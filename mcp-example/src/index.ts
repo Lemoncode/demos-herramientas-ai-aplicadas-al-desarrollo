@@ -92,24 +92,20 @@ const server = new McpServer({
 // =============================================================
 // Claude calls this tool when it wants to find relevant notes.
 // It scans every markdown file and returns matches with a snippet.
-server.tool(
-  // --- Tool name (must be unique, used by Claude to call the tool)
+server.registerTool(
   "search_notes",
-
-  // --- Human-readable description Claude uses to decide when to call it
-  "Search Obsidian notes by keyword. Returns matching note paths and a short preview of the matching line.",
-
-  // --- Input schema (validated with Zod before the handler runs)
   {
-    query: z.string().describe("Keyword or phrase to search for"),
-    max_results: z
-      .number()
-      .optional()
-      .default(10)
-      .describe("Maximum number of results to return (default: 10)"),
+    description:
+      "Search Obsidian notes by keyword. Returns matching note paths and a short preview of the matching line.",
+    inputSchema: {
+      query: z.string().describe("Keyword or phrase to search for"),
+      max_results: z
+        .number()
+        .optional()
+        .default(10)
+        .describe("Maximum number of results to return (default: 10)"),
+    },
   },
-
-  // --- Handler: receives the validated input, returns MCP content
   async ({ query, max_results }) => {
     const allFiles = await findMarkdownFiles(VAULT_PATH!);
     const lowerQuery = query.toLowerCase();
@@ -144,7 +140,7 @@ server.tool(
 
     // MCP tools always return { content: [{ type, text }] }
     return { content: [{ type: "text", text: result }] };
-  }
+  },
 );
 
 // =============================================================
@@ -152,31 +148,35 @@ server.tool(
 // =============================================================
 // Claude calls this after search_notes to read a full note.
 // The path should be relative to the vault root.
-server.tool(
+server.registerTool(
   "read_note",
-
-  'Read the full markdown content of an Obsidian note. Use the path returned by search_notes, e.g. "Projects/Ideas.md".',
-
   {
-    path: z
-      .string()
-      .describe('Path to the note relative to the vault root, e.g. "Projects/Ideas.md"'),
+    description:
+      'Read the full markdown content of an Obsidian note. Use the path returned by search_notes, e.g. "Projects/Ideas.md".',
+    inputSchema: {
+      path: z
+        .string()
+        .describe(
+          'Path to the note relative to the vault root, e.g. "Projects/Ideas.md"',
+        ),
+    },
   },
-
   async ({ path: notePath }) => {
     const fullPath = join(VAULT_PATH!, notePath);
 
     // Guard against path-traversal attacks like "../../etc/passwd"
     if (!fullPath.startsWith(VAULT_PATH!)) {
       return {
-        content: [{ type: "text", text: "Error: path is outside the vault directory." }],
+        content: [
+          { type: "text", text: "Error: path is outside the vault directory." },
+        ],
       };
     }
 
     const content = await readFile(fullPath, "utf8");
 
     return { content: [{ type: "text", text: content }] };
-  }
+  },
 );
 
 // =============================================================
