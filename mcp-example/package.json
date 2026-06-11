@@ -1,0 +1,18 @@
+{
+  "name": "mcp-obsidian-notes",
+  "version": "1.0.0",
+  "description": "MCP server that searches and reads notes from a local Obsidian vault",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}
