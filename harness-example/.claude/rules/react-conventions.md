@@ -1,26 +1,8 @@
 # React Conventions
 
-These rules apply to all React component files in this project. Claude Code loads this file automatically in every session.
+General conventions for all React and TypeScript files in this project. Loaded every session.
 
-## Component Rules
-
-- **Functional components only** — no class components
-- **Named exports only** — never `export default` from a component file (exception: `src/main.tsx` app entry)
-- **Props typed with `interface`** — not `type` alias
-
-  ```tsx
-  // correct
-  interface ButtonProps {
-    label: string
-    onClick: () => void
-  }
-
-  // wrong — use interface instead
-  type ButtonProps = { label: string; onClick: () => void }
-  ```
-
-- **No `any`** — use `unknown` + a type guard if the shape is truly unknown
-- **`useCallback`/`useMemo` only with justification** — not as a default pattern; only when a profiler shows a measurable issue
+For rules specific to `src/components/`, see `.claude/rules/components.md` — it loads automatically when you work with files in that directory.
 
 ## File Naming
 
@@ -28,10 +10,20 @@ These rules apply to all React component files in this project. Claude Code load
 - Utility/hook files: `camelCase.ts` — e.g., `useAuth.ts`, `formatDate.ts`
 - Test files: colocated, same name with `.test.tsx` suffix — e.g., `UserCard.test.tsx`
 
-## Semantic HTML
+## TypeScript
 
-Use the correct element for the job:
-- `<button>` for clickable actions — not `<div onClick>`
-- `<nav>`, `<main>`, `<header>`, `<footer>` for layout landmarks
-- `<ul>`/`<ol>` for lists, even if visually styled differently
-- `<a href>` for navigation — not `<button>` that programmatically navigates
+- Strict mode is on — no `any`, no type assertions without a comment explaining why
+- Prefer `interface` over `type` alias for object shapes
+- Prefer named exports over default exports across the codebase
+
+## Hooks
+
+- Custom hooks go in `src/hooks/` and are named with the `use` prefix
+- Do not call hooks conditionally or inside loops
+- `useEffect` deps arrays must be complete — lint will catch missing deps
+- `useCallback`/`useMemo` only with a measurable performance justification
+
+## Imports
+
+- Group imports: React → external packages → internal modules → styles
+- Use path aliases (`@/`) over relative `../../` paths when available
