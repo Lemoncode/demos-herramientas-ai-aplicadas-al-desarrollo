@@ -18,9 +18,12 @@ if [ -z "$TS_FILES" ]; then
   exit 0
 fi
 
+# Convert newline-separated list to array (bash 3 compatible)
+IFS=$'\n' read -r -d '' -a TS_FILE_ARRAY <<< "$TS_FILES" || true
+
 ERRORS=""
 
-if ! LINT_OUTPUT=$(npx eslint --max-warnings=0 $TS_FILES 2>&1); then
+if ! LINT_OUTPUT=$(npx eslint --max-warnings=0 "${TS_FILE_ARRAY[@]}" 2>&1); then
   ERRORS+=$'\n--- ESLint ---\n'"$LINT_OUTPUT"
 fi
 

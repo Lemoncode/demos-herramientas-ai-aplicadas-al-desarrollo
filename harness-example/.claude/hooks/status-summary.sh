@@ -17,7 +17,7 @@ else
   echo "  TypeScript  ✗  type errors found — run /typecheck"
 fi
 
-if npm test 2>/dev/null | grep -q "passed"; then
+if npm test 2>/dev/null 1>/dev/null; then
   echo "  Tests       ✓  all passing"
 else
   echo "  Tests       ✗  failures or no tests run — run /test"
