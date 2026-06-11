@@ -8,6 +8,8 @@
 
 **Tech Stack:** React 18, TypeScript strict, Vite 6, Vitest 2, @testing-library/react, ESLint 9 flat config, eslint-plugin-jsx-a11y, jq (for hook JSON parsing — `brew install jq` on macOS)
 
+**Working directory:** All implementation goes inside the `harness-example/` subfolder of the repo root (`/Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo/harness-example/`). Run all `npm` commands from that directory. All relative paths in this plan are relative to `harness-example/`.
+
 ---
 
 ## File Map
@@ -51,10 +53,10 @@ npm create vite@latest /tmp/harness-vite-scaffold -- --template react-ts
 
 Expected output ends with: `Done. Now run: cd /tmp/harness-vite-scaffold && npm install`
 
-- [ ] **Step 2: Copy scaffold files into the project root**
+- [ ] **Step 2: Copy scaffold files into the harness-example directory**
 
 ```bash
-cp -r /tmp/harness-vite-scaffold/. /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo/
+cp -r /tmp/harness-vite-scaffold/. /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo/harness-example/
 rm -rf /tmp/harness-vite-scaffold
 ```
 
