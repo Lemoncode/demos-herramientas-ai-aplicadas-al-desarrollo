@@ -19,13 +19,17 @@ Invoke the `react-component` skill before writing any `.tsx` component file.
 
 Invoke `superpowers:test-driven-development` before writing any implementation code.
 
+### Starting a new piece of work
+
+Invoke the `git-branch` skill to create a properly named feature branch from main. Never work directly on `main`.
+
 ### Committing
 
-Use the `write-commit` skill. Do **not** run `git commit` manually — the commit-guard hook will run tests for you either way, but the skill also generates a conventional commit message.
+Invoke the `git-commit` skill. Do **not** run `git commit` manually — it ensures conventional commit format and respects the commit-guard hook.
 
 ### Opening a pull request
 
-Use the `create-pr` skill.
+Invoke `git-pr-description` to generate the PR body, then `git-create-pr` to push and open the PR.
 
 ## Quality Gates (enforced by hooks)
 
