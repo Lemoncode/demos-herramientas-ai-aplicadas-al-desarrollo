@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx tsc *)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo status --short)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo remote -v)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo log --oneline -3)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo diff --stat HEAD)",
+      "Bash(git -C \"/Users/aridanemartin/workspace/knowledge-vault\" remote -v)",
+      "Bash(git -C \"/Users/aridanemartin/workspace/knowledge-vault\" log --oneline -3)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo diff RAG-01-core/src/main.ts)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo diff RAG-01-core/src/setup.ts)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo add RAG-01-core/docs/agent-loop.md RAG-01-core/docs/architecture.md RAG-01-core/docs/getting-started.md RAG-01-core/package-lock.json RAG-01-core/package.json RAG-01-core/src/internal/agent/loop.ts RAG-01-core/src/internal/provider/openai.ts RAG-01-core/src/main.ts RAG-01-core/src/setup.ts)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo commit -m ' *)",
+      "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo add demo-01-superpowers demo-02-spec-kit demo-03-grill-me)",
+      "Bash(git *)",
+      "WebFetch(domain:www.aridanemartin.dev)"
+    ]
+  }
+}
