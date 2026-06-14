@@ -1,0 +1,20 @@
+{
+  "name": "harness-01-core",
+  "version": "1.0.0",
+  "description": "BYO Harness §00-04: Provider, agent loop, tool registry, conversation state",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.54.0",
+    "dotenv": "^16.0.0",
+    "openai": "^4.100.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "@types/node": "^22.0.0"
+  }
+}
