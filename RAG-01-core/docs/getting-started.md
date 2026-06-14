@@ -4,12 +4,11 @@
 
 - Node.js with ESM support.
 - npm.
-- API credentials for the selected provider, unless using an OpenAI-compatible
-  local Ollama server.
+- A local Ollama server.
 
 Dependencies are declared in `package.json`:
 
-- Runtime: `@anthropic-ai/sdk`, `openai`, `dotenv`.
+- Runtime: `@anthropic-ai/sdk`, `openai`.
 - Development: `tsx`, `typescript`, `@types/node`.
 
 ## Install
@@ -21,34 +20,18 @@ npm install
 The repository currently includes `package-lock.json`, so npm will install the
 same dependency graph recorded in the lockfile.
 
-## Configure Environment
+## Configure Ollama
 
-Copy `.env.example` to `.env` and fill in the values for the provider you want:
+Start Ollama and make sure the model is available:
 
 ```sh
-cp .env.example .env
+ollama pull qwen3-coder:30b
 ```
 
-Provider selection is controlled by `PROVIDER`.
+The harness uses Ollama by default:
 
-```env
-PROVIDER=anthropic
-```
-
-Supported values:
-
-- `anthropic`: uses `AnthropicProvider` and requires `ANTHROPIC_API_KEY`.
-- `openai`: uses `OpenAIProvider` and requires `OPENAI_API_KEY`.
-- `ollama`: uses `OpenAIProvider` pointed at an OpenAI-compatible Ollama API.
-
-Useful model variables:
-
-- `OPENAI_MODEL`: overrides the default OpenAI model, `gpt-4o`.
-- `OLLAMA_MODEL`: overrides the default Ollama model, `llama3.2`.
+- `OLLAMA_MODEL`: overrides the default Ollama model, `qwen3-coder:30b`.
 - `OLLAMA_BASE_URL`: defaults to `http://localhost:11434/v1`.
-- `OPENAI_BASE_URL`: optional override for OpenAI-compatible APIs.
-
-The Anthropic default model is set in `src/internal/provider/anthropic.ts`.
 
 ## Run
 
@@ -62,8 +45,8 @@ This executes:
 tsx src/main.ts
 ```
 
-At startup, the CLI prints the selected provider and model, then waits for user
-input at a `>` prompt.
+At startup, the CLI prints the Ollama model, then waits for user input at a `>`
+prompt.
 
 ## Typecheck
 

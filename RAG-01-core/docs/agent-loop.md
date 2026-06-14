@@ -8,7 +8,7 @@ the model asks to use tools.
 ## Inputs
 
 ```ts
-runAgentLoop(provider, registry, messages, options)
+runAgentLoop(provider, registry, messages, options);
 ```
 
 - `provider`: any object implementing the `Provider` interface.
@@ -73,7 +73,7 @@ results answer one assistant turn.
 Before a tool executes, the loop calls:
 
 ```ts
-confirm(`approve ${block.toolName}?`)
+confirm(`approve ${block.toolName}?`);
 ```
 
 If the user denies the call, no tool code runs. Instead, the loop appends:

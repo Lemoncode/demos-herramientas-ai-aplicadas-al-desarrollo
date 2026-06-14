@@ -1,7 +1,5 @@
-// §03 The Provider Interface — OpenAI adapter.
-// Also works with Ollama since Ollama exposes an OpenAI-compatible API
-// at http://localhost:11434/v1. Set PROVIDER=ollama and OLLAMA_BASE_URL.
-// "One adapter serves multiple backends" via baseURL configuration.
+// OpenAI-compatible provider adapter.
+// In this harness it points to Ollama's local OpenAI-compatible endpoint.
 
 import OpenAI from "openai";
 import type { Provider } from "./index.js";
@@ -12,6 +10,7 @@ export class OpenAIProvider implements Provider {
   private client: OpenAI;
   private currentModel: string;
   private system: string;
+  private textToolCallCounter = 0;
 
   constructor(
     system: string,
@@ -39,15 +38,17 @@ export class OpenAIProvider implements Provider {
       });
 
       const choice = resp.choices[0];
+      const content = this.fromOpenAIMessage(choice.message);
       // Map OpenAI's finish_reason to harness StopReason
       const finishReason = choice.finish_reason;
       const stopReason: StopReason =
-        finishReason === "tool_calls" ? "tool_use"
+        content.some((block) => block.type === "tool_use") ? "tool_use"
+        : finishReason === "tool_calls" ? "tool_use"
         : finishReason === "length"   ? "max_tokens"
         : "end_turn";
 
       return {
-        content: this.fromOpenAIMessage(choice.message),
+        content,
         stopReason,
       };
     } catch (err) {
@@ -140,7 +141,18 @@ export class OpenAIProvider implements Provider {
 
   private fromOpenAIMessage(msg: OpenAI.ChatCompletionMessage): Block[] {
     const blocks: Block[] = [];
-    if (msg.content) blocks.push({ type: "text", text: msg.content });
+
+    const textToolCalls = msg.tool_calls?.length
+      ? []
+      : this.parseTextToolCalls(msg.content ?? "");
+    const textWithoutToolCalls = textToolCalls.length
+      ? this.removeTextToolCalls(msg.content ?? "").trim()
+      : msg.content;
+
+    if (textWithoutToolCalls) {
+      blocks.push({ type: "text", text: textWithoutToolCalls });
+    }
+
     for (const call of msg.tool_calls ?? []) {
       blocks.push({
         type: "tool_use",
@@ -149,6 +161,40 @@ export class OpenAIProvider implements Provider {
         toolInput: call.function.arguments,
       });
     }
+
+    blocks.push(...textToolCalls);
     return blocks;
+  }
+
+  private parseTextToolCalls(content: string): Block[] {
+    const blocks: Block[] = [];
+    const functionRe = /<function=([A-Za-z0-9_-]+)>\s*([\s\S]*?)<\/function>\s*(?:<\/tool_call>)?/g;
+
+    for (const match of content.matchAll(functionRe)) {
+      const [, toolName, body] = match;
+      const params: Record<string, string> = {};
+      const parameterRe = /<parameter=([A-Za-z0-9_-]+)>\s*([\s\S]*?)\s*<\/parameter>/g;
+
+      for (const paramMatch of body.matchAll(parameterRe)) {
+        const [, name, value] = paramMatch;
+        params[name] = value.trim();
+      }
+
+      blocks.push({
+        type: "tool_use",
+        toolUseId: `ollama_text_tool_${this.textToolCallCounter++}`,
+        toolName,
+        toolInput: JSON.stringify(params),
+      });
+    }
+
+    return blocks;
+  }
+
+  private removeTextToolCalls(content: string): string {
+    return content.replace(
+      /<function=([A-Za-z0-9_-]+)>\s*[\s\S]*?<\/function>\s*(?:<\/tool_call>)?/g,
+      ""
+    );
   }
 }

@@ -11,8 +11,7 @@ flowchart TD
   main --> registry["Tool registry"]
   main --> loop["runAgentLoop()"]
 
-  provider --> anthropic["AnthropicProvider"]
-  provider --> openai["OpenAIProvider<br/>OpenAI or Ollama"]
+  provider --> openai["OpenAIProvider<br/>Ollama local API"]
 
   registry --> bash["BashTool"]
   registry --> read["ReadFileTool"]
@@ -23,19 +22,18 @@ flowchart TD
   loop --> ui["terminal output and confirmation"]
 ```
 
-The core design goal is provider neutrality. The agent loop knows only about the
-`Provider` interface and the shared message protocol. It does not import any LLM
-SDK and does not know whether the backend is Anthropic, OpenAI, or Ollama.
+The agent loop knows only about the `Provider` interface and the shared message
+protocol. For this first harness, `main.ts` always wires that interface to a
+local Ollama server.
 
 ## Process Startup
 
 `src/main.ts` does the process-level setup:
 
-1. Loads `.env` through `dotenv.config()`.
-2. Builds a provider using `PROVIDER`.
-3. Builds a `Registry` and registers the built-in tools.
-4. Creates the session `messages` array.
-5. Starts a Node `readline` REPL.
+1. Builds an Ollama provider.
+2. Builds a `Registry` and registers the built-in tools.
+3. Creates the session `messages` array.
+4. Starts a Node `readline` REPL.
 
 The system prompt is also defined in `main.ts`. It is passed into provider
 constructors, because each provider has a different way to send system

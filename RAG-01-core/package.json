@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.54.0",
-    "dotenv": "^16.0.0",
     "openai": "^4.100.0"
   },
   "devDependencies": {

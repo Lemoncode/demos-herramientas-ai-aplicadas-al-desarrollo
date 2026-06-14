@@ -27,6 +27,7 @@ async function main(): Promise<void> {
   printInfo("Type your message. /clear to reset, /exit to quit.");
   printText("");
 
+  // Create a readline interface for user input
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -38,6 +39,7 @@ async function main(): Promise<void> {
   for await (const line of rl) {
     const trimmed = line.trim();
 
+    // If there's no input, just print the prompt again and continue the loop
     if (!trimmed) {
       printPrompt();
       continue;

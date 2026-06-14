@@ -1,46 +1,46 @@
-// §01 The Agent Loop — the core prompt → send → tool → repeat cycle.
+// Main loop for one assistant response.
 //
-// The loop runs while stopReason === "tool_use". On each iteration:
-//   1. Send the full message history to the provider
-//   2. Append the response to history (assistant turn)
-//   3. If any tool_use blocks: execute each tool, append results (user turn)
-//   4. If stopReason !== "tool_use": print text output, exit loop
+// The model may answer directly, or it may ask to run one or more tools.
+// When tools are requested, this loop runs them, sends the results back to the
+// model, and repeats until the model returns a final text answer.
 //
-// §06 Conversation State: the messages array accumulates across turns.
-// The entire history is sent on every API call — models are stateless.
-// The caller owns the array and can clear it (/clear command, §05).
+// `messages` is the conversation history. It grows during the session because
+// each provider call needs the previous user messages, assistant replies, and
+// tool results.
 
 import type { Provider } from "../provider/index.js";
 import { ProviderError } from "../provider/index.js";
 import type { Registry } from "../tool/registry.js";
 import type { Message, Block } from "../api/types.js";
-import { printText, printError, printToolCall, printToolResult } from "../ui/output.js";
+import {
+  printText,
+  printError,
+  printToolCall,
+  printToolResult,
+} from "../ui/output.js";
 import { confirm } from "../ui/confirm.js";
 
 export interface LoopOptions {
   // When true, every tool call requires interactive y/n approval.
-  // §02 The Permission Gate: default is true (always ask).
+  // The default is true so commands do not run silently.
   requireConfirm?: boolean;
-  // Optional confirm function — pass the REPL's readline.question() wrapper
-  // to avoid creating a second readline interface on stdin (byte-stealing).
-  // Falls back to the standalone confirm() from ../ui/confirm.js.
-  confirm?: (prompt: string) => Promise<boolean>;
 }
 
-// Run one agent turn: send the latest user message, handle tool calls,
-// and return when the model stops requesting tools.
-// Mutates `messages` in-place — the caller's array is updated.
+// Runs one user turn. This may involve several provider calls if the model
+// needs tools before it can produce the final answer.
+// Updates `messages` in place so main.ts keeps the full conversation.
 export async function runAgentLoop(
   provider: Provider,
   registry: Registry,
   messages: Message[],
-  options: LoopOptions = {}
+  options: LoopOptions = {},
 ): Promise<void> {
-  const { requireConfirm = true, confirm: confirmFn = confirm } = options;
+  const { requireConfirm = true } = options;
 
   while (true) {
     let response;
     try {
+      // Send the full history, plus the list of tools the model can request.
       response = await provider.send(messages, registry.definitions());
     } catch (err) {
       if (err instanceof ProviderError) {
@@ -50,13 +50,12 @@ export async function runAgentLoop(
       throw err;
     }
 
-    // §06: Append the assistant's full response to history before inspecting it.
-    // This must happen BEFORE tool execution so the next loop iteration
-    // includes this turn's tool_use blocks.
+    // Save the assistant response before running tools. The next provider call
+    // must include both the tool request and the matching tool result.
     messages.push({ role: "assistant", content: response.content });
 
     if (response.stopReason !== "tool_use") {
-      // Print any text blocks and return to the REPL
+      // No tool was requested, so print the final answer and return to main.ts.
       for (const block of response.content) {
         if (block.type === "text") {
           printText(block.text);
@@ -65,24 +64,25 @@ export async function runAgentLoop(
       return;
     }
 
-    // Collect tool results to append as a single user message.
-    // §01: All results from one turn go in one user message — not one per tool.
+    // Collect every tool result from this assistant response.
+    // They will be sent back together as one message.
     const toolResults: Block[] = [];
 
     for (const block of response.content) {
       if (block.type === "text") {
-        // Print any text that accompanies tool use (e.g. "Let me check that...")
+        // The model may explain what it is about to do before using a tool.
         printText(block.text);
       }
 
       if (block.type === "tool_use") {
         printToolCall(block.toolName, block.toolInput);
 
-        // §02 The Permission Gate: ask before executing
+        // Ask the user before running the requested tool.
         if (requireConfirm) {
-          const approved = await confirmFn(`approve ${block.toolName}?`);
+          const approved = await confirm(`approve using: ${block.toolName}?`);
+
           if (!approved) {
-            // §02: Denial returns isError:true — model receives feedback and adapts
+            // Tell the model the user rejected the tool call.
             toolResults.push({
               type: "tool_result",
               toolUseId: block.toolUseId,
@@ -95,13 +95,13 @@ export async function runAgentLoop(
 
         const { result, isError } = await registry.execute(
           block.toolName,
-          block.toolInput
+          block.toolInput,
         );
 
         printToolResult(result, isError);
 
-        // §01 Critical: toolUseId must match the tool_use block's id.
-        // Breaking this link causes a 400 API error on the next call.
+        // Link the result to the exact tool request that produced it.
+        // Providers reject the next call if this id does not match.
         toolResults.push({
           type: "tool_result",
           toolUseId: block.toolUseId,
@@ -111,10 +111,8 @@ export async function runAgentLoop(
       }
     }
 
-    // §06: Append all tool results as a single user-role message.
-    // Guard against empty toolResults: if stopReason was "tool_use" but
-    // no tool_use blocks appeared (unexpected API behavior), don't push
-    // an empty user message, which some providers reject with 400.
+    // Send tool results back to the model. If the provider claimed there was a
+    // tool request but did not include one, avoid sending an empty message.
     if (toolResults.length > 0) {
       messages.push({ role: "user", content: toolResults });
     }

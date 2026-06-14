@@ -7,6 +7,7 @@ import { WriteFileTool } from "./internal/tool/write-file.js";
 import { SYSTEM_PROMPT } from "./prompt.js";
 import { printError } from "./internal/ui/output.js";
 
+// Builds the provider for the LLM.
 export function buildProvider(): Provider {
   try {
     return new OpenAIProvider(
@@ -21,6 +22,7 @@ export function buildProvider(): Provider {
   }
 }
 
+// Builds the tool registry.
 export function buildRegistry(): Registry {
   const registry = new Registry();
   registry.register(new BashTool());
