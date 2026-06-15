@@ -1,9 +1,6 @@
 import type { Provider } from "./internal/provider/index.js";
 import { OpenAIProvider } from "./internal/provider/openai.js";
 import { Registry } from "./internal/tool/registry.js";
-import { BashTool } from "./internal/tool/bash.js";
-import { ReadFileTool } from "./internal/tool/read-file.js";
-import { WriteFileTool } from "./internal/tool/write-file.js";
 import { SYSTEM_PROMPT } from "./prompt.js";
 import { printError } from "./internal/ui/output.js";
 
@@ -22,11 +19,7 @@ export function buildProvider(): Provider {
   }
 }
 
-// Builds the tool registry.
+// No tools — the CV assistant answers from its hardcoded context.
 export function buildRegistry(): Registry {
-  const registry = new Registry();
-  registry.register(new BashTool());
-  registry.register(new ReadFileTool());
-  registry.register(new WriteFileTool());
-  return registry;
+  return new Registry();
 }

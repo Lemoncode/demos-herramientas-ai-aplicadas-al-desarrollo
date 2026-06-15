@@ -1,59 +1,66 @@
-# Harness 01 Core Documentation
+# RAG-01 — Static Context Injection
 
-This folder documents how `harness-01-core` works from the command line entry
-point down to provider adapters, tools, conversation state, and terminal output.
+## What this demo shows
 
-The harness is a small TypeScript coding-agent shell. It runs a REPL, sends the
-conversation history to an LLM provider, lets the model request tools, asks the
-user for permission before executing those tools, appends tool results back into
-the conversation, and repeats until the model finishes its turn.
+The simplest possible way to give an LLM knowledge about a specific topic: **paste the document directly into the system prompt**.
 
-## Documentation Map
+The CV is hardcoded in `src/prompt.ts`. The model receives the full text on every single API call, regardless of what the user asks.
 
-- [Getting started](./getting-started.md): installation, environment variables,
-  scripts, and provider selection.
-- [Architecture](./architecture.md): module layout and end-to-end request flow.
-- [Message protocol](./message-protocol.md): shared message, block, tool, and
-  provider response types.
-- [Agent loop](./agent-loop.md): the prompt -> provider -> tool -> result loop.
-- [Providers](./providers.md): Anthropic, OpenAI, and Ollama-compatible adapters.
-- [Tools and registry](./tools-and-registry.md): built-in tools, tool schemas,
-  execution contracts, and registration.
-- [Terminal UI](./terminal-ui.md): REPL commands, output helpers, and confirmation
-  prompts.
-- [Extending the harness](./extending.md): adding providers, tools, commands, and
-  guardrails.
-- [Known limitations](./known-limitations.md): intentional simplifications in
-  this first harness.
+## How it works
 
-## Source Map
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant M as main.ts
+    participant L as LLM
 
-```text
-src/main.ts                         REPL entry point and dependency wiring
-src/internal/api/types.ts            Provider-neutral message/tool types
-src/internal/agent/loop.ts           Core agent loop
-src/internal/provider/index.ts       Provider interface and ProviderError
-src/internal/provider/anthropic.ts   Anthropic SDK adapter
-src/internal/provider/openai.ts      OpenAI and Ollama-compatible adapter
-src/internal/tool/registry.ts        Tool interface and dispatcher
-src/internal/tool/bash.ts            Shell command tool
-src/internal/tool/read-file.ts       File read tool
-src/internal/tool/write-file.ts      File write tool
-src/internal/ui/output.ts            Terminal formatting helpers
-src/internal/ui/confirm.ts           Interactive approval prompt
+    Note over M: Startup: CV is already<br/>in the system prompt string
+
+    U->>M: "What is Aridane's current role?"
+    M->>L: system: [FULL CV TEXT]<br/>user: "What is Aridane's current role?"
+    L-->>M: "Tech Lead at Openbank..."
+    M-->>U: "Tech Lead at Openbank..."
 ```
 
-## Mental Model
+## File structure
 
-There are three important boundaries:
+```
+src/
+  prompt.ts     ← CV lives here, as a plain string
+  setup.ts      ← builds the provider with that prompt
+  main.ts       ← REPL loop
+  internal/
+    provider/   ← Ollama adapter (OpenAI-compatible)
+    api/        ← shared message types
+    ui/         ← terminal output helpers
+```
 
-1. `main.ts` owns process setup, provider selection, tool registration, and the
-   outer REPL.
-2. `runAgentLoop()` owns one assistant turn, including all provider calls and
-   tool execution needed to complete that turn.
-3. Provider adapters translate between the harness protocol and SDK-specific
-   request/response formats.
+## The core idea
 
-The rest of the code stays deliberately narrow: tools only execute work,
-providers only translate and send model requests, and UI helpers only print to
-the terminal.
+```
+System prompt = instructions + entire CV
+```
+
+Every call to the LLM includes the whole CV. The model reads it fresh each time and extracts whatever is relevant to the question.
+
+## Why this works — and when it breaks
+
+| | Works well | Breaks |
+|---|---|---|
+| **Document size** | Small (fits in context) | Large (exceeds token limit) |
+| **Cost** | Fine for demos | Expensive at scale (paying for the full CV on every turn) |
+| **Freshness** | Instant — just edit the string | Requires a code deploy to update |
+| **Precision** | The model sees everything | Model may hallucinate or mix unrelated sections |
+
+## The problem this creates
+
+Imagine the CV grows to 50 pages, or you have 1000 employees' CVs. You cannot fit them all in the prompt. You need a way to **retrieve only the relevant parts** before sending them to the model.
+
+That is what RAG-02 solves.
+
+## Running it
+
+```bash
+cp .env.example .env   # set OLLAMA_MODEL and OLLAMA_BASE_URL
+npm run dev
+```

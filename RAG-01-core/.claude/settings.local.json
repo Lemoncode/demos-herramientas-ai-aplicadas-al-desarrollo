@@ -21,7 +21,9 @@
       "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo commit -m ' *)",
       "Bash(git -C /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo add demo-01-superpowers demo-02-spec-kit demo-03-grill-me)",
       "Bash(git *)",
-      "WebFetch(domain:www.aridanemartin.dev)"
+      "WebFetch(domain:www.aridanemartin.dev)",
+      "Bash(rm -rf /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo/RAG-02-file-loading-and-kw-retrieval/src)",
+      "Bash(rm -rf /Users/aridanemartin/workspace/demos-herramientas-ai-aplicadas-al-desarrollo/RAG-03-full/src)"
     ]
   }
 }

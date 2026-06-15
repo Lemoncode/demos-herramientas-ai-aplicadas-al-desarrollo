@@ -1,0 +1,19 @@
+{
+  "name": "rag-02-keyword",
+  "version": "1.0.0",
+  "description": "RAG demo 02: file loading + BM25 keyword retrieval",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.54.0",
+    "openai": "^4.100.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}
