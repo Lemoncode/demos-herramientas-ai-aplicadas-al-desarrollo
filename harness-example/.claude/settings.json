@@ -1,4 +1,15 @@
 {
+  "permissions": {
+    "allow": [
+      "Agent",
+      "Bash",
+      "Edit",
+      "Write",
+      "Read",
+      "Glob",
+      "Grep"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
