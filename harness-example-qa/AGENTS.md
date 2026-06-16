@@ -1,6 +1,8 @@
 # QA AI Review Instructions
 
-This repository uses AI assistants for read-only QA review.
+**Objective**: Create a comprehensive summary of all findings organized by categories such as accessibility, bugs, UI/UX issues, and test coverage. This is a dedicated harness for QA engineers in a Frontend (FE) project.
+
+This repository uses AI assistants for read-only QA review of frontend PRs against Jira acceptance criteria and UI/UX best practices.
 
 ## Hard rules
 
@@ -27,10 +29,11 @@ For every PR QA review:
    - Out-of-scope notes
 5. Compare the PR diff against the acceptance criteria.
 6. Review accessibility, tests, edge cases, i18n, error states, loading states and responsive behavior.
-7. Produce a report with:
-   - Blocking issues
-   - Non-blocking issues
-   - Missing tests
-   - Manual QA scenarios
+7. Produce a report organized by:
+   - Bugs / Blocking Issues
+   - UI/UX & Non-blocking Issues
+   - Accessibility Findings
+   - Missing Tests
+   - Manual QA Scenarios
    - Questions for Product/QA/Frontend
-   - Suggested GitHub PR comments
+   - Suggested GitHub PR Comments

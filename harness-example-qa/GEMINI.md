@@ -1,6 +1,8 @@
 # QA Harness — Gemini CLI
 
-Read-only QA review of GitHub PRs against Jira acceptance criteria.
+**Objective**: Create a comprehensive summary of all findings organized by categories such as accessibility, bugs, UI/UX issues, and test coverage. This is a dedicated harness for QA engineers in a Frontend (FE) project.
+
+Read-only QA review of frontend PRs against Jira acceptance criteria and UI/UX best practices.
 
 ## Hard rules
 
@@ -27,13 +29,10 @@ Gemini CLI loads skill metadata at session start and activates full content on d
 
 **Always follow this order — do not skip Step 0:**
 
-### Step 0 — ask first
+### Step 0 — automated Jira key discovery
 
-Before running any command or activating any skill, ask the user:
-
-> What is the Jira issue key for this review? (e.g. PROJ-123)
-
-Do not proceed until the user provides the key or explicitly says there is no Jira issue.
+Extract the Jira issue key automatically from the branch name, PR title, or PR description. Do not stop to ask the user.
+If no Jira issue key can be found, note it and proceed without AC coverage.
 
 ### Step 1 — fetch Jira issue
 
@@ -73,7 +72,7 @@ Produce the final QA Review Report (format below).
 git status / git diff / git log
 gh pr view / gh pr diff / gh pr checks
 curl https://*.atlassian.net  (Jira REST API only)
-npm test / npm run test / npm run lint / npm run typecheck  ← ask user first
+npm test / npm run test / npm run lint / npm run typecheck  ← allowed automatically
 ```
 
 All other commands are disallowed. Never push, reset, delete or deploy.
@@ -84,8 +83,8 @@ All other commands are disallowed. Never push, reset, delete or deploy.
 
 ## Summary
 ## Jira / Acceptance Criteria Coverage
-## Blocking Issues
-## Non-blocking Issues
+## Bugs / Blocking Issues
+## UI/UX & Non-blocking Issues
 ## Accessibility Findings
 ### General Accessibility
 ### Color Contrast (WCAG 1.4.3 / 1.4.6 / 1.4.11 / 1.4.1)

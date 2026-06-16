@@ -1,6 +1,8 @@
 # QA Harness — Claude Code
 
-Read-only QA review of GitHub PRs against Jira acceptance criteria.
+**Objective**: Create a comprehensive summary of all findings organized by categories such as accessibility, bugs, UI/UX issues, and test coverage. This is a dedicated harness for QA engineers in a Frontend (FE) project.
+
+Read-only QA review of frontend PRs against Jira acceptance criteria and UI/UX best practices.
 
 ## Hard rules
 
@@ -29,7 +31,7 @@ Invoke a skill before starting any task that matches its description.
 
 **Always follow this order:**
 
-1. Ask the user for the Jira issue key before doing anything else.
+1. Extract the Jira issue key automatically from the branch name, PR title, or description. Do not ask the user. If not found, proceed without AC coverage.
 2. Use `jira-fetch` to retrieve the issue — summary, AC, QA notes, out-of-scope, design links.
 3. Fetch the PR diff and CI status via `gh pr`.
 4. Dispatch subagents in parallel for: AC coverage, accessibility, contrast (if colors changed), tests, regression risk.
@@ -47,7 +49,7 @@ gh pr view
 gh pr diff
 gh pr checks
 curl https://*.atlassian.net (Jira API only)
-npm test / npm run test / npm run lint / npm run typecheck  ← ask user first
+npm test / npm run test / npm run lint / npm run typecheck  ← allowed automatically
 ```
 
 ## Output format
@@ -58,8 +60,8 @@ Every review must produce:
 
 ## Summary
 ## Jira / Acceptance Criteria Coverage
-## Blocking Issues
-## Non-blocking Issues
+## Bugs / Blocking Issues
+## UI/UX & Non-blocking Issues
 ## Accessibility Findings
 ### General Accessibility
 ### Color Contrast (WCAG 1.4.3 / 1.4.6 / 1.4.11 / 1.4.1)
