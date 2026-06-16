@@ -1,73 +1,58 @@
-# React + TypeScript + Vite
+# Harness Example
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Next.js 15 (App Router) project bootstrapped for the AI-assisted development course. 
+It serves as a harness for an autonomous fleet demo.
 
-Currently, two official plugins are available:
+## Demo Workflow
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The harness executes the following autonomous steps when a goal is submitted:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```mermaid
+flowchart TD
+    Start([User runs /goal]) --> P1
+    
+    P1[Phase 1: Foundation] --> |Orchestrator builds shared UI shell| P2
+    
+    P2[Phase 2: Fleet] --> |6 Workers build sections in parallel| P3
+    
+    P3[Phase 3: Review] --> |3 Reviewers audit quality in parallel| P4
+    
+    P4[Phase 4: Ship & Report] --> |Orchestrator opens PRs & reports| Finish([Done])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Agents & Phases Breakdown
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Phase | Active Agent(s) | Responsibilities |
+|---|---|---|
+| **1. Foundation** | **Orchestrator** | Sequentially generates design tokens, UI primitives (`Heading`, `Button`, `Card`, `Section`), the app shell, and stubs for all 6 sections. Commits directly to `main`. |
+| **2. Fleet** | **6x `section-worker`** | Dispatched concurrently in isolated git worktrees. Each agent takes ownership of a single section and builds it following a strict Red → Green → Refactor TDD cycle. |
+| **3. Review** | **`react-reviewer`**<br/>**`accessibility-reviewer`**<br/>**`4r-reviewer`** | Dispatched concurrently to read across all 6 section worktrees (without modifying code). They emit verdicts based on React patterns, a11y standards, and the 4R framework (Risk, Readability, Reliability, Resilience). |
+| **4. Ship & Report** | **Orchestrator** | Collects the results, opens GitHub PRs for the sections that successfully passed all tests and reviews, and prints a final **6×4 quality check matrix** to the user (detailing the Build, React, Accessibility, and 4R Review status for all 6 page sections). |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### The 4R Framework
+
+During Phase 3, the `4r-reviewer` subagent audits the codebase against four strict quality gates. The agent checks for objective, verifiable signals rather than subjective opinions:
+
+1. **Risk:** Ensures no security vulnerabilities or production-breaking changes are introduced. The agent checks for things like missing sanitization (`dangerouslySetInnerHTML`), untrusted URL props, unprotected server actions, and runtime scripts lacking integrity checks.
+2. **Readability:** Ensures the code is understandable and respects complexity budgets. The agent enforces rules like component length (<200 LOC), shallow JSX nesting (≤4 levels), no magic numbers, explicit types (no `any`), and strict prop limits.
+3. **Reliability:** Ensures the code is genuinely tested with useful coverage. The agent verifies that colocated tests exist, tests assert user-visible behavior (rather than implementation details), explicit edge cases are covered, and logic snapshots are avoided.
+4. **Resilience:** Ensures the application degrades gracefully when failures occur. The agent looks for proper React Error Boundaries (`error.tsx`), loading states (`loading.tsx` or Suspense), fallbacks for failed server fetches, and proper error telemetry rather than swallowed exceptions.
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Scripts
+
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the app for production.
+- `npm run start`: Runs the built app in production mode.
+- `npm run lint`: Runs ESLint.
+- `npm run typecheck`: Runs TypeScript compiler check.
+- `npm run test`: Runs tests using Vitest.

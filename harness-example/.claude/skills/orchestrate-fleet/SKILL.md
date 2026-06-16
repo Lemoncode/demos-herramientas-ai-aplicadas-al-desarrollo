@@ -177,9 +177,9 @@ If a Worker returns malformed JSON or times out, record it as a failure with `bl
 
 ---
 
-## Phase 3 — Review (parallel, one message containing two `Agent` calls)
+## Phase 3 — Review (parallel, one message containing three `Agent` calls)
 
-After all six Worker results are in, dispatch **two Reviewers in one message**. Reviewers are read-only and do not need worktree isolation.
+After all six Worker results are in, dispatch **three Reviewers in one message**. Reviewers are read-only and do not need worktree isolation.
 
 ```
 Agent(
@@ -205,12 +205,22 @@ Agent(
 
     Worktrees: <same six paths>
 )
+
+Agent(
+  subagent_type: "react-reviewer",
+  description: "React review of all 6 Section worktrees",
+  prompt: |
+    Review React component patterns (TS strictness, hook rules, prop drilling) for these six Worker worktrees.
+
+    Worktrees: <same six paths>
+)
 ```
 
 Each Reviewer returns a per-Section verdict map. Save the raw outputs to disk:
 
 ```bash
 mkdir -p docs/reports
+echo "<React report>" > docs/reports/$(date +%Y-%m-%d)-react.md
 echo "<a11y report>"  > docs/reports/$(date +%Y-%m-%d)-a11y.md
 echo "<4R report>"    > docs/reports/$(date +%Y-%m-%d)-4r.md
 ```
@@ -239,6 +249,7 @@ Built by the Fleet on <date> under `/goal`.
 <bullets from Mission Brief>
 
 ### Reviews
+- React verdict: <pass|warning|fail>
 - a11y verdict: <pass|warning|fail>
 - 4R verdict:   <pass|warning|fail>
 <findings if any>
@@ -266,22 +277,22 @@ QA-HARNESS-EXAMPLE — GOAL COMPLETE
 
 Foundation:    ✓ committed at <sha>
 Fleet:         <n>/6 Workers returned
-Review:        2/2 Reviewers returned
+Review:        3/3 Reviewers returned
 Ship:          <n> PRs opened, <n> blocked
 
-┌──────────────────┬─────────┬───────┬──────┬──────────────────────────────────┐
-│ Section          │  Build  │  a11y │  4R  │  PR                              │
-├──────────────────┼─────────┼───────┼──────┼──────────────────────────────────┤
-│ hero             │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-│ catalog          │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-│ sustainability   │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-│ faq              │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-│ certifications   │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-│ contact          │   <s>   │  <s>  │ <s>  │  <pr or blocker reason>          │
-└──────────────────┴─────────┴───────┴──────┴──────────────────────────────────┘
+┌──────────────────┬─────────┬───────┬──────┬──────┬──────────────────────────────────┐
+│ Section          │  Build  │ React │ a11y │  4R  │  PR                              │
+├──────────────────┼─────────┼───────┼──────┼──────┼──────────────────────────────────┤
+│ hero             │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+│ catalog          │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+│ sustainability   │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+│ faq              │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+│ certifications   │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+│ contact          │   <s>   │  <s>  │ <s>  │ <s>  │  <pr or blocker reason>          │
+└──────────────────┴─────────┴───────┴──────┴──────┴──────────────────────────────────┘
 
 Result:  <n> PRs opened · <n> blocked · <n> warnings
-Reports: docs/reports/<date>-a11y.md, docs/reports/<date>-4r.md
+Reports: docs/reports/<date>-react.md, docs/reports/<date>-a11y.md, docs/reports/<date>-4r.md
 
 ✓ /goal complete
 ```
@@ -298,7 +309,7 @@ After printing the Final Report, **stop immediately**. Do not continue working. 
 
 - Phase ordering is strict — Foundation → Fleet → Review → Ship & Report. No reordering.
 - Phase 1 ends with a commit before Phase 2 starts. Worker worktrees fork from this commit.
-- All six Workers dispatched in ONE message in Phase 2. Both Reviewers dispatched in ONE message in Phase 3.
+- All six Workers dispatched in ONE message in Phase 2. All three Reviewers dispatched in ONE message in Phase 3.
 - Phase 4 opens PRs only for Sections with `build_pass && tests_pass`. Broken code never reaches GitHub.
 - The Final Report is printed in exactly the format above. Then HALT.
 

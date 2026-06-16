@@ -41,7 +41,7 @@ The structured data payload the Orchestrator passes per Worker at dispatch — S
 _Avoid_: Prompt, ticket spec, instructions, briefing
 
 **Reviewer**:
-A read-only specialist subagent dispatched after the Fleet finishes. Reviewers do not write feature code and do not have their own worktree — they read across the 6 Worker worktrees and emit findings. The harness ships two: `accessibility-reviewer` and `4r-reviewer`.
+A read-only specialist subagent dispatched after the Fleet finishes. Reviewers do not write feature code and do not have their own worktree — they read across the 6 Worker worktrees and emit findings. The harness ships three: `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer`.
 _Avoid_: Auditor, checker, linter, critic
 
 **4R Framework**:
@@ -49,5 +49,5 @@ External code-review framework adopted as the standard for the `4r-reviewer`. Th
 _Avoid_: Quality framework, review framework, 4-pillar framework
 
 **Final Report**:
-The single printed artifact that closes a `/goal` run — a 6×3 pass/fail matrix plus PR URLs. The Orchestrator does not exit until the Final Report is printed; printing it is the explicit stop condition.
+The single printed artifact that closes a `/goal` run — a 6×4 pass/fail matrix plus PR URLs. The Orchestrator does not exit until the Final Report is printed; printing it is the explicit stop condition.
 _Avoid_: Summary, status, results

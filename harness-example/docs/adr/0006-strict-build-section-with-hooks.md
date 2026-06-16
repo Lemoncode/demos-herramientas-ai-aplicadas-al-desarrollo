@@ -1,9 +1,0 @@
-# Strict build-section skill with hook-enforced file ownership and TDD
-
-Every Worker reads the same `build-section` skill. We considered (i) a "guided" skill that states rules and trusts the Worker to follow them, surfacing violations as Reviewer findings, and (ii) a "minimal" skill that enforces only the return contract. We rejected both because the demo's central lesson is that **stated conventions are not enforcement** — agents that respect rules on Monday will skip them on Friday unless something physical stops them.
-
-`build-section` is rigid: 7 steps in order — pre-flight → Phase R (failing test, evidence captured) → Phase G (minimal impl, evidence captured) → Phase Refactor (optional, tests stay green) → Quality gate (typecheck + lint) → Commit → Return structured contract `{ section, branch, worktree_path, build_pass, tests_pass, red_evidence, green_evidence, quality_gate, files_changed }`. Each step's output is captured into the return payload so the Final Report can prove the Worker ran the cycle.
-
-A `PreToolUse` hook (`section-ownership.sh`) blocks any `Write` or `Edit` targeting a path outside `src/sections/{worker's section id}/`. The hook reads the Section ID from the worktree branch name (`fleet/{id}`) and rejects out-of-bounds writes at the tool level — the agent literally cannot stomp on another Section's files. Reviewers do not waste findings on file-ownership violations; they focus on semantic 4R findings only.
-
-Consequence: hooks are now load-bearing infrastructure of the harness, not optional. If the operator runs Claude Code without `.claude/hooks/` available (e.g., in CI), the Workers can edit anything and the demo's main lesson is silently undone. Document this prominently in the README. The hook approach also slightly inflates demo time — each Worker runs `npm test` twice (red + green) — accepted as the price of visible TDD evidence in the Final Report.

@@ -20,8 +20,8 @@ One prompt. The Orchestrator runs four phases and prints a Final Report when don
 |---|---|---|
 | **1. Foundation** | Orchestrator generates tokens, primitives (`Heading`, `Button`, `Card`, `Section`), app shell, Section stubs. Commits to main. | ~90s sequential output |
 | **2. Fleet** | Orchestrator dispatches 6 Workers in parallel via `Agent(isolation: "worktree")`. Each Worker owns one Section folder, runs Red→Green→Refactor, returns a structured contract. | 6 transcripts running concurrently |
-| **3. Review** | Orchestrator dispatches `accessibility-reviewer` and `4r-reviewer` in parallel. Each reads all 6 worktrees and emits per-Section verdicts. | 2 review reports + 2 markdown files in `docs/reports/` |
-| **4. Ship & Report** | Orchestrator opens one PR per Section that passed Build + Tests, then prints the Final Report (6×3 matrix + PR URLs). HALT. | Final Report on screen |
+| **3. Review** | Orchestrator dispatches `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer` in parallel. Each reads all 6 worktrees and emits per-Section verdicts. | 3 review reports + 3 markdown files in `docs/reports/` |
+| **4. Ship & Report** | Orchestrator opens one PR per Section that passed Build + Tests, then prints the Final Report (6×4 matrix + PR URLs). HALT. | Final Report on screen |
 
 Stop condition: the Final Report prints. Nothing else happens.
 
@@ -53,6 +53,7 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 | Agent | Dispatched when | Tools |
 |---|---|---|
 | `section-worker` | Phase 2, 6× in parallel (`isolation: "worktree"`) | Read, Write, Edit, Bash, Glob, Grep |
+| `react-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
 | `accessibility-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
 | `4r-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
 
@@ -91,7 +92,7 @@ harness-example/
 │   └── reports/                    ← Reviewer outputs land here per run
 ├── .claude/
 │   ├── commands/goal.md
-│   ├── agents/                     ← section-worker, accessibility-reviewer, 4r-reviewer
+│   ├── agents/                     ← section-worker, react-reviewer, accessibility-reviewer, 4r-reviewer
 │   ├── skills/                     ← orchestrate-fleet, build-section, vitest-tdd, frontend-design
 │   ├── rules/                      ← react-conventions, components
 │   ├── hooks/                      ← section-ownership, commit-guard, quality-gate, status-summary
