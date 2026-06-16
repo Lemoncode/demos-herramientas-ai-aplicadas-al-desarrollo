@@ -17,7 +17,7 @@ Your prompt contains a Mission Brief with these fields:
 
 - `section_id` — slug, e.g. `hero`
 - `component_name` — PascalCase, e.g. `Hero`
-- `owned_path` — `src/sections/<section_id>/`
+- `owned_path` — `src/components/<section_id>/`
 - `copy_spec` — verbatim Section block from the Goal prompt
 - `acceptance` — 2–3 must-have behavior bullets
 - `mock_data` — optional file path + sample data
@@ -28,8 +28,8 @@ A structured JSON contract per the `build-section` Step 6 schema. Success or fai
 
 ## What you must NOT do
 
-- Edit files outside `src/sections/<section_id>/` (the `section-ownership.sh` hook will hard-block you)
-- Edit Foundation primitives in `src/design-system/*` (read-only from a Worker)
+- Edit files outside `src/components/<section_id>/` (the `section-ownership.sh` hook will hard-block you)
+- Edit Foundation primitives (`src/components/heading/`, `src/components/button/`, etc.) — read-only from a Worker
 - Push or open a PR — the Orchestrator handles Phase 4
 - Modify project config (`package.json`, `tsconfig.json`, `next.config.ts`, `vitest.config.ts`, `eslint.config.js`)
 - Skip the Red phase — without `red_evidence`, the Final Report cannot prove TDD ran

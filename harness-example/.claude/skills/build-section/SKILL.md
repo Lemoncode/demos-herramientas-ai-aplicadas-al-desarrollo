@@ -18,10 +18,10 @@ Parse the Mission Brief from your prompt. It MUST contain:
 | Field | Example | Required |
 |---|---|---|
 | `section_id` | `hero` | yes |
-| `owned_path` | `src/sections/hero/` | yes |
+| `owned_path` | `src/components/hero/` | yes |
 | `component_name` | `Hero` | yes |
 | `copy_spec` | The section's content + structure brief | yes |
-| `mock_data` | `src/sections/hero/data.ts` + content | only if the Section uses data |
+| `mock_data` | `src/components/hero/data.ts` + content | only if the Section uses data |
 | `acceptance` | 2–3 bullets describing must-have behavior | yes |
 
 Locate yourself in the harness:
@@ -35,7 +35,7 @@ git status
 git checkout -b fleet/<section_id>
 ```
 
-After `fleet/<section_id>` is checked out, every `Write` / `Edit` outside `src/sections/<section_id>/` is hard-blocked by `.claude/hooks/section-ownership.sh`. This is intentional. If the hook ever blocks you, the violation is real — fix the path, do not work around it.
+After `fleet/<section_id>` is checked out, every `Write` / `Edit` outside `src/components/<section_id>/` is hard-blocked by `.claude/hooks/section-ownership.sh`. This is intentional. If the hook ever blocks you, the violation is real — fix the path, do not work around it.
 
 Read the standard the Reviewer will apply to your code:
 - `docs/references/4r-framework.md`
@@ -44,7 +44,7 @@ Read the standard the Reviewer will apply to your code:
 
 ## Step 1 — Phase R (Red): failing test first
 
-Create `src/sections/<section_id>/<ComponentName>.test.tsx`. Assert **user-visible behavior** from `copy_spec` and `acceptance` — a heading text, a CTA name, list items, accessible labels — using `getByRole` first, then `getByLabelText`, then `getByText`. Never start with `getByTestId`.
+Create `src/components/<section_id>/<ComponentName>.test.tsx`. Assert **user-visible behavior** from `copy_spec` and `acceptance` — a heading text, a CTA name, list items, accessible labels — using `getByRole` first, then `getByLabelText`, then `getByText`. Never start with `getByTestId`.
 
 ```tsx
 import { render, screen } from '@testing-library/react'
@@ -63,7 +63,7 @@ describe('Hero', () => {
 
 Run only your Section's tests:
 ```bash
-npm test -- src/sections/<section_id>
+npm test -- src/components/<section_id>
 ```
 
 The test **must fail** because the component file does not exist yet. Capture the failing output verbatim — this becomes `red_evidence` in your return contract.
@@ -74,10 +74,10 @@ If the test passes without an implementation, rewrite it — your assertions are
 
 ## Step 2 — Phase G (Green): minimal implementation
 
-Create `src/sections/<section_id>/<ComponentName>.tsx`. The component must:
+Create `src/components/<section_id>/<ComponentName>.tsx`. The component must:
 
 - Pass the test from Phase R
-- Import **only** from `@/design-system/*` (Foundation primitives) and `react` / `next/*`
+- Import **only** from `@/components/*` (Foundation primitives) and `react` / `next/*`
 - Use the `Heading` primitive for every heading — never bare `<h1>` / `<h2>` (this prevents typographic drift across Sections)
 - Use the `Section` primitive as the outer wrapper (it owns vertical spacing + container width)
 - Use semantic HTML — `<button>` for actions, `<a>` for navigation, `<ul>` for lists
@@ -87,7 +87,7 @@ Create `src/sections/<section_id>/<ComponentName>.tsx`. The component must:
 
 Run your tests:
 ```bash
-npm test -- src/sections/<section_id>
+npm test -- src/components/<section_id>
 ```
 
 All tests must pass (new and existing). Capture the output as `green_evidence`.
@@ -104,7 +104,7 @@ Only if there is real duplication or unclear naming:
 - Rename obscure variables
 - Split components only if a clear seam exists (do not pre-emptively abstract)
 
-Re-run `npm test -- src/sections/<section_id>` after every change. Tests stay green throughout.
+Re-run `npm test -- src/components/<section_id>` after every change. Tests stay green throughout.
 
 Do not introduce contexts, new hooks, or new files outside your Section folder in this phase.
 
@@ -129,7 +129,7 @@ If either fails, fix the issues and re-run. Do not commit code that the gate rej
 ## Step 5 — Commit
 
 ```bash
-git add src/sections/<section_id>
+git add src/components/<section_id>
 git commit -m "feat(<section_id>): <one-line title from copy_spec>"
 ```
 
@@ -157,8 +157,8 @@ Emit your result in this exact JSON shape. The Orchestrator parses it directly i
     "lint": "<verbatim output>"
   },
   "files_changed": [
-    "src/sections/<section_id>/<ComponentName>.tsx",
-    "src/sections/<section_id>/<ComponentName>.test.tsx"
+    "src/components/<section_id>/<ComponentName>.tsx",
+    "src/components/<section_id>/<ComponentName>.test.tsx"
   ]
 }
 ```
@@ -182,9 +182,9 @@ Return the JSON and stop. **Do not push. Do not open a PR.** The Orchestrator ha
 
 ## Hard constraints
 
-- **Read-only outside `src/sections/<section_id>/`.** Enforced by `section-ownership.sh`.
-- **No cross-Section imports.** Never `import` from another `src/sections/*` folder.
-- **No Foundation modifications.** Never edit `src/design-system/*`. If a primitive is missing, build a local component inside your own folder.
+- **Read-only outside `src/components/<section_id>/`.** Enforced by `section-ownership.sh`.
+- **No cross-Section imports.** Never `import` from another Section's folder inside `src/components/`.
+- **No Foundation modifications.** Never edit Foundation primitive folders (`src/components/heading/`, `src/components/button/`, `src/components/card/`, `src/components/section/`, `src/components/tokens.ts`). If a primitive is missing, build a local component inside your own folder.
 - **No project-config changes.** Do not edit `package.json`, `tsconfig.json`, `next.config.ts`, `vitest.config.ts`, `eslint.config.js`.
 - **No remote operations.** No `git push`, no `gh pr create`. Phase 4 is the Orchestrator's.
 

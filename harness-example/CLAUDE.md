@@ -63,8 +63,8 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Rule file | Scope | Covers |
 |---|---|---|
-| `react-conventions.md` | All `.ts` / `.tsx` files | Folder layout (`src/app`, `src/design-system`, `src/sections`), server vs client components, naming, strict TypeScript, imports |
-| `components.md` | `src/design-system/**`, `src/sections/**` | One component per file, named exports, props ≤ 6, semantic HTML, accessibility, no cross-Section imports |
+| `react-conventions.md` | All `.ts` / `.tsx` files | Folder layout (`src/app`, `src/components`), server vs client components, naming, strict TypeScript, imports |
+| `components.md` | `src/components/**` | One component per file, named exports, props ≤ 6, semantic HTML, accessibility, no cross-Section imports |
 
 ---
 
@@ -72,7 +72,7 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Hook | Trigger | What it enforces |
 |---|---|---|
-| `section-ownership.sh` | PreToolUse on Write / Edit / MultiEdit | When the current branch is `fleet/<id>`, writes are restricted to `src/sections/<id>/`. Foundation Phase (main branch) is unrestricted. |
+| `section-ownership.sh` | PreToolUse on Write / Edit / MultiEdit | When the current branch is `fleet/<id>`, writes are restricted to `src/components/<id>/`. Foundation Phase (main branch) is unrestricted. |
 | `commit-guard.sh` | PreToolUse on Bash containing `git commit` | All tests must pass. |
 | `quality-gate.sh` | PostToolUse on Write / Edit / MultiEdit | ESLint zero errors + TypeScript zero type errors. |
 | `status-summary.sh` | Stop (after each turn) | Prints lint / type / test status — informational only. |
@@ -99,8 +99,20 @@ harness-example/
 │   └── settings.json
 └── src/
     ├── app/                        ← Next.js App Router (layout, page, globals.css)
-    ├── design-system/              ← Foundation primitives (Heading, Button, Card, Section)
-    └── sections/                   ← 6 folders, one per Worker
+    └── components/                 ← All components, each in its own folder
+        ├── tokens.ts               ← shared design tokens
+        ├── heading/                 ← Foundation primitive
+        │   ├── Heading.tsx
+        │   └── Heading.test.tsx
+        ├── button/
+        ├── card/
+        ├── section/
+        ├── hero/                    ← Section (one per Worker)
+        ├── catalog/
+        ├── sustainability/
+        ├── faq/
+        ├── certifications/
+        └── contact/
 ```
 
 ---

@@ -1,15 +1,13 @@
 ---
-description: Conventions for React component files in src/design-system/ and src/sections/ — functional components, named exports (except Next.js conventions), props interface, semantic HTML, accessibility, and performance. Auto-loaded when editing files in those directories.
+description: Conventions for React component files in src/components/ — functional components, named exports (except Next.js conventions), props interface, semantic HTML, accessibility, and performance. Auto-loaded when editing files in that directory.
 paths:
-  - "src/design-system/**/*.tsx"
-  - "src/design-system/**/*.ts"
-  - "src/sections/**/*.tsx"
-  - "src/sections/**/*.ts"
+  - "src/components/**/*.tsx"
+  - "src/components/**/*.ts"
 ---
 
 # Component Rules
 
-These rules apply to files inside `src/design-system/` (Foundation primitives) and `src/sections/` (homepage Sections).
+These rules apply to all files inside `src/components/` — Foundation primitives (Heading, Button, Card, Section, tokens) and Section folders (hero, catalog, etc.).
 
 ## Structure
 
@@ -29,12 +27,12 @@ These rules apply to files inside `src/design-system/` (Foundation primitives) a
 
 ## Section import rules
 
-Files inside `src/sections/{id}/` may import from:
+Files inside `src/components/<id>/` (Section folders) may import from:
 - `react`, `next/*`
-- `@/design-system/*` (Foundation primitives only)
+- `@/components/*` (Foundation primitives only — `Heading`, `Button`, `Card`, `Section`, `tokens`)
 
-Files inside `src/sections/{id}/` may **not** import from:
-- `@/sections/*` (no cross-Section imports — Sections are isolated)
+Files inside `src/components/<id>/` may **not** import from:
+- `@/components/<other_id>/*` (no cross-Section imports — Sections are isolated)
 - Any external UI library (no Material, Chakra, etc. — Foundation primitives only)
 
 If a Section needs a UI element that does not exist in the Foundation, build it inside its own folder. Do not extend the Foundation from a Section.

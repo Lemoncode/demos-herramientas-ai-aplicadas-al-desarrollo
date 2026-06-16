@@ -63,7 +63,7 @@ For each PR (or each worktree in a Fleet Phase) the Reviewer:
     {
       "r": "readability",
       "severity": "major",
-      "file": "src/sections/hero/Hero.tsx",
+      "file": "src/components/hero/Hero.tsx",
       "line": 42,
       "issue": "Magic number 0.85 in JSX without a named constant",
       "fix": "Extract as HERO_OPACITY constant at module level"

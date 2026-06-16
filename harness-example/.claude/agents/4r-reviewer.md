@@ -51,7 +51,7 @@ For each Section's worktree path, `Glob` for `*.tsx`, `*.ts`, `*.css`, `data.ts`
       {
         "r": "readability",
         "severity": "major",
-        "file": "src/sections/catalog/Catalog.tsx",
+        "file": "src/components/catalog/Catalog.tsx",
         "line": 42,
         "issue": "Magic number 0.85 in JSX without a named constant",
         "fix": "Extract as CATALOG_CARD_OPACITY at module scope"

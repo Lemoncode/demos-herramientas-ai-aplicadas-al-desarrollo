@@ -46,7 +46,7 @@ Return this JSON (one entry per Section, in the order the Orchestrator gave you)
     "findings": [
       {
         "severity": "warning",
-        "file": "src/sections/catalog/Catalog.tsx",
+        "file": "src/components/catalog/Catalog.tsx",
         "line": 23,
         "issue": "Charger card image missing alt attribute",
         "fix": "Add alt={model.name} or alt=\"\" if decorative"

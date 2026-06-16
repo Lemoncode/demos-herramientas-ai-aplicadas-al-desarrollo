@@ -19,7 +19,7 @@ Parse it into a list of Mission Briefs. For each Section block extract:
 |---|---|
 | `section_id` | the heading slug, lowercased (e.g., `Product Catalog` → `catalog`) |
 | `component_name` | PascalCase of `section_id` (`Catalog` → `Catalog`, `Contact & Footer` → `Contact`) |
-| `owned_path` | `src/sections/<section_id>/` |
+| `owned_path` | `src/components/<section_id>/` |
 | `copy_spec` | the entire Section block verbatim |
 | `acceptance` | the bullet list under each Section (must-have behavior) |
 | `mock_data` | path + sample data if specified in the block |
@@ -40,7 +40,7 @@ git branch --show-current  # expect: main
 
 If branch is not `main`, halt with: `"orchestrate-fleet must start from main. Current branch: <X>. Reset and re-run /goal."`
 
-If `src/design-system/` already contains primitives, the Foundation has been built. Skip to Phase 2 — Workers fork from the existing Foundation commit.
+If `src/components/heading/` already contains `Heading.tsx`, the Foundation has been built. Skip to Phase 2 — Workers fork from the existing Foundation commit.
 
 ### 1.2 Generate the design system
 
@@ -53,16 +53,16 @@ Invoke the `frontend-design` skill with these locked constraints (per ADR-0001):
 - **Output exactly these files** and no others:
 
 ```
-src/design-system/tokens.ts          ← color / type / spacing constants
-src/design-system/Heading.tsx        ← primitive
-src/design-system/Heading.test.tsx
-src/design-system/Button.tsx         ← primitive
-src/design-system/Button.test.tsx
-src/design-system/Card.tsx           ← primitive
-src/design-system/Card.test.tsx
-src/design-system/Section.tsx        ← primitive (wrapper + container + heading slot)
-src/design-system/Section.test.tsx
-src/app/globals.css                  ← CSS custom properties from tokens.ts
+src/components/tokens.ts                    ← color / type / spacing constants
+src/components/heading/Heading.tsx           ← primitive
+src/components/heading/Heading.test.tsx
+src/components/button/Button.tsx             ← primitive
+src/components/button/Button.test.tsx
+src/components/card/Card.tsx                 ← primitive
+src/components/card/Card.test.tsx
+src/components/section/Section.tsx           ← primitive (wrapper + container + heading slot)
+src/components/section/Section.test.tsx
+src/app/globals.css                          ← CSS custom properties from tokens.ts
 ```
 
 Primitive interface requirements:
@@ -81,12 +81,12 @@ Each primitive ships with **a real test** that asserts user-visible behavior, no
 Update `src/app/page.tsx` to import the six Section stubs and render them in order:
 
 ```tsx
-import { Hero } from '@/sections/hero/Hero'
-import { Catalog } from '@/sections/catalog/Catalog'
-import { Sustainability } from '@/sections/sustainability/Sustainability'
-import { Faq } from '@/sections/faq/Faq'
-import { Certifications } from '@/sections/certifications/Certifications'
-import { Contact } from '@/sections/contact/Contact'
+import { Hero } from '@/components/hero/Hero'
+import { Catalog } from '@/components/catalog/Catalog'
+import { Sustainability } from '@/components/sustainability/Sustainability'
+import { Faq } from '@/components/faq/Faq'
+import { Certifications } from '@/components/certifications/Certifications'
+import { Contact } from '@/components/contact/Contact'
 
 export default function Page() {
   return (
@@ -109,8 +109,8 @@ Update `src/app/page.test.tsx` to assert the page renders at least one heading (
 For each Section in the Mission Brief list, create:
 
 ```
-src/sections/<section_id>/<ComponentName>.tsx       ← stub: returns <Section><Heading>...coming soon</Heading></Section>
-src/sections/<section_id>/<ComponentName>.test.tsx  ← stub test: asserts "coming soon" text
+src/components/<section_id>/<ComponentName>.tsx       ← stub: returns <Section><Heading>...coming soon</Heading></Section>
+src/components/<section_id>/<ComponentName>.test.tsx  ← stub test: asserts "coming soon" text
 ```
 
 Stubs allow `npm run typecheck` to pass during Phase 1 even though Workers have not built the real Sections yet. Workers will overwrite the stubs in Phase 2.
@@ -155,7 +155,7 @@ Agent(
     -------------
     section_id:     <section_id>
     component_name: <ComponentName>
-    owned_path:     src/sections/<section_id>/
+    owned_path:     src/components/<section_id>/
 
     copy_spec: |
       <verbatim Section block from the Goal prompt>
@@ -189,12 +189,12 @@ Agent(
     Review accessibility for these six Worker worktrees. For each Section, return a verdict (pass / warning / fail) and structured findings.
 
     Worktrees:
-      hero:           <worktree_path from Phase 2>/harness-example/src/sections/hero/
-      catalog:        <worktree_path>/harness-example/src/sections/catalog/
-      sustainability: <worktree_path>/harness-example/src/sections/sustainability/
-      faq:            <worktree_path>/harness-example/src/sections/faq/
-      certifications: <worktree_path>/harness-example/src/sections/certifications/
-      contact:        <worktree_path>/harness-example/src/sections/contact/
+      hero:           <worktree_path from Phase 2>/harness-example/src/components/hero/
+      catalog:        <worktree_path>/harness-example/src/components/catalog/
+      sustainability: <worktree_path>/harness-example/src/components/sustainability/
+      faq:            <worktree_path>/harness-example/src/components/faq/
+      certifications: <worktree_path>/harness-example/src/components/certifications/
+      contact:        <worktree_path>/harness-example/src/components/contact/
 )
 
 Agent(

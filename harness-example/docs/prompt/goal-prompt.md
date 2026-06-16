@@ -31,7 +31,7 @@ JivaEnergy — manufacturer of AC and DC chargers for electric vehicles and plug
 - Grid of 10 charger cards.
 - Each card: model name, power rating (kW), connector type, residential/commercial badge, link to product page.
 - Models: JC-DUO Premium, JC-DC TS Premium, JC-AC Wall, JC-DC Fast 60, JC-DC Fast 120, JC-AC Pole, JC-DC Modular, JC-AC Smart, JC-Portable, JC-Fleet Hub.
-- Mock data file at `src/sections/catalog/chargers.ts` exporting a typed `chargers` array.
+- Mock data file at `src/components/catalog/chargers.ts` exporting a typed `chargers` array.
 
 **Acceptance:**
 - Renders exactly 10 cards from the mock data.
@@ -85,8 +85,8 @@ JivaEnergy — manufacturer of AC and DC chargers for electric vehicles and plug
 
 ## Constraints (global, every Worker must respect)
 
-- Each Section lives at `src/sections/<id>/` and owns nothing outside.
-- Imports allowed only from `@/design-system/*`, `react`, and `next/*`.
+- Each Section lives at `src/components/<id>/` and owns nothing outside.
+- Imports allowed only from `@/components/*`, `react`, and `next/*`.
 - Every Section ships with a colocated `*.test.tsx`.
 - Use the `Heading`, `Button`, `Card`, and `Section` primitives — do not reimplement them locally.
 - No external UI library.
