@@ -1,3 +1,8 @@
+---
+name: git-create-pr
+description: Use when a feature branch is complete and ready to merge — requires commits ahead of main and a passing quality gate before the PR is opened
+---
+
 # git-create-pr
 
 **Type: Rigid** — follow every step in order.

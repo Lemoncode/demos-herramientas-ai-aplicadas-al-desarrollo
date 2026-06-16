@@ -1,3 +1,8 @@
+---
+name: vitest-tdd
+description: Use when implementing any feature or fixing any bug — before writing any implementation code, to enforce Red→Green→Refactor discipline
+---
+
 # vitest-tdd
 
 **Type: Rigid** — Red → Green → Refactor. Do not skip phases or merge them.

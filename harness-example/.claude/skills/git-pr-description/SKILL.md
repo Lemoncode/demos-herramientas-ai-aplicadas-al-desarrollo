@@ -1,3 +1,8 @@
+---
+name: git-pr-description
+description: Use when generating a pull request body from the current branch — analyzes commits and diff against main before opening a PR with git-create-pr
+---
+
 # git-pr-description
 
 **Type: Rigid** — follow every step in order.

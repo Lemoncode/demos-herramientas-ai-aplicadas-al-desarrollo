@@ -1,3 +1,8 @@
+---
+description: Testing conventions for Vitest and @testing-library/react — query priority (getByRole first), userEvent over fireEvent, one behavior per test. Applies to all test files.
+alwaysApply: true
+---
+
 # Testing Conventions
 
 These rules apply to all test files in this project. Claude Code loads this file automatically in every session.

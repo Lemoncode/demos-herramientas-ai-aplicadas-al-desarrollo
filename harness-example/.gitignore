@@ -12,6 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Next.js
+.next
+out
+next-env.d.ts.bak
+
+# TypeScript incremental build
+*.tsbuildinfo
+
+# Per-run review artifacts (Reviewer outputs)
+docs/reports/*.md
+!docs/reports/.gitkeep
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

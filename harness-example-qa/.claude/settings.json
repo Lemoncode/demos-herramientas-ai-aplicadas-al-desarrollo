@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr diff*)",
+      "Bash(gh pr checks*)",
+      "Bash(curl -s -u * https://*.atlassian.net*)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git reset*)",
+      "Bash(git checkout*)",
+      "Bash(git clean*)",
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(npm publish*)",
+      "Bash(npm run deploy*)",
+      "Edit(*)",
+      "Write(*)"
+    ]
+  }
+}

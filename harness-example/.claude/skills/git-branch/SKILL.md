@@ -1,3 +1,8 @@
+---
+name: git-branch
+description: Use when starting any new piece of work that requires code changes — ensures all work begins from an up-to-date feature branch instead of directly on main
+---
+
 # git-branch
 
 **Type: Rigid** — follow every step in order.

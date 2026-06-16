@@ -1,3 +1,8 @@
+---
+name: git-commit
+description: Use when committing changes — stages files selectively and writes a conventional commit message in imperative mood with the correct type prefix
+---
+
 # git-commit
 
 **Type: Rigid** — follow every step in order.
