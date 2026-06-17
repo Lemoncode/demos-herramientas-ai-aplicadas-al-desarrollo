@@ -1,1 +1,71 @@
-/* Foundation will populate this file with design tokens (Editorial Energy palette + type scale + spacing). */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap');
+
+:root {
+  --color-primary: #1B3A28;
+  --color-primary-light: #2D5C40;
+  --color-background: #F3EDE2;
+  --color-background-alt: #EAE2D4;
+  --color-accent: #D9C840;
+  --color-accent-dark: #B5A730;
+  --color-text: #12201A;
+  --color-text-secondary: #4B5E54;
+  --color-text-on-primary: #F3EDE2;
+  --color-border: #C9BFA8;
+  --color-border-strong: #8A7F68;
+
+  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+
+  --size-display: 4.5rem;
+  --size-section: 2.5rem;
+  --size-body: 1.125rem;
+
+  --lh-display: 1.1;
+  --lh-section: 1.2;
+  --lh-body: 1.65;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 64px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
