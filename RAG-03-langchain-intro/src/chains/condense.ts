@@ -1,6 +1,6 @@
 import type { BaseMessage } from "@langchain/core/messages";
 import type { ChatOllama } from "@langchain/ollama";
-import { CONDENSE_PROMPT } from "../prompts.js";
+import { CONDENSE_PROMPT_TEMPLATE } from "../prompts.js";
 
 // Rewrite a follow-up question into a standalone question using prior history.
 // On first turn (empty history) the prompt is written to return the input
@@ -10,18 +10,27 @@ export async function condenseQuestion(
 	history: BaseMessage[],
 	question: string,
 ): Promise<string> {
-	const messages = await CONDENSE_PROMPT.formatMessages({ history, question });
-	// console.log("===> condenseQuestion: messages", messages);
-	const response = await model.invoke(messages);
+	const promptTemplate = await CONDENSE_PROMPT_TEMPLATE.formatMessages({
+		history,
+		question,
+	});
+	console.log(
+		"===> condenseQuestion: messages",
+		promptTemplate,
+		"==============",
+	);
+	// Here we send the template to AI and
+	const response = await model.invoke(promptTemplate);
+	console.log("===> condenseQuestion:", response.content);
 	// console.log("===> condenseQuestion: response", response);
 
 	// ChatOllama returns AIMessage. `.content` is typed as
 	// `string | MessageContentComplex[]`. In practice the chat model returns a
 	// string for text-only responses, so we coerce defensively and trim.
-	const text =
+	const condensedResponse =
 		typeof response.content === "string"
 			? response.content
 			: String(response.content);
 
-	return text.trim();
+	return condensedResponse.trim();
 }
