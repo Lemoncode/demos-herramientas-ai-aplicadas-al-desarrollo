@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Jira issue fetch instructions
 
 When asked to fetch a Jira issue, use the REST API v3.

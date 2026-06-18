@@ -7,7 +7,6 @@ Read-only QA review of frontend PRs against Jira acceptance criteria and UI/UX b
 ## Hard rules
 
 - Never edit files unless the user explicitly asks for an implementation task.
-- Never run destructive commands (`git push`, `git reset`, `rm`, deploy, publish, migrate).
 - Never read `.env`, credentials, secrets or files outside the repository.
 - When uncertain, report uncertainty instead of inventing project behavior.
 

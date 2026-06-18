@@ -1,7 +1,3 @@
----
-applyTo: "**/*.{tsx,jsx,ts,js,html,css,scss,svg}"
----
-
 # Color contrast review instructions
 
 Apply this when a PR diff includes changes to colors, backgrounds, design tokens, SVG fill/stroke or Tailwind color classes.

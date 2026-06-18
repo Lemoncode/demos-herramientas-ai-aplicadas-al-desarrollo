@@ -1,30 +1,9 @@
 ---
+name: qa-orchestrator
 description: Coordinates read-only QA review of GitHub PRs using Jira acceptance criteria and specialist subagents.
-mode: primary
-temperature: 0.1
-permission:
-  edit: deny
-  external_directory: deny
-  bash:
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "gh pr view*": allow
-    "gh pr diff*": allow
-    "gh pr checks*": allow
-    "curl https://*.atlassian.net*": allow
-    "npm test*": allow
-    "npm run test*": allow
-    "npm run lint*": allow
-    "npm run typecheck*": allow
-    "*": deny
-  skill:
-    "pr-qa-review": allow
-    "jira-fetch": allow
-    "jira-ac-analysis": allow
-    "accessibility-review": allow
-    "contrast-review": allow
-    "test-strategy-review": allow
+tools: Read, Bash, Glob, Grep
+disallowedTools: Edit, Write
+model: sonnet
 ---
 
 You are the QA review orchestrator.

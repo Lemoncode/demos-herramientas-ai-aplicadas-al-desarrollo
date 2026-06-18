@@ -1,7 +1,3 @@
----
-applyTo: "**/*.{ts,tsx,js,jsx,html,css,scss,md}"
----
-
 # Jira Acceptance Criteria Analysis
 
 Apply this instruction when evaluating whether a PR satisfies Jira acceptance criteria.

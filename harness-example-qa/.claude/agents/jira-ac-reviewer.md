@@ -1,16 +1,9 @@
 ---
+name: jira-ac-reviewer
 description: Reviews whether a PR satisfies Jira acceptance criteria.
-mode: subagent
-temperature: 0.1
-permission:
-  edit: deny
-  external_directory: deny
-  bash:
-    "gh pr view*": allow
-    "gh pr diff*": allow
-    "*": deny
-  skill:
-    "jira-ac-analysis": allow
+tools: Read, Bash, Glob, Grep
+disallowedTools: Edit, Write
+model: sonnet
 ---
 
 You are a Jira acceptance criteria reviewer.

@@ -1,0 +1,7 @@
+{
+  "id": "vercel-react-best-practices",
+  "name": "Vercel React Best Practices",
+  "description": "40+ performance optimization rules organized into 8 categories (rendering, async, bundle, client, server, JS, rerender, resources)",
+  "version": "1.0.0",
+  "source": "https://vercel.com/docs/react-best-practices"
+}

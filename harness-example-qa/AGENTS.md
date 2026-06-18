@@ -8,7 +8,6 @@ This repository uses AI assistants for read-only QA review of frontend PRs again
 
 - Never edit files unless the user explicitly asks for an implementation task.
 - Never run destructive commands.
-- Never run `git push`, `git reset`, `rm`, deployment commands, package publishing commands, or migration commands.
 - Never read `.env`, credentials, secrets, tokens, private keys, or local files outside the repository.
 - Prefer reviewing PR diffs, linked Jira issues, acceptance criteria, tests, and user-facing behavior.
 - When uncertain, report uncertainty instead of inventing project behavior.

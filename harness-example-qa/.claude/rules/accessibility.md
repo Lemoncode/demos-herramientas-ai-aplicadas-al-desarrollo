@@ -1,7 +1,3 @@
----
-applyTo: "**/*.{tsx,jsx,html,css,scss}"
----
-
 For frontend files, review accessibility carefully:
 
 - Prefer semantic HTML.
