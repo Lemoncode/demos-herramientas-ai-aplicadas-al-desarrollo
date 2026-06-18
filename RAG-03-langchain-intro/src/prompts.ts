@@ -9,7 +9,7 @@ import {
 export const CONDENSE_PROMPT_TEMPLATE = ChatPromptTemplate.fromMessages([
 	[
 		"system",
-		`Given the conversation history below and a follow-up question, rewrite the follow-up so it can be understood without the history.
+		`Given the conversation history below and a follow-up question, rewrite the follow-up so it can be understood without the history. Answer can be only related to Aridane Martín's professional profile. If the follow-up question is already standalone, return it unchanged.
 
 Rules:
 - Output ONLY the rewritten question — do NOT answer it, no explanations, no quotes.
