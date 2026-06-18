@@ -27,9 +27,8 @@ export interface IndexedChunk extends Chunk {
 	tokens: string[];
 }
 
-export interface Index {
+export interface RAGIndex {
 	chunks: IndexedChunk[];
-	// How rare each word is: words that appear in few chunks score higher
 	wordRarity: Map<string, number>;
 	avgChunkLength: number;
 }
@@ -45,8 +44,8 @@ function tokenize(text: string): string[] {
 
 // Build an in-memory search index from the list of chunks.
 // This runs once at startup — the result is reused for every query.
-export function buildIndex(chunks: Chunk[]): Index {
-	// Tokenise every chunk so we can count words later
+export function buildIndex(chunks: Chunk[]): RAGIndex {
+	// We create an object with Title / Id / Content / Tokens
 	const indexedChunks: IndexedChunk[] = chunks.map((chunk, id) => ({
 		...chunk,
 		id,
@@ -66,26 +65,39 @@ export function buildIndex(chunks: Chunk[]): Index {
 			chunksContainingWord.set(word, (chunksContainingWord.get(word) ?? 0) + 1);
 		}
 	}
+	console.log(
+		`[RETRIEVER] Found ${chunksContainingWord.size} unique words across all chunks.`,
+		JSON.stringify(
+			Array.from(chunksContainingWord.entries()).slice(0, 5),
+			null,
+			2,
+		),
+	);
 
 	// Compute word rarity (IDF — Inverse Document Frequency).
 	// Words that appear in almost every chunk (e.g. "and", "the") get a low score.
 	// Words that appear in only one or two chunks get a high score.
 	const totalChunks = indexedChunks.length;
 	const wordRarity = new Map<string, number>();
-	for (const [word, chunksWithWord] of chunksContainingWord) {
+	for (const [word, wordFrequency] of chunksContainingWord) {
 		wordRarity.set(
 			word,
-			Math.log(
-				(totalChunks - chunksWithWord + 0.5) / (chunksWithWord + 0.5) + 1,
-			),
+			Math.log((totalChunks - wordFrequency + 0.5) / (wordFrequency + 0.5) + 1),
 		);
 	}
-
+	console.log(
+		`[RETRIEVER] Computed rarity for ${wordRarity.size} words.`,
+		JSON.stringify(Array.from(wordRarity.entries()).slice(0, 5), null, 2),
+	);
 	return { chunks: indexedChunks, wordRarity, avgChunkLength };
 }
 
 // Score every chunk against the query and return the top-k matches.
-export function search(index: Index, query: string, topK = 3): IndexedChunk[] {
+export function search(
+	index: RAGIndex,
+	query: string,
+	topK = 3,
+): IndexedChunk[] {
 	const queryWords = tokenize(query);
 
 	const scoredChunks = index.chunks.map((chunk) => {

@@ -1,95 +1,118 @@
-# RAG-03 — LangChain Intro
+# RAG-03 — LangChain + BM25 + Condense Question
+
+## Why LangChain
+
+LangChain is a **framework** for building LLM-powered applications. It gives you:
+- **Typed abstractions** for models, prompts, and messages instead of raw HTTP
+- **Composable primitives** — chains, prompt templates, output parsers — that you mix without boilerplate
+- **A standard interface** (`invoke`, `stream`, `batch`) so swapping Ollama for OpenAI or Anthropic is one line
+
+For this project, LangChain makes the difference between "I'm writing glue code for one specific model" and "I'm building a pipeline that I can swap, inspect, and extend." Without LangChain, every prompt would be hand-assembled JSON, every history push would be a raw array, and the condense step would be another fetch call. With LangChain, the whole pipeline reads as a chain of typed objects.
 
 ## What this demo shows
 
-Two changes on top of RAG-02:
+RAG-03 keeps the same **BM25 keyword retrieval** from RAG-02 and adds one new piece: a **condense-question** step that rewrites conversational follow-ups into standalone queries before searching.
 
-1. The hand-rolled `Provider` abstraction is replaced with LangChain.js (`ChatOllama` from `@langchain/ollama`).
-2. Before retrieval, a **condense-question** step rewrites the follow-up question into a standalone question using the chat history. The rewrite is then used for both BM25 search and the final answer.
+This is the "R" in RAG — **Retrieve** before you **Generate** — plus the "Q" in **Question rewriting** so multi-turn conversations work without leaking the full history into every BM25 search.
 
-The standalone question is logged with a `[Standalone]:` tag so you can see exactly what the model used.
+The difference from RAG-02: instead of using the raw user question as the BM25 query, it first runs an LLM call to **canonicalise** the question. "What about the e-commerce one?" becomes "What was Aridane's experience building the e-commerce platform at Douglas?" — which then matches the right BM25 chunks.
 
-## Per-turn flow
+## How it works
+
+### Phase 1 — Startup (index)
+
+```mermaid
+flowchart LR
+    A[data/cv.md] -->|loadCV| B[Raw markdown]
+    B -->|chunkByHeaders| C["Chunks\n─────\n'Summary'\n'Experience at Openbank'\n'Education'\n..."]
+    C -->|buildIndex| D["BM25 Index\n─────\nIDF per term\navgdl\ntoken lists"]
+```
+
+Runs once at startup. Same as RAG-02 — the BM25 index is built in memory from `data/cv.md`.
+
+### Phase 2 — Per query (condense → retrieve → generate)
 
 ```mermaid
 sequenceDiagram
     participant U as User
     participant M as main.ts
-    participant C as condenseQuestion
+    participant C as condense chain
     participant R as BM25 retriever
-    participant A as answer
+    participant L as Ollama LLM
 
-    U->>M: "What languages does he know?"
-    M->>C: history + question
-    C-->>M: "What programming languages does Aridane Martín know?"
-    Note over M: printStandalone("[Standalone]: ...")
+    U->>M: "What about the e-commerce one?"
+    Note over M: History: [previous turn already stored]
+    M->>C: condenseQuestion(history, query)
+    C-->>M: "What was Aridane's experience<br>building the e-commerce platform?"
+    Note over M: Standalone question replaces the<br>ambiguous follow-up
     M->>R: search(index, standalone, 3)
-    R-->>M: top-3 chunks
-    M->>A: context + standalone + history
-    A-->>M: final answer
-    M-->>U: prints answer
-    Note over M: history.push(HumanMessage(original query), AIMessage(response))
+    R-->>M: ["Experience at Douglas", "Experience at Openbank", …]
+    Note over M: Build final message:<br/>history + context + question
+    M->>L: system + user prompt<br/>with <context> and history
+    L-->>M: Answer with full context
+    M-->>U: "At Douglas (2022) he built the<br/>e-commerce frontend for 7 countries…"
 ```
 
-History stores the **original** user message, not the standalone — the rewrite is a per-turn artifact only.
+## What LangChain adds
 
-## What you see in the terminal
+Every LLM call in RAG-03 goes through **LangChain's `ChatPromptTemplate`** and **`ChatOllama`**, not raw HTTP to Ollama. Two concrete things:
 
-```
-> Who is Aridane?
-[Standalone]: Who is Aridane?
-[rag] Retrieved 1 chunk(s): "Summary"
-Aridane Martín is a Tech Lead and frontend developer based in Gran Canaria...
+| | Raw Ollama (RAG-02) | LangChain (RAG-03) |
+|---|---|---|
+| **Model call** | `fetch("http://localhost:11434/api/chat")` | `model.invoke(messages)` |
+| **Prompt** | Hand-assembled JSON | `ChatPromptTemplate.fromMessages([…])` |
+| **History** | Push/pop on a `BaseMessage[]` array | Same — but typed via `@langchain/core/messages` |
+| **Condense** | N/A — raw question sent to BM25 | `condenseQuestion()` chain with `CONDENSE_PROMPT` |
 
-> What languages does he know?
-[Standalone]: What programming languages does Aridane Martín know?
-[rag] Retrieved 2 chunk(s): "Skills", "Summary"
-He works primarily with TypeScript and JavaScript...
-```
-
-The follow-up "What languages does he know?" gets the implicit "he" resolved into "Aridane Martín" before BM25 ever runs — which means the retriever can actually match by name.
+The `condenseQuestion` step sends a small prompt (`CONDENSE_PROMPT` — ~6 lines) to the same Ollama model, asking it to rewrite the follow-up into a standalone question. On the first turn (empty history) the prompt is written to return the input unchanged, so no special-case branch is needed.
 
 ## File structure
 
 ```
 data/
-  cv.md              ← unchanged from RAG-02
+  cv.md             ← the document (same as RAG-02)
 src/
-  main.ts            ← REPL + per-turn pipeline
-  setup.ts           ← buildChatModel() + buildRagIndex()
-  prompts.ts         ← CONDENSE_PROMPT, ANSWER_PROMPT (ChatPromptTemplate)
+  main.ts           ← startup: build index; per-query: condense → search → answer
+  prompts.ts        ← ANSWER_PROMPT + CONDENSE_PROMPT (LangChain templates)
+  setup.ts          ← buildChatModel() + buildRagIndex()
   chains/
-    condense.ts      ← formats CONDENSE_PROMPT, calls model.invoke()
-    answer.ts        ← formats ANSWER_PROMPT, calls model.invoke()
+    answer.ts       ← run ANSWER_PROMPT through the model
+    condense.ts     ← run CONDENSE_PROMPT through the model (→ standalone)
   rag/
-    loader.ts        ← unchanged from RAG-02
-    chunker.ts       ← unchanged from RAG-02
-    retriever.ts     ← unchanged from RAG-02 (BM25)
-  internal/ui/
-    output.ts        ← + printStandalone()
+    loader.ts       ← fs.readFile(data/cv.md)
+    chunker.ts      ← split on "## " headers → Chunk[]
+    retriever.ts    ← buildIndex() + search() with BM25
+  internal/
+    ui/             ← terminal output helpers
 ```
 
-## LangChain pieces in play
+## What you see in the terminal
 
-- `ChatOllama` from `@langchain/ollama` — the chat model.
-- `ChatPromptTemplate.fromMessages([...])` from `@langchain/core/prompts` — template with variable interpolation.
-- `MessagesPlaceholder("history")` — slot for a `BaseMessage[]` (chat history).
-- `HumanMessage` / `AIMessage` / `BaseMessage` from `@langchain/core/messages` — typed messages.
-- `prompt.formatMessages({ ... })` — turn the template into a concrete `BaseMessage[]`.
-- `model.invoke(messages)` — single call, returns an `AIMessage` whose `.content` is the response text.
+```
+╔══════════════════════════════════╗
+║  RAG-03 — LangChain Intro        ║
+╚══════════════════════════════════╝
 
-No LCEL pipes (`prompt.pipe(model).pipe(parser)`) on purpose — this is an intro and the plain async style reads top-to-bottom.
+Loading CV and building BM25 index…
+Index ready. 15 chunks indexed.
+
+> What about the e-commerce one?
+
+[condense] Rewritten → standalone: "What was Aridane's experience building the e-commerce platform at Douglas?
+[rag] Retrieved 2 chunk(s): "Experience at Douglas", "Experience at Secret Source"
+
+At Douglas (2022), Aridane developed the e-commerce frontend for 7 European countries…
+```
+
+The `[condense]` line shows the rewritten question — this transparency lets you debug whether the condense step is working correctly.
+
+## The problem this solves
+
+RAG-02's BM25 only matches exact words. If the user asks a **follow-up** like "What about the e-commerce one?" after "Where did Aridane work in 2022?", the raw question has no overlap with any chunk. The condense step rewrites it using conversation history so BM25 can find the right chunks.
 
 ## Running it
 
 ```bash
-cp .env.example .env
-npm install
+cp .env.example .env   # OLLAMA_MODEL and OLLAMA_BASE_URL
 npm run dev
-```
-
-Requires a local Ollama with the model from `OLLAMA_MODEL` already pulled:
-
-```bash
-ollama pull llama3.2
 ```
