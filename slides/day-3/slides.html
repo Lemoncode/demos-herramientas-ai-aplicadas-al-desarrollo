@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 3 — Next-Level Mastery · AI Tools for Developers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600&family=IBM+Plex+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"
+    />
+    <style>
+      /* ── Design tokens ── */
+      :root {
+        --ink: #111111;
+        --cream: #fefaf0;
+        --yellow: #ffd60a;
+        --panel: #171a16;
+        --white: #ffffff;
+        --grid: linear-gradient(
+            180deg,
+            rgba(17, 17, 17, 0.04) 0 1px,
+            transparent 1px 100%
+          )
+          0 0 / 100% 24px;
+      }
+
+      /* ── Reveal overrides ── */
+      .reveal-viewport {
+        background: var(--ink);
+      }
+
+      .reveal {
+        font-family: "Archivo", sans-serif;
+        font-size: 32px;
+        color: var(--ink);
+      }
+
+      .reveal .slides section {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 3.5rem 4.5rem;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        text-align: left;
+        background-color: var(--cream);
+        background-image: var(--grid);
+        background-repeat: repeat;
+      }
+
+      /* ── Typography ── */
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        font-family: "Archivo Black", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin: 0 0 0.5rem 0;
+        text-align: left;
+      }
+
+      .reveal h1 {
+        font-size: 5.5rem;
+        line-height: 0.88;
+        margin-bottom: 1.2rem;
+      }
+      .reveal h2 {
+        font-size: 3.5rem;
+        line-height: 0.92;
+        margin-bottom: 1rem;
+      }
+      .reveal h3 {
+        font-size: 1.5rem;
+        line-height: 0.94;
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.05em;
+      }
+      .reveal h4 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+        letter-spacing: 0.08em;
+        opacity: 0.55;
+        margin-bottom: 1.5rem;
+      }
+
+      .reveal p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        max-width: 70ch;
+        margin: 0 0 0.6rem;
+      }
+
+      .reveal ul,
+      .reveal ol {
+        padding-left: 1.2rem;
+        margin: 0.5rem 0 0;
+      }
+      .reveal li {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        padding-left: 0.4rem;
+        list-style-type: disc;
+      }
+      .reveal li::marker {
+        color: var(--yellow);
+        font-weight: 700;
+      }
+      .reveal strong {
+        font-family: "Archivo Black", sans-serif;
+        font-weight: 400;
+      }
+      .reveal b {
+        font-weight: bold;
+      }
+
+      .reveal code {
+        font-family: "IBM Plex Mono", monospace;
+        background: rgba(17, 17, 17, 0.08);
+        border-radius: 4px;
+        padding: 0.1em 0.4em;
+        font-size: 0.88em;
+      }
+      .reveal pre {
+        font-family: "IBM Plex Mono", monospace;
+        background: var(--panel);
+        color: var(--yellow);
+        border-radius: 1rem;
+        padding: 1.5rem 2rem;
+        border: 2px solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      /* ── Slide variants ── */
+      .reveal .slides section.dark {
+        background-color: var(--panel);
+        background-image: repeating-linear-gradient(
+          45deg,
+          rgba(255, 214, 10, 0.08) 0 1px,
+          transparent 1px 28px
+        );
+        color: var(--white);
+      }
+      .reveal .slides section.dark h1,
+      .reveal .slides section.dark h2,
+      .reveal .slides section.dark h3 {
+        color: var(--white);
+      }
+      .reveal .slides section.dark h4 {
+        color: var(--yellow);
+        opacity: 1;
+      }
+      .reveal .slides section.dark li::marker {
+        color: var(--yellow);
+      }
+      .reveal .slides section.dark p {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .reveal .slides section.dark code {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--yellow);
+      }
+      /* ── Links ── */
+      .reveal a {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        opacity: 0.75;
+        text-decoration: underline !important;
+      }
+      .reveal .slides section a {
+        color: var(--ink);
+      }
+      .reveal .slides section.dark a {
+        color: var(--yellow);
+      }
+
+      /* ── Hero ── */
+      .reveal .slides section.hero {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+      .reveal .slides section.hero .tag {
+        display: none;
+      }
+      .reveal .slides section.hero h1 {
+        font-size: 7rem;
+        line-height: 0.86;
+        margin: 0;
+      }
+
+      /* ── Components ── */
+      .tag {
+        display: inline-block;
+        width: fit-content;
+        align-self: flex-start;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        background: var(--yellow);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 999rem;
+        padding: 0.25rem 0.85rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .module-num {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        opacity: 0.4;
+        margin-bottom: 1rem;
+      }
+      .dark .module-num {
+        color: var(--yellow);
+      }
+
+      .module-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 1rem;
+      }
+      .module-title .module-rest {
+        opacity: 0.4;
+      }
+
+      .module-tag {
+        display: inline-block;
+        padding: 0.34rem 0.82rem 0.3rem;
+        border: 2px solid var(--ink);
+        border-radius: 0;
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        line-height: 1;
+        text-transform: uppercase;
+        box-shadow: 0.18rem 0.18rem 0 var(--white);
+        transform: rotate(-1deg);
+      }
+
+      /* Two-column grid */
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        margin-top: 0.5rem;
+      }
+      .cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: start;
+      }
+
+      /* Key idea callout */
+      .idea-clave {
+        margin-top: 1.5rem !important;
+        padding-left: 1rem;
+        border-left: 3px solid var(--yellow);
+        font-size: 0.95rem !important;
+        opacity: 0.9;
+      }
+
+      /* ── Flow diagram ── */
+      .flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        width: 100%;
+      }
+      .flow-node {
+        background: var(--yellow);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 0.85rem;
+        box-shadow: 4px 4px 0 var(--ink);
+        padding: 1rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        min-width: 140px;
+        text-align: center;
+      }
+      .flow-node strong {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+      .flow-node span {
+        font-size: 0.65rem;
+        opacity: 0.68;
+        font-family: "Archivo", sans-serif;
+      }
+      .flow-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+      .flow-arrow {
+        font-size: 1.8rem;
+        color: var(--ink);
+        font-family: "Archivo Black", sans-serif;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      .dark .flow-arrow {
+        color: var(--yellow);
+      }
+
+      /* ── Table ── */
+      .reveal table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+      }
+      .reveal table th {
+        font-family: "Archivo Black", sans-serif;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 2px solid var(--ink);
+        text-align: left;
+      }
+      .reveal table td {
+        padding: 0.55rem 0.75rem;
+        border-bottom: 1px solid rgba(17, 17, 17, 0.15);
+        vertical-align: top;
+        line-height: 1.4;
+      }
+      .reveal .slides section.dark table th {
+        border-bottom-color: rgba(255, 255, 255, 0.3);
+      }
+      .reveal .slides section.dark table td {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ── Slide entry animation ── */
+      @keyframes entryFade {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reveal .slides section.present .module-num {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .reveal .slides section.present h1,
+      .reveal .slides section.present h2,
+      .reveal .slides section.present h4 {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 160ms;
+      }
+      .reveal .slides section.present ul,
+      .reveal .slides section.present pre,
+      .reveal .slides section.present table,
+      .reveal .slides section.present p {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+
+      /* ── Flow animation stagger ── */
+      .reveal .slides section.present .flow > *:nth-child(1) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(2) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(3) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 1320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(4) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 1820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(5) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 2320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(6) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 2820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(7) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 3320ms;
+      }
+
+      /* ── Two-column staggered slide-in ── */
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .reveal .slides section.present .cols > *:nth-child(1) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+      .reveal .slides section.present .cols > *:nth-child(2) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 480ms;
+      }
+      .reveal .slides section.present .cols > *:nth-child(3) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 640ms;
+      }
+
+      /* ── Logo header ── */
+      .slide-logo {
+        position: absolute;
+        top: 1.4rem;
+        left: 4.5rem;
+        height: 26px;
+        width: auto;
+      }
+      .dark .slide-logo {
+        filter: saturate(0) invert(1) brightness(2.5);
+      }
+
+      /* ── Progress bar & slide number ── */
+      .reveal .progress {
+        color: var(--yellow);
+      }
+      .reveal .slide-number {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        background: transparent;
+        color: var(--ink);
+        opacity: 0.35;
+      }
+      .reveal .slides section.dark .slide-number {
+        color: var(--white);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- ── Cover ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              flex: 1;
+              gap: 2rem;
+            "
+          >
+            <p
+              style="
+                font-family: &quot;Archivo Black&quot;, sans-serif;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                color: rgba(255, 255, 255, 0.35);
+                margin: 0;
+              "
+            >
+              Day 3
+            </p>
+            <h1 style="font-size: 3.8rem; line-height: 0.92; margin: 0">
+              AI Tools for Developers:<br /><span style="color: var(--yellow)"
+                >Next-Level<br />Mastery</span
+              >
+            </h1>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+              "
+            >
+              <span
+                style="
+                  font-family: &quot;Archivo Black&quot;, sans-serif;
+                  font-size: 1.1rem;
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                  color: #fff;
+                "
+                >Aridane Martín</span
+              >
+              <a
+                href="https://www.aridanemartin.dev"
+                target="_blank"
+                style="
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  font-size: 0.85rem;
+                  color: var(--yellow);
+                  text-decoration: none;
+                  letter-spacing: 0.03em;
+                "
+                >www.aridanemartin.dev</a
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Index ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <h1>Day 3</h1>
+          <br />
+          <div class="cols" style="align-items: start">
+            <ul>
+              <li>Intro to LangChain</li>
+              <li>Token Optimization</li>
+              <li>Engineering Docs: RFC, ADR, PRD</li>
+              <li>Spec-Driven Development</li>
+              <li>Spec Kit vs Superpowers vs Grill-me</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 01 — INTRO TO LANGCHAIN
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 14/&gt;</span>
+          </div>
+          <h1>Intro to LangChain</h1>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 02 — TOKEN OPTIMIZATION
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 15/&gt;</span>
+          </div>
+          <h1>Token<br />Optimization</h1>
+        </section>
+
+        <!-- 01 · Where tokens go -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">01 — Where tokens go</div>
+              <h2>What's eating<br />your budget</h2>
+              <ul>
+                <li>Verbose terminal output</li>
+                <li>Full file reads when only symbols are needed</li>
+                <li>MCP data dumps without filtering</li>
+                <li>Oversized <code>CLAUDE.md</code></li>
+              </ul>
+            </div>
+            <div>
+              <p
+                style="
+                  font-family: &quot;Archivo Black&quot;, sans-serif;
+                  font-size: 3rem;
+                  line-height: 0.9;
+                  text-transform: uppercase;
+                  color: var(--ink);
+                "
+              >
+                Most waste is<br /><span
+                  style="
+                    color: var(--yellow);
+                    -webkit-text-stroke: 2px var(--ink);
+                  "
+                  >invisible</span
+                ><br />to the user.
+              </p>
+            </div>
+          </div>
+          <p class="idea-clave">
+            <strong>Key idea:</strong> cutting token waste is the
+            highest-leverage cost optimization available today.
+          </p>
+        </section>
+
+        <!-- 02 · The toolbox -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">02 — The toolbox</div>
+          <h2>Tools and<br />reductions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Tool</th>
+                <th>Reduction</th>
+                <th>Best for</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>RTK</strong> (Rust Token Killer)</td>
+                <td>60–90%</td>
+                <td>Terminal output filtering</td>
+                <td><a href="https://github.com/rtk-ai/rtk" target="_blank" style="color:var(--yellow);font-size:0.7rem">github.com/rtk-ai/rtk</a></td>
+              </tr>
+              <tr>
+                <td><strong>Caveman Claude</strong></td>
+                <td>75%</td>
+                <td>Simplified output language</td>
+                <td><a href="https://github.com/juliusbrussee/caveman" target="_blank" style="color:var(--yellow);font-size:0.7rem">github.com/juliusbrussee/caveman</a></td>
+              </tr>
+              <tr>
+                <td><strong>Graphify</strong></td>
+                <td>70%</td>
+                <td>Codebase summary / graph exploration</td>
+                <td><a href="https://graphify.net" target="_blank" style="color:var(--yellow);font-size:0.7rem">graphify.net</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 03 — ENGINEERING DOCS
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 16/&gt;</span>
+          </div>
+          <h1>Engineering<br />Docs</h1>
+        </section>
+
+        <!-- 01 · RFC -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items:center;">
+            <div>
+              <div class="module-num">01 — RFC</div>
+              <h2>Request for<br />Comments</h2>
+              <p>A structured proposal that invites feedback <em>before</em> a decision is made. RFC = think out loud · ADR = lock it in.</p>
+              <ul>
+                <li>Used by TC39, Rust, React — the pattern is universal</li>
+                <li>Opens the decision to the team before the cost of change goes up</li>
+                <li>AI can draft an RFC from a rough idea in seconds</li>
+              </ul>
+            </div>
+            <div>
+              <div style="background:var(--ink);color:var(--white);border:3px solid var(--ink);border-radius:1.45rem;padding:1.5rem 2rem;box-shadow:6px 6px 0 var(--yellow);">
+                <h3 style="color:var(--yellow);margin-bottom:1.2rem;font-size:1.1rem;">Lifecycle</h3>
+                <p style="border-left:3px solid var(--yellow);padding-left:1rem;margin-bottom:0.8rem;">
+                  <strong style="font-family:'Archivo Black',sans-serif;">RFC</strong><br />
+                  <span style="opacity:0.7;font-size:0.85rem;">Propose · Discuss · Refine</span>
+                </p>
+                <p style="border-left:3px solid rgba(255,214,10,0.4);padding-left:1rem;margin-bottom:0.8rem;">
+                  <strong style="font-family:'Archivo Black',sans-serif;">ADR</strong><br />
+                  <span style="opacity:0.7;font-size:0.85rem;">Record the decision</span>
+                </p>
+                <p style="border-left:3px solid rgba(255,214,10,0.2);padding-left:1rem;">
+                  <strong style="font-family:'Archivo Black',sans-serif;">PRD</strong><br />
+                  <span style="opacity:0.7;font-size:0.85rem;">Define requirements</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 · ADR -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items:center;">
+            <div>
+              <div class="module-num">02 — ADR</div>
+              <h2>Architecture<br />Decision Record</h2>
+              <p>Captures a significant technical decision: what was chosen, why, and what trade-offs were accepted.</p>
+              <ul>
+                <li>Write one for any irreversible or hard-to-reverse choice</li>
+                <li>Keeps the team aligned on <em>why</em>, not just <em>what</em></li>
+                <li>AI can generate drafts — you supply the context</li>
+              </ul>
+            </div>
+            <div>
+              <div style="background:var(--ink);color:var(--white);border:3px solid var(--ink);border-radius:1.45rem;padding:1.5rem 2rem;box-shadow:6px 6px 0 var(--yellow);">
+                <h3 style="color:var(--yellow);margin-bottom:1rem;font-size:1.1rem;">ADR Structure</h3>
+                <p style="margin-bottom:0.6rem;"><strong>Status</strong> — proposed · accepted · deprecated</p>
+                <p style="margin-bottom:0.6rem;"><strong>Context</strong> — why this decision was needed</p>
+                <p style="margin-bottom:0.6rem;"><strong>Decision</strong> — what was chosen and why</p>
+                <p><strong>Consequences</strong> — trade-offs and follow-ups</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 · PRD -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items:center;">
+            <div>
+              <div class="module-num">03 — PRD</div>
+              <h2>Product<br />Requirements<br />Document</h2>
+              <p>Defines what you're building, for whom, and why — before a line of code is written.</p>
+              <ul>
+                <li>Written before implementation begins</li>
+                <li>Shared language between devs, design, and product</li>
+                <li>AI excels at drafting PRDs from a rough brief</li>
+              </ul>
+            </div>
+            <div>
+              <div style="background:var(--ink);color:var(--white);border:3px solid var(--ink);border-radius:1.45rem;padding:1.5rem 2rem;box-shadow:6px 6px 0 var(--yellow);">
+                <h3 style="color:var(--yellow);margin-bottom:1rem;font-size:1.1rem;">PRD Structure</h3>
+                <p style="margin-bottom:0.6rem;"><strong>Problem</strong> — what pain are we solving</p>
+                <p style="margin-bottom:0.6rem;"><strong>Goals</strong> — measurable outcomes</p>
+                <p style="margin-bottom:0.6rem;"><strong>Non-Goals</strong> — explicit scope limits</p>
+                <p style="margin-bottom:0.6rem;"><strong>Requirements</strong> — must-haves and nice-to-haves</p>
+                <p><strong>Metrics</strong> — how we'll know it worked</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 04 — SPEC-DRIVEN DEVELOPMENT
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 17/&gt;</span>
+          </div>
+          <h1>Spec-Driven<br />Development</h1>
+        </section>
+
+        <!-- Code is not the place to define requirements -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <h1>Code is not<br />the place to<br />define<br />requirements.</h1>
+          <p>
+            Problems are discovered after the code has already made the
+            decisions.
+          </p>
+        </section>
+
+        <!-- The analogy: Epic workflow -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">The analogy</div>
+          <h2>Like a well-executed<br />Epic</h2>
+          <div class="flow">
+            <div class="flow-node">
+              <span class="flow-icon">📋</span>
+              <strong>Epic</strong>
+              <span>Constitution</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">📖</span>
+              <strong>User Stories</strong>
+              <span>Specify</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">✅</span>
+              <strong>Tasks</strong>
+              <span>Plan + Tasks</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">⚡</span>
+              <strong>Implement</strong>
+              <span>Execute</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Spec first -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">What is SDD</div>
+              <h2>Spec first</h2>
+              <ul>
+                <li>
+                  <strong>Spec-first:</strong> write a well-structured spec before
+                  coding — it's used for the task and then discarded
+                </li>
+                <li>
+                  <strong>Spec-anchored:</strong> spec stays after the task is
+                  done, kept for evolution and maintenance of the feature
+                </li>
+                <li>
+                  <strong>Spec-as-source:</strong> human only edits the spec —
+                  code is generated and never touched by the developer
+                </li>
+                <li>
+                  All three are spec-first, but not all strive to be
+                  spec-anchored or spec-as-source
+                </li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Key idea:</strong> specs become the executable artifact —
+                not scaffolding that gets discarded.
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/sdd-levels.png"
+                alt="3 levels of SDD: spec-first, spec-anchored, spec-as-source"
+                style="width: 100%; border-radius: 8px"
+              />
+              <p style="font-size: 0.65rem; opacity: 0.55; margin-top: 0.4rem">
+                Source: Birgitta Böckeler,
+                <a
+                  href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+                  target="_blank"
+                  style="color: var(--yellow)"
+                  >martinfowler.com</a
+                >
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Yellow interstitial -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <h1>The flow<br />in 5 phases</h1>
+          <h3>(Short version)</h3>
+        </section>
+
+        <!-- Phase 01 -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 01</div>
+          <h2>Constitution</h2>
+          <h4>Define the non-negotiable principles of the project (Constraints / Technical harness)</h4>
+          <ul>
+            <li>Testing standards</li>
+            <li>Stack constraints</li>
+            <li>Naming and architecture conventions</li>
+          </ul>
+          <br>
+          <pre><code>/speckit.constitution Quality, testing, and UX consistency principles</code></pre>
+        </section>
+
+        <!-- Phase 02 -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 02</div>
+          <h2>Specify</h2>
+          <h4>Describe the what and the why — no technical decisions (Business requirements)</h4>
+          <pre><code>/speckit.specify Build an app to organize photos in albums,
+grouped by date, with drag-and-drop reordering.
+Albums are never nested inside other albums.</code></pre>
+          <p class="idea-clave">
+            <strong>Rule:</strong> no stack, libraries, or architecture in this
+            step.
+          </p>
+        </section>
+
+        <!-- Phase 03 -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 03</div>
+          <h2>Plan</h2>
+          <h4>The framework works in architecture decisions, stack, and technical design</h4>
+          <pre><code>/speckit.plan Vite, vanilla HTML/CSS/JS.
+Images stay local. Metadata in SQLite.</code></pre>
+          <p class="idea-clave">
+            <strong>Optional before:</strong> <code>/speckit.clarify</code> to
+            detect underspecified areas.
+          </p>
+        </section>
+
+        <!-- Phase 04 -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 04</div>
+          <h2>Tasks</h2>
+          <h4>Ordered task list with clear dependencies</h4>
+          <pre><code>/speckit.tasks</code></pre>
+          <p class="idea-clave">
+            <strong>Optional after:</strong> <code>/speckit.analyze</code> to
+            validate consistency across artifacts.
+          </p>
+        </section>
+
+        <!-- Phase 05 -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 05</div>
+          <h2>Implement</h2>
+          <h4>Execute all tasks using all artifacts as context</h4>
+          <pre><code>/speckit.implement</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 05 — SUPERPOWERS VS SPEC KIT
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 18/&gt;</span>
+          </div>
+          <h1>Spec Kit<br />vs Superpowers<br />vs Grill-me</h1>
+        </section>
+
+        <!-- Superpowers in action -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center">
+            <div>
+              <div class="module-num">01 — Superpowers</div>
+              <h2>Workflow<br />enforced<br />by design</h2>
+              <ul>
+                <li>Plugin-based — installs into Claude&nbsp;Code</li>
+                <li>14 auto-activating skills per context</li>
+                <li>Process discipline: design → plan → TDD → review</li>
+                <li>Works inside the agent loop</li>
+              </ul>
+              <p style="margin-top:0.4rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.55;">
+                Install in: <strong>Claude&nbsp;Code</strong> · <strong>OpenCode</strong> · <strong>Cursor</strong> · <strong>Gemini&nbsp;CLI</strong> · <strong>Copilot&nbsp;CLI</strong> · <strong>Codex</strong> · <strong>Kimi</strong> · <strong>Pi</strong> · <strong>Antigravity</strong> · <strong>Factory&nbsp;Droid</strong>
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/superpowers-tasks.png"
+                alt="Superpowers brainstorming task list in Claude Code"
+                style="
+                  width: 100%;
+                  border-radius: 0.85rem;
+                  border: 2px solid var(--ink);
+                  box-shadow: 6px 6px 0 var(--ink);
+                  display: block;
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Superpowers: execution pipeline -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Execution flow</div>
+          <h2>Prompt to<br />merge: 4 phases</h2>
+          <div class="flow">
+            <div class="flow-node">
+              <span class="flow-icon">🧠</span>
+              <strong>Brainstorm</strong>
+              <span>spec + design doc</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">📋</span>
+              <strong>Plan</strong>
+              <span>bite-sized tasks</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">🤖</span>
+              <strong>Subagents</strong>
+              <span>implement + review</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">🚀</span>
+              <strong>Finish</strong>
+              <span>merge or PR</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Superpowers: per-task triple gate -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Per task</div>
+          <h2>Triple<br />quality gate</h2>
+          <div class="flow">
+            <div class="flow-node">
+              <span class="flow-icon">💻</span>
+              <strong>Implementer</strong>
+              <span>code + self-review</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">📋</span>
+              <strong>Spec review</strong>
+              <span>did it build the right thing?</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">✨</span>
+              <strong>Quality review</strong>
+              <span>is it built well?</span>
+            </div>
+          </div>
+          <p style="margin-top:1.4rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.55;">
+            Each gate re-reviews until approved — only then does the next task start.
+          </p>
+        </section>
+
+        <!-- Three approaches -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">02 — Three approaches</div>
+              <h2>Same goal,<br />different<br />philosophy</h2>
+            </div>
+<div> <h3>Spec Kit</h3>
+              <ul>
+                <li>CLI-based — scaffolds files and slash commands</li>
+                <li>
+                  5-phase workflow: Constitution → Specify → Plan → Tasks →
+                  Implement
+                </li>
+                <li>Agent-agnostic — works with Copilot, Cursor, Gemini, Codex, OpenCode, Kimi, Pi…</li>
+                <li>3 levels: <strong>spec-first</strong> (doc before code), <strong>spec-anchored</strong> (spec lives on), <strong>spec-as-source</strong> (human edits spec, never code)</li>
+                <li style="margin-top: 0.6rem; font-size: 0.75rem; opacity: 0.65"><a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank" style="color: var(--yellow)">Birgitta Böckeler — martinfowler.com</a></li>
+              </ul>
+              
+              <h3 style="margin-top: 2.8rem">Superpowers</h3>
+              <ul>
+                <li>Plugin-based — installs into Claude Code</li>
+                <li>14 auto-activating skills per context</li>
+                <li>Process discipline: design → plan → TDD → review</li>
+              </ul>
+              
+              <h3 style="margin-top: 2.8rem">Grill-me</h3>
+              <ul>
+                <li>Dialogue-first — aligns before any planning</li>
+                <li>Reaches a shared design concept via questions</li>
+                <li>Code stays in focus throughout (anti-spec-to-code)</li>
+              </ul></div>
+          </div>
+        </section>
+
+        <!-- The 4-phase flow -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">03 — Grill-me methodology</div>
+          <h2>Grill → PRD → Issues → Loop</h2>
+          <div class="cols cols-3" style="margin-top: 1.2rem">
+            <div>
+              <div class="tag">Phase 1 — Human in the loop</div>
+              <p>
+                <strong>Grill Me</strong><br />Dialogue session that surfaces
+                all assumptions, decisions, and open questions. Output: a shared
+                design concept.
+              </p>
+              <p>
+                <strong>Write PRD</strong><br />Summarizes the conversation into
+                a destination document — user stories, module map, out-of-scope
+                items.
+              </p>
+            </div>
+            <div>
+              <div class="tag">Phase 2 — Human review</div>
+              <p>
+                <strong>PRD → Issues</strong><br />Breaks the PRD into a Kanban
+                board of independently-grabbable issues with blocking
+                relationships.
+              </p>
+              <p>
+                Issues use <strong>vertical slices</strong> (traceable bullets)
+                so every task crosses all layers — DB, API, UI — for instant
+                feedback.
+              </p>
+            </div>
+            <div>
+              <div class="tag">Phase 3 — AFK</div>
+              <p>
+                <strong>Ralph Loop</strong><br />Agent picks the next unblocked
+                issue, applies TDD, runs feedback loops, commits, and repeats.
+              </p>
+              <p>
+                Human is away from the keyboard. Parallelization is possible
+                across unblocked issues.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vertical slices -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">06 — Vertical slices</div>
+          <h2>Traceable<br />bullets</h2>
+          <div class="cols">
+            <div>
+              <p><strong>AI codes horizontally by default:</strong></p>
+              <ul>
+                <li>Phase 1: all database/schema work</li>
+                <li>Phase 2: all API / service layer</li>
+                <li>Phase 3: all front-end work</li>
+              </ul>
+              <p style="margin-top: 0.8rem">
+                ❌ No feedback until phase 3 — you're coding blind.
+              </p>
+            </div>
+            <div>
+              <p><strong>Vertical slices instead:</strong></p>
+              <ul>
+                <li>Each issue touches DB + API + UI together</li>
+                <li>Working end-to-end feature at the end of every slice</li>
+                <li>Enables parallelization — issues form a DAG, not a list</li>
+              </ul>
+              <p style="margin-top: 0.8rem">
+                ✅ Feedback after every task. System is always integrated.
+              </p>
+              <p class="idea-clave">
+                <strong>Traceable bullets</strong> — from
+                <em>The Pragmatic Programmer</em>. Like phosphor on a bullet:
+                you see where you're aiming as you go.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Day shift / Night shift -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">07 — Human vs AFK</div>
+          <h2>Day shift<br />Night shift</h2>
+          <div class="cols">
+            <div>
+              <h3>Day shift — Human</h3>
+              <ul>
+                <li>Grill Me session</li>
+                <li>PRD review</li>
+                <li>Kanban board review</li>
+                <li>QA and code review</li>
+              </ul>
+              <p style="margin-top: 0.8rem; font-size: 0.9rem">
+                Planning is always <strong>human in the loop</strong>. Taste,
+                alignment, and quality belong to you.
+              </p>
+            </div>
+            <div>
+              <h3>Night shift — AI</h3>
+              <ul>
+                <li>Pick next unblocked issue</li>
+                <li>Write failing test (TDD red)</li>
+                <li>Implement to pass (green)</li>
+                <li>Run feedback loops, commit, repeat</li>
+              </ul>
+              <p style="margin-top: 0.8rem; font-size: 0.9rem">
+                Implementation is <strong>AFK</strong>. Agent loops until the
+                backlog is empty or blocked.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- When to use which -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols cols-3">
+            <div>
+              <div class="module-num">08 — When to use</div>
+              <h2>Pick the<br />right tool</h2>
+              <h3>Spec Kit</h3>
+              <ul>
+                <li>Team uses multiple AI tools</li>
+                <li>Need version-controlled, shareable specs</li>
+                <li>Artifacts that survive beyond the session</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="margin-top: 2.8rem">Superpowers</h3>
+              <ul>
+                <li>You live in Claude Code</li>
+                <li>You want automatic workflow enforcement</li>
+                <li>TDD and review built into every task</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="margin-top: 2.8rem">Grill-me</h3>
+              <ul>
+                <li>Misalignment is the real risk</li>
+                <li>Feature is complex or requirements are fuzzy</li>
+                <li>You want to own and understand the planning stack</li>
+              </ul>
+            </div>
+          </div>
+          <p class="idea-clave" style="margin-top: 1rem">
+            <strong>They are not mutually exclusive</strong> — Spec Kit for
+            requirements, Superpowers for execution, Grill-me for alignment.
+          </p>
+        </section>
+
+        <!-- Other frameworks -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center">
+            <div>
+              <div class="module-num">09 — More to explore</div>
+              <h2>Other<br />frameworks</h2>
+              <ul>
+                <li>
+                  <strong>BMAD</strong> — Breakthrough Method for Agile
+                  AI-Driven Development<br />
+                  <a
+                    href="https://github.com/bmadcode/BMAD-METHOD"
+                    target="_blank"
+                    style="
+                      font-family: &quot;IBM Plex Mono&quot;, monospace;
+                      font-size: 0.72rem;
+                      color: var(--ink);
+                      opacity: 0.65;
+                    "
+                    >bmadcode/BMAD-METHOD — GitHub</a
+                  >
+                </li>
+                <li style="margin-top: 0.6rem">
+                  <strong>GSD</strong> — Get Shit Done<br />
+                  <a
+                    href="https://github.com/gsd-build/get-shit-done"
+                    target="_blank"
+                    style="
+                      font-family: &quot;IBM Plex Mono&quot;, monospace;
+                      font-size: 0.72rem;
+                      color: var(--ink);
+                      opacity: 0.65;
+                    "
+                    >gsd-build/get-shit-done — GitHub</a
+                  >
+                </li>
+              </ul>
+              <p class="idea-clave">
+                <strong>The ecosystem is exploding.</strong> Pick the philosophy
+                that matches how you think.
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/ai-ecosystem-graph.png"
+                alt="AI tools knowledge graph"
+                style="
+                  width: 100%;
+                  border-radius: 0.85rem;
+                  border: 2px solid var(--ink);
+                  box-shadow: 6px 6px 0 var(--ink);
+                  display: block;
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        progress: true,
+        slideNumber: true,
+        center: false,
+        transition: "none",
+        backgroundTransition: "none",
+        width: 1280,
+        height: 720,
+      });
+    </script>
+  </body>
+</html>
