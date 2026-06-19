@@ -6,7 +6,7 @@ describe('Sustainability', () => {
   it('renders a heading for the sustainability section', () => {
     render(<Sustainability />)
     expect(
-      screen.getByRole('heading', { name: /sustainability/i }),
+      screen.getByRole('heading', { name: /sostenibilidad/i }),
     ).toBeInTheDocument()
   })
 
@@ -16,28 +16,28 @@ describe('Sustainability', () => {
     expect(tiles).toHaveLength(3)
   })
 
-  it('renders the CO2 avoided metric with a label and a numeric value', () => {
+  it('renders the CO2 avoided metric with label and value', () => {
     render(<Sustainability />)
-    expect(screen.getByText(/CO₂ avoided/i)).toBeInTheDocument()
-    expect(screen.getByText('48,200')).toBeInTheDocument()
+    expect(screen.getByText(/CO₂ evitado/i)).toBeInTheDocument()
+    expect(screen.getByText('12.400')).toBeInTheDocument()
   })
 
-  it('renders the charge sessions metric with a label and a numeric value', () => {
+  it('renders the charge sessions metric with label and value', () => {
     render(<Sustainability />)
-    expect(screen.getByText(/charge sessions/i)).toBeInTheDocument()
-    expect(screen.getByText('1.3M')).toBeInTheDocument()
+    expect(screen.getByText(/sesiones de carga/i)).toBeInTheDocument()
+    expect(screen.getByText('2.800.000')).toBeInTheDocument()
   })
 
-  it('renders the partner countries metric with a label and a numeric value', () => {
+  it('renders the partner countries metric with label and value', () => {
     render(<Sustainability />)
-    expect(screen.getByText(/partner countries/i)).toBeInTheDocument()
-    expect(screen.getByText('34')).toBeInTheDocument()
+    expect(screen.getByText(/países asociados/i)).toBeInTheDocument()
+    expect(screen.getByText('18')).toBeInTheDocument()
   })
 
   it('renders the circular-economy paragraph as a semantic <p> element', () => {
     render(<Sustainability />)
-    // getByTestId used here because <p> has no ARIA role distinguishable
-    // from other text containers; the tag check is load-bearing per the acceptance criterion
+    // getByTestId used because <p> has no distinguishable ARIA role from other text nodes;
+    // the tag check is load-bearing per the acceptance criterion
     const paragraph = screen.getByTestId('circular-economy-paragraph')
     expect(paragraph.tagName).toBe('P')
   })
