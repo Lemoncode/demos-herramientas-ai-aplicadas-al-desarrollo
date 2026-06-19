@@ -34,3 +34,4 @@ docs/reports/*.md
 *.njsproj
 *.sln
 *.sw?
+.claude/worktrees/
