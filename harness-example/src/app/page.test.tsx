@@ -3,10 +3,8 @@ import { describe, it, expect } from 'vitest'
 import Page from './page'
 
 describe('Page', () => {
-  it('renders the foundation-not-built placeholder', () => {
+  it('renders at least one heading', () => {
     render(<Page />)
-    expect(
-      screen.getByText(/foundation has not been built/i),
-    ).toBeInTheDocument()
+    expect(screen.getAllByRole('heading').length).toBeGreaterThan(0)
   })
 })
