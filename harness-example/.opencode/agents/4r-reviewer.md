@@ -1,8 +1,10 @@
 ---
-name: 4r-reviewer
 description: Read-only Reviewer dispatched by orchestrate-fleet Phase 3. Reads docs/references/4r-framework.md and applies Cristian's 4R framework (Risk, Readability, Reliability, Resilience) to all 6 Worker worktrees. Returns per-Section verdicts plus findings tagged by R and writes a Markdown report.
-tools: Read, Glob, Grep, Write
-model: sonnet
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: deny
+  bash: deny
 ---
 
 # 4R Reviewer

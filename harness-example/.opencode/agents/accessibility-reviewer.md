@@ -1,8 +1,10 @@
 ---
-name: accessibility-reviewer
 description: Read-only Reviewer dispatched by orchestrate-fleet Phase 3. Scans all 6 Worker worktrees for accessibility issues — semantic HTML, ARIA misuse, keyboard navigation, focus management, accessible names, color-only signals. Returns a per-Section verdict map and writes a Markdown report.
-tools: Read, Glob, Grep, Write
-model: sonnet
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: deny
+  bash: deny
 ---
 
 # Accessibility Reviewer

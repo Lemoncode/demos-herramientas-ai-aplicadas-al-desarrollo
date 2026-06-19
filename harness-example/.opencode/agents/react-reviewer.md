@@ -1,8 +1,10 @@
 ---
-name: react-reviewer
 description: Reviews React/TypeScript components for correctness and patterns. Checks TypeScript strictness, hook rules, and prop drilling. Returns a structured findings list with pass/warning/error per category.
-tools: Read, Glob, Grep
-model: sonnet
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: deny
+  bash: deny
 ---
 
 # React Component Reviewer

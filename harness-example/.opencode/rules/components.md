@@ -1,8 +1,5 @@
 ---
-description: Conventions for React component files in src/components/ — functional components, named exports (except Next.js conventions), props interface, semantic HTML, accessibility, and performance. Auto-loaded when editing files in that directory.
-paths:
-  - "src/components/**/*.tsx"
-  - "src/components/**/*.ts"
+description: Conventions for React component files in src/components/ — functional components, named exports (except Next.js conventions), props interface, semantic HTML, accessibility, and performance.
 ---
 
 # Component Rules

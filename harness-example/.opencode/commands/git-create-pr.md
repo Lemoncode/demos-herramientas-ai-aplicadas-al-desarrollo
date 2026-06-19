@@ -1,3 +1,7 @@
+---
+description: Create a pull request for the current branch — syncs with main, commits any staged changes, pushes, and opens the PR via gh CLI.
+---
+
 Create a pull request for the current branch. Follow these steps in order:
 
 ## 1. Verify you are not on main

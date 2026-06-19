@@ -1,8 +1,10 @@
 ---
-name: section-worker
 description: Section Worker dispatched by the orchestrate-fleet skill. Implements one homepage Section end-to-end via the build-section skill inside an isolated git worktree, then returns a structured contract. Single persona handles all 6 Sections; identity comes from the Mission Brief in the prompt.
-tools: Read, Write, Edit, Bash, Glob, Grep
-model: sonnet
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: allow
+  bash: allow
 ---
 
 # Section Worker

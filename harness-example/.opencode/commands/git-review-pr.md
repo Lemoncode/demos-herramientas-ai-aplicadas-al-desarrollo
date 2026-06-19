@@ -1,3 +1,7 @@
+---
+description: Review the current pull request — dispatches a subagent that checks test coverage and rule compliance against project conventions.
+---
+
 Review the current pull request by dispatching a subagent that checks test coverage and rule compliance.
 
 ## 1. Identify the PR
