@@ -1,29 +1,22 @@
 import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
 import { Card } from './Card'
 
 describe('Card', () => {
-  it('renders children inside an article element by default', () => {
-    render(
-      <Card>
-        <h3>JC-DUO Premium</h3>
-        <p>22 kW · Type 2</p>
-      </Card>,
-    )
-    expect(screen.getByRole('article')).toBeInTheDocument()
+  it('renders an article element by default', () => {
+    render(<Card>Contenido de tarjeta</Card>)
+    const el = screen.getByRole('article')
+    expect(el).toBeInTheDocument()
+    expect(el).toHaveClass('card')
+  })
+
+  it('renders children inside the card', () => {
+    render(<Card><span>JC-DUO Premium</span></Card>)
     expect(screen.getByText('JC-DUO Premium')).toBeInTheDocument()
   })
 
-  it('renders as a different element when as prop is provided', () => {
-    render(
-      <Card as="div">
-        <span>Contenido</span>
-      </Card>,
-    )
-    expect(screen.getByText('Contenido')).toBeInTheDocument()
-  })
-
-  it('applies the card class', () => {
-    render(<Card><p>Content</p></Card>)
-    expect(screen.getByRole('article')).toHaveClass('card')
+  it('accepts a custom element type via the as prop', () => {
+    const { container } = render(<Card as="li">Elemento</Card>)
+    expect(container.querySelector('li')).toBeInTheDocument()
   })
 })

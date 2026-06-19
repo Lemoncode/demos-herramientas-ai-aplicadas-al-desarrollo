@@ -5,16 +5,19 @@ interface SectionProps {
   id?: string
   title?: string
   children: ReactNode
+  className?: string
 }
 
-export function Section({ id, title, children }: SectionProps) {
+export function Section({ id, title, children, className }: SectionProps) {
+  const classes = ['section', className].filter(Boolean).join(' ')
+
   return (
-    <section id={id} className="section" aria-label={title}>
+    <section id={id} className={classes}>
       <div className="section__container">
-        {title !== undefined && (
-          <div className="section__title">
-            <Heading level={2} size="section">{title}</Heading>
-          </div>
+        {title && (
+          <Heading level={2} size="section">
+            {title}
+          </Heading>
         )}
         {children}
       </div>

@@ -239,6 +239,7 @@ For each Section where `build_pass && tests_pass`:
 cd <worktree_path>/harness-example
 git push -u origin fleet/<section_id>
 gh pr create \
+  --base demo \
   --title "feat(<section_id>): <one-line title from copy_spec>" \
   --body "$(cat <<'EOF'
 ## Section: <section_id>

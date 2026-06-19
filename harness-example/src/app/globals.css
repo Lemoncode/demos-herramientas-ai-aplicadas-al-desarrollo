@@ -1,4 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap');
+
+:root {
+  --color-primary: #1B3A28;
+  --color-primary-light: #2D5C40;
+  --color-background: #F3EDE2;
+  --color-background-alt: #EAE2D4;
+  --color-accent: #D9C840;
+  --color-accent-dark: #B5A730;
+  --color-text: #12201A;
+  --color-text-secondary: #4B5E54;
+  --color-text-on-primary: #F3EDE2;
+  --color-border: #C9BFA8;
+  --color-border-strong: #8A7F68;
+
+  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+
+  --size-display: 4.5rem;
+  --size-section: 2.5rem;
+  --size-body: 1.125rem;
+
+  --lh-display: 1.1;
+  --lh-section: 1.2;
+  --lh-body: 1.65;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 64px;
+}
 
 *,
 *::before,
@@ -8,133 +40,32 @@
   padding: 0;
 }
 
-:root {
-  /* Colors — Editorial Energy: forest green · bone · sulfur */
-  --color-primary: #1B3A2D;
-  --color-background: #F3EDE1;
-  --color-accent: #D4C832;
-  --color-surface: #EAE4D7;
-  --color-border: #C3BAA7;
-  --color-text: #19191A;
-  --color-text-muted: #5A5850;
-  --color-white: #FFFFFF;
-
-  /* Typography */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
-  --size-display: 3.5rem;
-  --size-section: 2rem;
-  --size-body: 1rem;
-  --lh-display: 1.05;
-  --lh-section: 1.2;
-  --lh-body: 1.65;
-
-  /* Spacing — 8px base scale */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 40px;
-  --space-2xl: 64px;
+html {
+  scroll-behavior: smooth;
 }
 
-html {
+body {
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: 16px;
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  min-height: 100vh;
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
-/* ── Heading primitive ──────────────────────────────────────────────── */
-.heading {
-  font-family: var(--font-display);
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-.heading--display {
-  font-size: var(--size-display);
-  line-height: var(--lh-display);
-  letter-spacing: -0.02em;
-}
-
-.heading--section {
-  font-size: var(--size-section);
-  line-height: var(--lh-section);
-  letter-spacing: -0.015em;
-}
-
-.heading--body {
-  font-family: var(--font-body);
-  font-size: var(--size-body);
-  line-height: var(--lh-body);
-  font-weight: 500;
-}
-
-/* ── Button primitive ───────────────────────────────────────────────── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-xl);
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
-  white-space: nowrap;
-}
-
-.btn--primary {
-  background-color: var(--color-primary);
-  color: var(--color-background);
-  border-color: var(--color-primary);
-}
-
-.btn--primary:hover {
-  background-color: transparent;
-  color: var(--color-primary);
-}
-
-.btn--secondary {
-  background-color: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.btn--secondary:hover {
-  background-color: var(--color-primary);
-  color: var(--color-background);
-}
-
-/* ── Card primitive ─────────────────────────────────────────────────── */
-.card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-xl);
-}
-
-/* ── Section primitive ──────────────────────────────────────────────── */
-.section {
-  padding: var(--space-2xl) var(--space-xl);
-}
-
-.section__container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section__title {
-  margin-bottom: var(--space-xl);
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }

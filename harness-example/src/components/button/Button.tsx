@@ -1,26 +1,38 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, MouseEventHandler } from 'react'
+
+type ButtonVariant = 'primary' | 'secondary'
+type ButtonAs = 'button' | 'a'
 
 interface ButtonProps {
   children: ReactNode
-  variant: 'primary' | 'secondary'
-  as?: 'button' | 'a'
+  variant?: ButtonVariant
+  as?: ButtonAs
   href?: string
-  onClick?: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
+  type?: 'button' | 'submit' | 'reset'
 }
 
-export function Button({ children, variant, as: Tag = 'button', href, onClick }: ButtonProps) {
-  const className = `btn btn--${variant}`
+export function Button({ children, variant = 'primary', as = 'button', href, onClick, type = 'button' }: ButtonProps) {
+  const classes = `btn btn--${variant}`
 
-  if (Tag === 'a') {
+  if (as === 'a') {
     return (
-      <a className={className} href={href} onClick={onClick}>
+      <a
+        href={href}
+        className={classes}
+        onClick={onClick as MouseEventHandler<HTMLAnchorElement>}
+      >
         {children}
       </a>
     )
   }
 
   return (
-    <button type="button" className={className} onClick={onClick}>
+    <button
+      type={type}
+      className={classes}
+      onClick={onClick as MouseEventHandler<HTMLButtonElement>}
+    >
       {children}
     </button>
   )
