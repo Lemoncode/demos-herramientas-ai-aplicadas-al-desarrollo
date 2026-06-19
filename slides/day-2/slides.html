@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 2 — Advanced Concepts · AI Tools for Developers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600&family=IBM+Plex+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"
+    />
+    <style>
+      /* ── Design tokens ── */
+      :root {
+        --ink: #111111;
+        --cream: #fefaf0;
+        --yellow: #ffd60a;
+        --panel: #171a16;
+        --white: #ffffff;
+        --grid: linear-gradient(
+            180deg,
+            rgba(17, 17, 17, 0.04) 0 1px,
+            transparent 1px 100%
+          )
+          0 0 / 100% 24px;
+      }
+
+      /* ── Reveal overrides ── */
+      .reveal-viewport {
+        background: var(--ink);
+      }
+
+      .reveal {
+        font-family: "Archivo", sans-serif;
+        font-size: 32px;
+        color: var(--ink);
+      }
+
+      .reveal .slides section {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        padding: 3.5rem 4.5rem;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        text-align: left;
+        background-color: var(--cream);
+        background-image: var(--grid);
+        background-repeat: repeat;
+      }
+
+      /* ── Typography ── */
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4 {
+        font-family: "Archivo Black", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin: 0 0 0.5rem 0;
+        text-align: left;
+      }
+
+      .reveal h1 {
+        font-size: 5.5rem;
+        line-height: 0.88;
+        margin-bottom: 1.2rem;
+      }
+      .reveal h2 {
+        font-size: 3.5rem;
+        line-height: 0.92;
+        margin-bottom: 1rem;
+      }
+      .reveal h3 {
+        font-size: 1.5rem;
+        line-height: 0.94;
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.05em;
+      }
+      .reveal h4 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+        letter-spacing: 0.08em;
+        opacity: 0.55;
+        margin-bottom: 1.5rem;
+      }
+
+      .reveal p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        max-width: 70ch;
+        margin: 0 0 0.6rem;
+      }
+
+      .reveal ul,
+      .reveal ol {
+        padding-left: 1.2rem;
+        margin: 0.5rem 0 0;
+      }
+      .reveal li {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        padding-left: 0.4rem;
+        list-style-type: disc;
+      }
+      .reveal li::marker {
+        color: var(--yellow);
+        font-weight: 700;
+      }
+      .reveal strong {
+        font-family: "Archivo Black", sans-serif;
+        font-weight: 400;
+      }
+      .reveal b {
+        font-weight: bold;
+      }
+
+      .reveal code {
+        font-family: "IBM Plex Mono", monospace;
+        background: rgba(17, 17, 17, 0.08);
+        border-radius: 4px;
+        padding: 0.1em 0.4em;
+        font-size: 0.88em;
+      }
+      .reveal pre {
+        font-family: "IBM Plex Mono", monospace;
+        background: var(--panel);
+        color: var(--yellow);
+        border-radius: 1rem;
+        padding: 1.5rem 2rem;
+        border: 2px solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      /* ── Slide variants ── */
+      .reveal .slides section.dark {
+        background-color: var(--panel);
+        background-image: repeating-linear-gradient(
+          45deg,
+          rgba(255, 214, 10, 0.08) 0 1px,
+          transparent 1px 28px
+        );
+        color: var(--white);
+      }
+      .reveal .slides section.dark h1,
+      .reveal .slides section.dark h2,
+      .reveal .slides section.dark h3 {
+        color: var(--white);
+      }
+      .reveal .slides section.dark h4 {
+        color: var(--yellow);
+        opacity: 1;
+      }
+      .reveal .slides section.dark li::marker {
+        color: var(--yellow);
+      }
+      .reveal .slides section.dark p {
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .reveal .slides section.dark code {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--yellow);
+      }
+      /* ── Links ── */
+      .reveal a {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        opacity: 0.75;
+        text-decoration: underline !important;
+      }
+      .reveal .slides section a {
+        color: var(--ink);
+      }
+      .reveal .slides section.dark a {
+        color: var(--yellow);
+      }
+
+      /* ── Hero ── */
+      .reveal .slides section.hero {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+      .reveal .slides section.hero .tag {
+        display: none;
+      }
+      .reveal .slides section.hero h1 {
+        font-size: 7rem;
+        line-height: 0.86;
+        margin: 0;
+      }
+
+      /* ── Components ── */
+      .tag {
+        display: inline-block;
+        width: fit-content;
+        align-self: flex-start;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        background: var(--yellow);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 999rem;
+        padding: 0.25rem 0.85rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .module-num {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        opacity: 0.4;
+        margin-bottom: 1rem;
+      }
+      .dark .module-num {
+        color: var(--yellow);
+      }
+
+      .module-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 1rem;
+      }
+      .module-title .module-rest {
+        opacity: 0.4;
+      }
+
+      .module-tag {
+        display: inline-block;
+        padding: 0.34rem 0.82rem 0.3rem;
+        border: 2px solid var(--ink);
+        border-radius: 0;
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        line-height: 1;
+        text-transform: uppercase;
+        box-shadow: 0.18rem 0.18rem 0 var(--white);
+        transform: rotate(-1deg);
+      }
+
+      /* Two-column grid */
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        margin-top: 0.5rem;
+      }
+      .cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      /* Key idea callout */
+      .idea-clave {
+        margin-top: 1.5rem !important;
+        padding-left: 1rem;
+        border-left: 3px solid var(--yellow);
+        font-size: 0.95rem !important;
+        opacity: 0.9;
+      }
+
+      /* ── Flow diagram ── */
+      .flow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        width: 100%;
+      }
+      .flow-node {
+        background: var(--yellow);
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-radius: 0.85rem;
+        box-shadow: 4px 4px 0 var(--ink);
+        padding: 1rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        min-width: 148px;
+        text-align: center;
+      }
+      .flow-node strong {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+      .flow-node span {
+        font-size: 0.65rem;
+        opacity: 0.68;
+        font-family: "Archivo", sans-serif;
+      }
+      .flow-icon {
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+      .flow-arrow {
+        font-size: 1.8rem;
+        color: var(--ink);
+        font-family: "Archivo Black", sans-serif;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      .dark .flow-arrow {
+        color: var(--yellow);
+      }
+
+      /* ── Slide entry animation ── */
+      @keyframes entryFade {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reveal .slides section.present .module-num {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .reveal .slides section.present h1,
+      .reveal .slides section.present h2,
+      .reveal .slides section.present h4 {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 160ms;
+      }
+      .reveal .slides section.present ul,
+      .reveal .slides section.present pre,
+      .reveal .slides section.present table,
+      .reveal .slides section.present p {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+
+      /* ── Flow animation stagger ── */
+      .reveal .slides section.present .flow > *:nth-child(1) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(2) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(3) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 1320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(4) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 1820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(5) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 2320ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(6) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 2820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(7) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 3320ms;
+      }
+
+      /* ── Two-column staggered slide-in ── */
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .reveal .slides section.present .cols > *:nth-child(1) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 320ms;
+      }
+      .reveal .slides section.present .cols > *:nth-child(2) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 480ms;
+      }
+      .reveal .slides section.present .cols > *:nth-child(3) {
+        animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 640ms;
+      }
+
+      /* ── Logo header ── */
+      .slide-logo {
+        position: absolute;
+        top: 1.4rem;
+        left: 4.5rem;
+        height: 26px;
+        width: auto;
+      }
+      .dark .slide-logo {
+        filter: saturate(0) invert(1) brightness(2.5);
+      }
+
+      /* ── Progress bar & slide number ── */
+      .reveal .progress {
+        color: var(--yellow);
+      }
+      .reveal .slide-number {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        background: transparent;
+        color: var(--ink);
+        opacity: 0.35;
+      }
+      .reveal .slides section.dark .slide-number {
+        color: var(--white);
+      }
+      /* Responsive comparison table */
+      .comparison-table-container {
+        overflow: auto;
+        max-height: 60vh;
+        -webkit-overflow-scrolling: touch;
+      }
+      .reveal .slides section table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      .reveal .slides section table th,
+      .reveal .slides section table td {
+        word-break: break-word;
+        vertical-align: top;
+        padding: 0.6rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- ── Cover ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              flex: 1;
+              gap: 2rem;
+            "
+          >
+            <p
+              style="
+                font-family: &quot;Archivo Black&quot;, sans-serif;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.16em;
+                color: rgba(255, 255, 255, 0.35);
+                margin: 0;
+              "
+            >
+              Day 2
+            </p>
+            <h1 style="font-size: 3.8rem; line-height: 0.92; margin: 0">
+              AI Tools for Developers:<br /><span style="color: var(--yellow)"
+                >Advanced<br />Concepts</span
+              >
+            </h1>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+              "
+            >
+              <span
+                style="
+                  font-family: &quot;Archivo Black&quot;, sans-serif;
+                  font-size: 1.1rem;
+                  text-transform: uppercase;
+                  letter-spacing: 0.06em;
+                  color: #fff;
+                "
+                >Aridane Martín</span
+              >
+              <a
+                href="https://www.aridanemartin.dev"
+                target="_blank"
+                style="
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  font-size: 0.85rem;
+                  color: var(--yellow);
+                  text-decoration: none;
+                  letter-spacing: 0.03em;
+                "
+                >www.aridanemartin.dev</a
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Index ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <h1>Day 2</h1>
+          <br />
+          <div class="cols" style="align-items: start">
+            <ul>
+              <li>From prompt to Loop engineering</li>
+              <li>Agent Hooks</li>
+              <li>MCP and CLIs</li>
+              <li>Plugins</li>
+              <li>Obsidian: Working with a Second Brain</li>
+              <li>RAG Basic Concepts</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 01 — PROMPT / CONTEXT / HARNESS / LOOP ENGINEERING
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 08/&gt;</span>
+          </div>
+          <h1>From prompt<br />to Loop engineering</h1>
+        </section>
+
+        <!-- 01 — Three engineering layers -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">01 — Three engineering layers</div>
+          <h2>From prompt<br />to loop engineering</h2>
+          <div class="flow">
+            <div class="flow-node">
+              <span class="flow-icon">✍️</span>
+              <strong>Prompt Eng.</strong>
+              <span>The user's lever</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">🗂️</span>
+              <strong>Context Eng.</strong>
+              <span>The architect's lever</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">⚙️</span>
+              <strong>Harness Eng.</strong>
+              <span>The platform lever</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">🔄</span>
+              <strong>Loop Eng.?</strong>
+              <span>The feedback lever</span>
+            </div>
+          </div>
+          <p class="idea-clave">
+            <strong>Key idea:</strong> as systems mature, the value moves from
+            From prompt loop engineering.
+          </p>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 02 — AGENT HOOKS
+    ════════════════════════════════════════════════ -->
+
+        <!-- Hooks · Section cover -->
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 09/&gt;</span>
+          </div>
+          <h1>Agent<br />Hooks</h1>
+        </section>
+
+        <!-- Hooks · 01 — What they are -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">01 — What they are</div>
+              <h2>Shell commands<br />on agent events</h2>
+              <ul>
+                <li>
+                  Fire on lifecycle events: <code>PreToolUse</code>,
+                  <code>PostToolUse</code>, <code>Stop</code>,
+                  <code>Notification</code>
+                </li>
+                <li>
+                  Output is injected back into the agent's context as feedback
+                </li>
+                <li>
+                  Exit <code>0</code> → continue · Exit <code>2</code> → block
+                  and force the agent to react to our feedback
+                </li>
+                <li>No token cost — they run entirely outside the LLM</li>
+              </ul>
+             
+            </div>
+            <div>
+              <pre><code>#!/bin/bash
+# PreToolUse hook — block rm commands
+
+input=$(cat)
+command=$(echo "$input" | jq -r '.tool_input.command')
+
+if [[ "$command" == rm* ]]; then
+  echo "Blocked: rm commands are not allowed" >&2
+  exit 2
+fi
+
+exit 0</code></pre>
+<pre><code></code>
+{
+  "session_id": "abc123",
+  "transcript_path": "/Users/aridane/.claude/projects/my-app/transcript.jsonl",
+  "cwd": "/Users/aridane/projects/my-app",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "tool_use_id": "toolu_123",
+  "tool_input": {
+    "command": "rm -rf dist",
+    "description": "Clean build output",
+    "timeout": 120000,
+    "run_in_background": false
+  }
+}
+</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 03 — MCP AND CLIS
+    ════════════════════════════════════════════════ -->
+
+        <!-- MCP · Section cover -->
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 10/&gt;</span>
+          </div>
+          <h1>MCP<br />and CLIs</h1>
+        </section>
+
+        <!-- 01 — Model Context Protocol -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">01 — Model Context Protocol</div>
+          <div class="cols">
+            <div>
+              <h2>The tools<br />layer</h2>
+              <p>
+                MCP is the open protocol that lets agents connect to external
+                services in a standard way: databases, APIs, browsers, file
+                systems…
+              </p>
+              <ul>
+                <li>Created by Anthropic, adopted across the industry</li>
+                <li>The agent can read, write, and execute real actions</li>
+                <li>Each MCP server exposes tools and resources</li>
+                <li>No need to modify the model — just connect the server</li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Key idea:</strong> MCP turns the agent from chatbot into
+                an assistant with access to the real world.
+              </p>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <img
+                src="images/mcp-architecture.png"
+                alt="MCP architecture diagram"
+                style="
+                  max-width: 100%;
+                  max-height: 480px;
+                  border: 2px solid var(--ink);
+                  box-shadow: 4px 4px 0 var(--ink);
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- MCP · 02 — Popular servers -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <h2>Some MCP Servers to Consider</h2>
+              <ul>
+                <li><strong>Filesystem</strong> — read and write files</li>
+                <li>
+                  <strong>Chrome DevTools / Playwright</strong> — automate the
+                  browser
+                </li>
+                <li><strong>GitHub</strong> — PRs, issues, commits</li>
+                <li><strong>Slack / Gmail</strong> — messages and email</li>
+                <li><strong>Context7</strong> — up-to-date documentation</li>
+                <li><strong>Linear / Jira</strong> — task management</li>
+                <li><strong>Supabase</strong> — database queries</li>
+                <li><strong>Figma</strong> — design file manipulation</li>
+                <li><strong>Any REST API</strong> — with a custom server</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 04 — PLUGINS
+    ════════════════════════════════════════════════ -->
+
+        <!-- Plugins · Section cover -->
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 11/&gt;</span>
+          </div>
+          <h1>Plugins</h1>
+        </section>
+
+        <!-- Plugins · 01 — What are plugins -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center">
+            <div>
+              <div class="module-num">01 — Plugins</div>
+              <h2>Install once,<br />ready everywhere</h2>
+              <p>
+                Most AI agents now ship a plugin system — a marketplace where
+                you install pre-built capabilities and toggle them on or off
+                without touching config files.
+              </p>
+              <ul>
+                <li>Enable or disable per project or globally</li>
+                <li>Community-built + officially verified tiers</li>
+                <li>One-click install — no manual config files</li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Every major AI agent ships a plugin marketplace</strong> — it's the new extension model for developer tools.
+              </p>
+              <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.75;line-height:1.8;">
+                <a href="https://claude.com/plugins" target="_blank" style="color:var(--yellow);text-decoration:underline">claude.com/plugins — Claude Plugin Marketplace</a>
+              </p>
+            </div>
+            <div>
+              <div style="display:flex;flex-direction:column;gap:0.8rem;">
+                <div style="border:2px solid rgba(255,255,255,0.2);border-radius:1rem;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.05);">
+                  <strong style="font-family:'Archivo Black',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--yellow)">Claude Code</strong>
+                  <p style="margin:0.25rem 0 0;font-size:0.78rem;opacity:0.8">Superpowers, Frontend Design, GitHub, Context7 — community + verified</p>
+                </div>
+                <div style="border:2px solid rgba(255,255,255,0.2);border-radius:1rem;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.05);">
+                  <strong style="font-family:'Archivo Black',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--yellow)">GitHub Copilot</strong>
+                  <p style="margin:0.25rem 0 0;font-size:0.78rem;opacity:0.8">Extensions marketplace — Sentry, DataStax, Docker, LaunchDarkly…</p>
+                </div>
+                <div style="border:2px solid rgba(255,255,255,0.2);border-radius:1rem;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.05);">
+                  <strong style="font-family:'Archivo Black',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--yellow)">OpenCode</strong>
+                  <p style="margin:0.25rem 0 0;font-size:0.78rem;opacity:0.8">Plugin system for terminal-native AI — composable, open source</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 05 — OBSIDIAN & SECOND BRAIN
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 12/&gt;</span>
+          </div>
+          <h1>Obsidian<br />&amp; Second Brain</h1>
+        </section>
+
+        <!-- What is Obsidian -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center">
+            <div>
+              <div class="module-num">01 — What is Obsidian</div>
+              <h2>A graph of<br />linked notes</h2>
+              <ul>
+                <li>All notes are plain Markdown</li>
+                <li>Powerful search and tags</li>
+                <li>Works fully offline</li>
+                <li>
+                  Bidirectional links. You can connect any note to any other
+                </li>
+                <li>Plugin ecosystem around 1,000+ community plugins</li>
+                <li>Sync via Obsidian Sync (Paid feature), iCloud, or Git</li>
+              </ul>
+              <p class="idea-clave">
+                <strong
+                  >Your knowledge as a graph of portable Markdown files.</strong
+                >
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/obsidian-graph.png"
+                alt="Obsidian graph view — network of linked notes"
+                style="
+                  width: 100%;
+                  border-radius: 0.85rem;
+                  border: 2px solid var(--ink);
+                  box-shadow: 6px 6px 0 var(--ink);
+                  display: block;
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Obsidian + AI -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">02 — Obsidian + AI workflow</div>
+          <h2>The vault<br />as context</h2>
+          <ul>
+            <li>
+              Notes become specs, feed them to the agent via
+              <code>AGENTS.md / CLAUDE.md</code> or MCP
+            </li>
+            <li>
+              AI creates notes from conversations. Capture knowledge
+              automatically
+            </li>
+            <li>
+              Graph connections surface context the agent wouldn't otherwise see
+            </li>
+            <li>
+              AI updates notes with new information. Docs that stay fresh!
+            </li>
+            <li>
+              💡 Skills living in the vault — portable across projects and tools
+            </li>
+          </ul>
+          <p class="idea-clave">
+            <strong>The vault is not a document graveyard</strong>, it's curated
+            context the agent reads.
+          </p>
+        </section>
+
+        <!-- Challenge: Build an MCP -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">🏆 Challenge</div>
+              <h2>Build the<br />MCP bridge</h2>
+              <p>
+                Create an MCP server that fetches data from your local Obsidian
+                project
+              </p>
+              <p><strong>Points to consider:</strong></p>
+              <ul>
+                <li>
+                  Start with this tools: list_notes - Shows every note in the
+                  vault or inside an specific section <br />
+                </li>
+
+                <li>Keep the vault read-only, searchable, and auditable</li>
+                <li>
+                  Let the agent pull only the context it needs, when it needs it
+                </li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Goal:</strong> make your vault available as live context
+                without turning it into a dump of raw files.
+              </p>
+            </div>
+            <pre>
+list_notes({
+  folder?: string,
+  limit?: number
+})
+
+// Show me all notes inside Courses/AI.
+
+search_notes({
+  query: string,
+  folder?: string,
+  limit?: number
+})
+
+// Search my Obsidian vault for notes about MCP servers.
+</pre
+            >
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+         MODULE 06 — RAG BASIC CONCEPTS
+    ════════════════════════════════════════════════ -->
+
+        <section class="hero">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Module 13/&gt;</span>
+          </div>
+          <h1>RAG Basic<br />Concepts</h1>
+        </section>
+
+        <!-- What RAG is -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">01 — What RAG is</div>
+          <h2>Not training.<br />Context at query time.</h2>
+          <ul>
+            <li>RAG = <strong>Retrieval-Augmented Generation</strong></li>
+            <li>The model's knowledge is frozen at training</li>
+            <li>No fine-tuning or retraining required</li>
+            <li>
+              Example: ask questions about your team's docs, a CV, or a company
+              knowledge base
+            </li>
+          </ul>
+          <p class="idea-clave">
+            <strong>Key idea:</strong> RAG does not change the model — it
+            changes what the model sees before answering.
+          </p>
+        </section>
+
+        <!-- How it works -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">02 — The pipeline</div>
+              <h2>Index once.<br />Retrieve per query.</h2>
+            </div>
+            <div>
+              <h3>Indexing (done once)</h3>
+              <ul>
+                <li>Load documents</li>
+                <li>Split into chunks</li>
+                <li>Embed each chunk</li>
+                <li>Store in vector DB</li>
+              </ul>
+              <br />
+              <h3>Retrieval (every request)</h3>
+              <ul>
+                <li>Embed the user's question</li>
+                <li>Find closest chunks by similarity</li>
+                <li>Inject chunks into the prompt</li>
+                <li>Model answers using that context</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Common problems -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">03 — What goes wrong</div>
+              <h2>Common<br />RAG problems</h2>
+              <p class="idea-clave">
+                <strong>Test your retrieval layer independently</strong> — do
+                not blame the model before inspecting what it actually received.
+              </p>
+            </div>
+            <div>
+              <ul>
+                <li>
+                  <strong>Bad chunking</strong> — splits mid-sentence or
+                  mid-concept
+                </li>
+                <li>
+                  <strong>Wrong retrieval</strong> — irrelevant chunks returned
+                </li>
+                <li>
+                  <strong>Stale documents</strong> — outdated data in the index
+                </li>
+                <li>
+                  <strong>Too much context</strong> — flooding the model with
+                  noise
+                </li>
+                <li>
+                  <strong>Hallucination</strong> — model fills gaps when chunks
+                  miss the answer
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        progress: true,
+        slideNumber: true,
+        center: false,
+        transition: "none",
+        backgroundTransition: "none",
+        width: 1280,
+        height: 720,
+      });
+    </script>
+  </body>
+</html>
