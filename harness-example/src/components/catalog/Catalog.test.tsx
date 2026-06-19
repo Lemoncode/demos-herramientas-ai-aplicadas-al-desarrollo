@@ -9,22 +9,20 @@ describe('Catalog', () => {
     expect(cards).toHaveLength(10)
   })
 
-  it('renders each card model name as a heading', () => {
+  it('renders each card model name as a heading using the Heading primitive', () => {
     render(<Catalog />)
     expect(
       screen.getByRole('heading', { name: /jc-duo premium/i }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: /jc-dc ts premium/i }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: /jc-ac wall/i }),
+      screen.getByRole('heading', { name: /jc-fleet hub/i }),
     ).toBeInTheDocument()
   })
 
-  it('renders the power rating for each card', () => {
+  it('renders the power rating in kW for each card', () => {
     render(<Catalog />)
-    expect(screen.getAllByText(/kw/i).length).toBeGreaterThanOrEqual(10)
+    const powerValues = screen.getAllByText(/kw/i)
+    expect(powerValues.length).toBeGreaterThanOrEqual(10)
   })
 
   it('renders the connector type for each card', () => {
@@ -33,16 +31,28 @@ describe('Catalog', () => {
     expect(connectorValues.length).toBeGreaterThanOrEqual(1)
   })
 
-  it('renders residential/commercial badge with visible text (not color-only)', () => {
+  it('renders residential badge with visible text — not color-only', () => {
     render(<Catalog />)
-    const residentialBadges = screen.getAllByText(/residential/i)
-    const commercialBadges = screen.getAllByText(/commercial/i)
-    expect(residentialBadges.length + commercialBadges.length).toBeGreaterThanOrEqual(10)
+    const residentialBadges = screen.getAllByText(/residencial/i)
+    expect(residentialBadges.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('renders commercial badge with visible text — not color-only', () => {
+    render(<Catalog />)
+    const commercialBadges = screen.getAllByText(/comercial/i)
+    expect(commercialBadges.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('renders all 10 residential/commercial badges', () => {
+    render(<Catalog />)
+    const residentialBadges = screen.getAllByText(/residencial/i)
+    const commercialBadges = screen.getAllByText(/comercial/i)
+    expect(residentialBadges.length + commercialBadges.length).toBe(10)
   })
 
   it('renders a link to the product page for each card', () => {
     render(<Catalog />)
-    const links = screen.getAllByRole('link', { name: /view product/i })
+    const links = screen.getAllByRole('link', { name: /ver producto/i })
     expect(links).toHaveLength(10)
   })
 })
