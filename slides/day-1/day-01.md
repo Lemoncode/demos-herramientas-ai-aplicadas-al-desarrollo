@@ -95,12 +95,15 @@ Enseñar frontmatter en artículos de www.aridanemartin.dev
 ### Cover
 
 ### Invocable instructions — What they are
+Manual invocation via `/skill-name` (works in Claude Code, Cursor, Copilot, Windsurf).
+You can also write on the same line: `/skill-name additional instructions here`.
 
 ### Structure of a skill — How they work
 
 ### Example skill file
 
 ### context: fork — Token savings
+⚠️ Claude Code–only syntax. Not available in Cursor, Windsurf, GitHub Copilot, or other AI coding assistants.
 
 ---
 
