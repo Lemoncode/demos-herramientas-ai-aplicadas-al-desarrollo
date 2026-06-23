@@ -2801,15 +2801,18 @@ paths: src/components/**        ← Claude Code
               <h2>Invocable<br />instructions</h2>
               <ul>
                 <li>Step-by-step instructions for repeatable tasks</li>
-                <li>
-                  In some IDE's you can invoke them using
-                  <code>/skill-name</code>
+                 <li>
+                  Folder with the name of the skill containing a
+                  <code>SKILL.md</code> file in <code>{X}/skills/</code>
                 </li>
                 <li>Only consume tokens when active</li>
                 <li>
                   They can be project-specific or reusable across projects
                 </li>
               </ul>
+              <p class="idea-clave" style="font-size: 0.75rem; margin-top: 0.5rem;">
+                ✅ Supported in every provider (Claude, Gemini, Copilot, Cursor, Windsurf, Devin, etc.)
+              </p>
             </div>
             <div>
               <img
@@ -2830,15 +2833,11 @@ paths: src/components/**        ← Claude Code
         <!-- Skills · 02 — How they work -->
         <section class="dark">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">02 — How they work</div>
           <div class="cols">
-            <div>
+            <div style="align-self: center;">
+              <div class="module-num">02 — How they work</div>
               <h2>Structure of<br />a skill</h2>
               <ul>
-                <li>
-                  Folder with the name of the skill containing a
-                  <code>SKILL.md</code> file in <code>{X}/skills/</code>
-                </li>
                 <li><b>Frontmatter:</b> name and description</li>
                 <li><b>Body:</b> instructions in natural language</li>
                 <li><b>Steps:</b> numbered instructions</li>
@@ -2856,68 +2855,41 @@ paths: src/components/**        ← Claude Code
                   Skills can be chained. Think if having atomic skills is
                   beneficial for your use case.
                 </li>
+                  <li>
+                  Invoke manually with <code>/skill-name</code> in the chat
+                </li>
+                <li>
+                  You can add instructions on the same line:<br />
+                  <code>/write-commit refactor the auth module</code>
+                </li>
               </ul>
             </div>
             <div>
-              <img
-                src="./images/skill-chain.png"
-                alt="Skill chain diagram"
-                style="
-                  width: 100%;
-                  border-radius: 0.85rem;
-                  border: 2px solid var(--ink);
-                  box-shadow: 6px 6px 0 var(--ink);
-                  display: block;
-                "
-              />
-            </div>
-          </div>
-        </section>
-
-        <!-- Skills · 02 — Example skill file -->
-        <section class="dark">
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="cols">
-            <div>
-              <pre><code>---
+              <pre style="font-size: 1rem; line-height: 1.4;"><code>---
 name: write-commit
-description: Use when committing
-  changes — reads the diff and
-  writes a conventional message.
+description: Reads diff, writes
+  conventional commit message.
 ---
-
-Read the diff, write a message,
-and commit.
+Read the diff and commit.
 
 ## Steps
-
 1. Run `git diff --cached`
-2. Write: `[type]: [description]`
+2. Write: `[type]: description`
 3. Run `git commit -m "..."`
-   — never `--no-verify`</code></pre>
-            </div>
-            <div>
-              <pre><code>## Commit Types
 
-      | Type     | When                    |
-      |----------|-------------------------|
-      | feat     | New user-facing feature |
-      | fix      | Bug fix                 |
-      | chore    | Config, no prod code    |
-      | refactor | Internal change         |
+## Commit Types
+feat      New feature
+fix       Bug fix
+...
 
-      ## Constraints
+## Constraints
+- Never push without approval
+- Never skip pre-commit hooks
 
-      - Never push without approval
-      - Never skip pre-commit hooks
-
-      ## Checklist
-
-      - [ ] Run `git diff --cached` and review staged changes
-      - [ ] Pick the correct commit type (feat/fix/chore/refactor)
-      - [ ] Ensure linters pass locally
-      - [ ] Run tests relevant to the change
-      - [ ] Confirm code review approval before pushing</code></pre>
+## Checklist
+- [ ] Review staged changes
+- [ ] Pick correct commit type
+...</code></pre>
             </div>
           </div>
         </section>
@@ -2927,7 +2899,7 @@ and commit.
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
           <div class="cols" style="align-items: center">
             <div>
-              <div class="module-num">03 — Token savings</div>
+              <div class="module-num">03 — Skill automatically delegated to a subagent</div>
               <h2>context:<br />fork</h2>
               <p>
                 Runs the skill in an isolated subagent — the main conversation
@@ -2935,69 +2907,27 @@ and commit.
                 <span style="color: var(--yellow)">not consumed</span>. The
                 subagent gets only what the skill provides.
               </p>
-              <p class="idea-clave">
-                <strong>Use it when:</strong> the task is self-contained and the
-                result can be handed back as a single output.
+              <p class="idea-clave" style="font-size: 0.75rem; margin-top: 0.5rem;">
+                ⚠️ <strong>Claude Code–only syntax.</strong> Not available in
+                Cursor, Windsurf, GitHub Copilot, or other AI coding assistants.
               </p>
             </div>
             <div>
-              <div
-                style="
-                  border: 2px solid rgba(255, 255, 255, 0.2);
-                  border-radius: 1rem;
-                  padding: 1.4rem 1.6rem;
-                "
-              >
-                <p
-                  style="
-                    font-family: &quot;Archivo Black&quot;, sans-serif;
-                    font-size: 0.75rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    color: var(--yellow);
-                    margin: 0 0 1rem;
-                  "
-                >
-                  The best rule of thumb
-                </p>
-                <p
-                  style="
-                    font-size: 0.85rem;
-                    line-height: 1.6;
-                    margin: 0 0 0.75rem;
-                  "
-                >
-                  Ask this:<br /><em style="color: var(--yellow)"
-                    >Could a fresh assistant complete this task using only the
-                    SKILL.md content, its tools, and maybe command output?</em
-                  >
-                </p>
-                <p
-                  style="
-                    font-size: 0.85rem;
-                    line-height: 1.6;
-                    margin: 0 0 0.75rem;
-                  "
-                >
-                  If yes → use <code>context: fork</code>.
-                </p>
-                <p
-                  style="
-                    font-size: 0.85rem;
-                    line-height: 1.6;
-                    margin: 0 0 0.75rem;
-                  "
-                >
-                  Ask this:<br /><em style="color: var(--yellow)"
-                    >Do I want these instructions to guide the main agent while
-                    it codes, reasons, edits, or talks with me across turns?</em
-                  >
-                </p>
-                <p style="font-size: 0.85rem; line-height: 1.6; margin: 0">
-                  If yes → do <strong>not</strong> use
-                  <code>context: fork</code>.
-                </p>
-              </div>
+              <pre style="padding: 0.75rem 1rem; font-size: 0.9rem; line-height:1.45; box-shadow: 3px 3px 0 var(--ink); margin: 0.4rem 0 0; border-radius: 0.75rem; box-sizing: border-box; max-width:100%; overflow:auto;">
+                <code style="white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;">
+The best rule of thumb
+
+Ask this:
+> Could a fresh assistant complete this task using only the SKILL.md content, its tools, and maybe command output?
+
+If YES → use `context: fork`.
+
+Ask this:
+> Do I want these instructions to guide the main agent while it codes, reasons, edits, or talks with me across turns?
+
+If YES → do not use `context: fork`.
+                </code>
+              </pre>
             </div>
           </div>
         </section>
@@ -3017,23 +2947,10 @@ and commit.
         <section>
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
           <div class="cols">
-            <div>
+            <div style="align-self: center;">
               <div class="module-num">01 — What's a prompt?</div>
               <h2>Trigger a workflow by demand</h2>
-              <ul>
-                <li>
-                  A prompt is a request to the agent to perform a task or answer
-                  a question
-                </li>
-                <li>
-                  It can be a single instruction, a multi-step workflow, or a
-                  complex set of constraints
-                </li>
-                <li>
-                  <b>IMPORTANT:</b> They don't take space in the agent's context
-                  they are only used when invoked
-                </li>
-              </ul>
+              <p>Pretty similar to a skill, but without the tool calling capabilities</p>
             </div>
             <div>
               <h3>Always include</h3>

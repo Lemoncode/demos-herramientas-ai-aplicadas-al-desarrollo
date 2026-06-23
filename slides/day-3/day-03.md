@@ -18,6 +18,17 @@
 
 ### Cover
 
+### Install Spec Kit
+Before diving into the workflow, install the GitHub Spec Kit CLI:
+```bash
+npm install -g @github/specify-cli
+```
+Then scaffold your project:
+```bash
+specify init . https://github.com/github/spec-kit
+```
+This creates `.specify/` with prompts, templates, memory, and specs folders — the entire workflow scaffold.
+
 ### Code is not the place to define requirements (statement)
 
 ### The analogy
@@ -28,7 +39,7 @@
 
 ### Phase 01 — Constitution
 
-### Phase 02 — Specify
+### Phase 02 — 
 
 ### Phase 03 — Plan
 
