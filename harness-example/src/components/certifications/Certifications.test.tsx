@@ -1,9 +1,36 @@
 import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
 import { Certifications } from './Certifications'
 
+const CERT_LABELS = ['CB', 'CE', 'IEC', 'UN38.3', 'RoHS', 'FCC', 'TÜV', 'UKCA']
+
 describe('Certifications', () => {
-  it('renders the coming soon placeholder', () => {
+  it('renders exactly 8 certification logos', () => {
     render(<Certifications />)
-    expect(screen.getByText(/coming soon/i)).toBeInTheDocument()
+    const logos = screen.getAllByRole('img')
+    expect(logos).toHaveLength(8)
+  })
+
+  it('renders a descriptive aria-label or visible text label for every logo', () => {
+    render(<Certifications />)
+    for (const label of CERT_LABELS) {
+      expect(
+        screen.getByRole('img', { name: new RegExp(label, 'i') }),
+      ).toBeInTheDocument()
+    }
+  })
+
+  it('renders the subhead text about homologation', () => {
+    render(<Certifications />)
+    expect(
+      screen.getByText(/homologado para venta/i),
+    ).toBeInTheDocument()
+  })
+
+  it('renders a section heading', () => {
+    render(<Certifications />)
+    expect(
+      screen.getByRole('heading', { level: 2 }),
+    ).toBeInTheDocument()
   })
 })
