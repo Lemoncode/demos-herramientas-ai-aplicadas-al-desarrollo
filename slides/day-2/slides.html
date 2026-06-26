@@ -535,6 +535,7 @@
           <br />
           <div class="cols" style="align-items: start">
             <ul>
+              <li>Subagents</li>
               <li>From prompt to Loop engineering</li>
               <li>Agent Hooks</li>
               <li>MCP and CLIs</li>
@@ -542,6 +543,35 @@
               <li>Obsidian: Working with a Second Brain</li>
               <li>RAG Basic Concepts</li>
             </ul>
+          </div>
+        </section>
+
+        <!-- ── Subagents ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center;">
+            <div>
+              <div class="module-num">What is a subagent?</div>
+              <h2>Subagents</h2>
+              <p style="color: rgba(255,255,255,0.85); max-width: 42ch;">
+                A <span style="color: var(--yellow)">subagent</span> is a separate AI model instance
+                spawned by the main agent to handle a bounded task with its own
+                context window and tool access.
+              </p>
+              <ul style="margin-top: 0.8rem;">
+                <li style="color: rgba(255,255,255,0.8);">Isolated context — does not share the parent's memory</li>
+                <li style="color: rgba(255,255,255,0.8);">Can use a different tool set than the orchestrator</li>
+                <li style="color: rgba(255,255,255,0.8);">Multiple subagents can run <span style="color: var(--yellow)">in parallel</span></li>
+                <li style="color: rgba(255,255,255,0.8);">Returns a single result back to the orchestrator</li>
+              </ul>
+            </div>
+            <div>
+              <img
+                src="agentsCopilot.png"
+                alt="Agents Copilot screenshot"
+                style="width:100%;border-radius:0.85rem;border:2px solid var(--yellow);box-shadow:6px 6px 0 var(--yellow);display:block;"
+              />
+            </div>
           </div>
         </section>
 
