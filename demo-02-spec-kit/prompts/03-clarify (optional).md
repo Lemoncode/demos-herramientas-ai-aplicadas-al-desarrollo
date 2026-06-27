@@ -9,7 +9,7 @@ Before technical planning, resolve every ambiguity in the spec. The agent surfac
 ## Prompt
 
 ```
-/speckit.clarify specs/task-manager/spec.md
+/speckit-clarify specs/task-manager/spec.md
 
 Focus on: task ordering, maximum list length, and what happens to tasks on page reload.
 ```

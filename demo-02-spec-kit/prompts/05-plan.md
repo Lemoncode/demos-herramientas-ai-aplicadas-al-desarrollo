@@ -9,7 +9,7 @@ Translate the validated spec into a concrete technical plan. This is the first s
 ## Prompt
 
 ```
-/speckit.plan specs/task-manager/spec.md
+/speckit-plan specs/task-manager/spec.md
 
 Stack: React 19, TypeScript strict, Vitest + @testing-library/react.
 No backend. Components in src/components/task-manager/.

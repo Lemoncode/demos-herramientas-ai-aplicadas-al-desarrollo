@@ -9,7 +9,7 @@ Convert the plan into an ordered, executable task list. Each task maps to a user
 ## Prompt
 
 ```
-/speckit.tasks specs/task-manager/plan.md
+/speckit-tasks specs/task-manager/plan.md
 ```
 
 ---

@@ -9,7 +9,7 @@ Validate the spec against a quality rubric before any technical work begins. Cat
 ## Prompt
 
 ```
-/speckit.checklist specs/task-manager/spec.md
+/speckit-checklist specs/task-manager/spec.md
 ```
 
 ---

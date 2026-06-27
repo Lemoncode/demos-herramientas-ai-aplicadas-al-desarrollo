@@ -9,7 +9,7 @@ Execute the task list. The agent works through `tasks.md` in dependency order, w
 ## Prompt
 
 ```
-/speckit.implement specs/task-manager/tasks.md
+/speckit-implement specs/task-manager/tasks.md
 ```
 
 To start from a specific task:

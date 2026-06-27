@@ -9,7 +9,7 @@ Describe *what* you want to build and *why* — no technology decisions yet. The
 ## Prompt
 
 ```
-/speckit.specify
+/speckit-specify
 
 I want to build a Task Manager widget for the app. Users need to be able to create tasks, track which ones are done, and remove tasks they no longer need. Everything lives in the browser — no backend.
 

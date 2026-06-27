@@ -9,7 +9,7 @@ Cross-check the spec, plan, and tasks for consistency before any code is written
 ## Prompt
 
 ```
-/speckit.analyze specs/task-manager/
+/speckit-analyze specs/task-manager/
 ```
 
 The agent reads all artifacts in the folder:
