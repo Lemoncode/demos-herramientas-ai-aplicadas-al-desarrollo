@@ -45,6 +45,7 @@ Web developer and Tech Lead specializing in frontend development. Currently lead
 - Universidad de Murcia — Postgraduate in Mediation & Conflict Resolution (2016–2017)
 
 ### Notable Achievements
+- Trainer at Lemoncode (2026) — joined Lemoncode as a trainer for the course 'Herramientas IA aplicadas al desarrollo', teaching developers how to understand LLMs from the ground up: tokens, context, costs, prompting strategies, agent workflows, and AI tooling in the IDE. Goal: move from using AI 'on autopilot' to making conscious, efficient, and secure decisions in real development workflows.
 - SpainSkills Mentor (2025, 2023) — guided competition winners for national competitions
 - Public speaker at Openbank OpenCommit Fest on productivity and AI
 
