@@ -18,6 +18,16 @@ import type { Index } from "./rag/retriever.js";
 import { search } from "./rag/retriever.js";
 import { buildProvider, buildRagIndex } from "./setup.js";
 
+/**
+ * Sends the current message history to the provider and prints the text answer.
+ *
+ * RAG-02 has no tools, so this helper always passes an empty tool list. It still
+ * appends the assistant response to `messages` so follow-up chat continuity is
+ * preserved at the provider level.
+ *
+ * @param provider LLM provider used for generation.
+ * @param messages Mutable conversation history.
+ */
 async function ask(provider: Provider, messages: Message[]): Promise<void> {
 	let response: Awaited<ReturnType<Provider["send"]>>;
 	try {
@@ -37,6 +47,12 @@ async function ask(provider: Provider, messages: Message[]): Promise<void> {
 	}
 }
 
+/**
+ * Starts the RAG-02 terminal demo.
+ *
+ * Startup builds the BM25 index once. Each user question is then searched
+ * against that index, augmented with matching chunks, and sent to the provider.
+ */
 async function main(): Promise<void> {
 	printText("\x1b[1m\x1b[36m╔══════════════════════════════════╗\x1b[0m");
 	printText("\x1b[1m\x1b[36m║  RAG-02 — Keyword Retrieval      ║\x1b[0m");

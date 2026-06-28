@@ -6,15 +6,8 @@
 import type { Message, ToolDef, LLMResponse } from "../api/types.js";
 
 export interface Provider {
-  // Send the full conversation history and available tools.
-  // Returns the model's response. Throws ProviderError on unrecoverable failure.
   send(messages: Message[], tools: ToolDef[]): Promise<LLMResponse>;
-
-  // The current model identifier (e.g. "claude-opus-4-7-20251101", "gpt-4o")
   model(): string;
-
-  // Switch models at runtime — wired to the /model slash command (§05).
-  // No validation here; the API layer rejects unknown models.
   setModel(name: string): void;
 }
 
@@ -22,6 +15,13 @@ export interface Provider {
 // The agent loop catches this, logs to stderr, and returns to the REPL
 // without killing the session.
 export class ProviderError extends Error {
+  /**
+   * Creates an error wrapper for provider API failures.
+   *
+   * @param message Error message from the provider.
+   * @param statusCode Optional HTTP status code.
+   * @param retryable Whether retry logic could reasonably try again.
+   */
   constructor(
     message: string,
     public readonly statusCode?: number,

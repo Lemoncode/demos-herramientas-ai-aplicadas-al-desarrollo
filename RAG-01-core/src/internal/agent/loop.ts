@@ -26,9 +26,20 @@ export interface LoopOptions {
   requireConfirm?: boolean;
 }
 
-// Runs one user turn. This may involve several provider calls if the model
-// needs tools before it can produce the final answer.
-// Updates `messages` in place so main.ts keeps the full conversation.
+/**
+ * Runs one assistant turn, including any tool-use loop the model requests.
+ *
+ * The loop sends the current conversation to the provider. If the model asks
+ * for tools, it optionally asks the user for approval, executes the tools,
+ * appends tool results to `messages`, and calls the provider again. It returns
+ * only after the model produces a final text response or a provider error is
+ * handled.
+ *
+ * @param provider LLM adapter used to generate assistant responses.
+ * @param registry Tool registry exposed to the model.
+ * @param messages Mutable conversation history; updated in place.
+ * @param options Loop behavior options, including tool confirmation.
+ */
 export async function runAgentLoop(
   provider: Provider,
   registry: Registry,

@@ -14,6 +14,13 @@ import {
 } from "./internal/ui/output.js";
 import { buildProvider, buildRegistry } from "./setup.js";
 
+/**
+ * Starts the RAG-01 terminal demo.
+ *
+ * The REPL stores user and assistant messages in memory, sends each turn to the
+ * provider through `runAgentLoop`, and supports a few local slash commands for
+ * clearing or exiting the conversation.
+ */
 async function main(): Promise<void> {
 	printText("\x1b[1m\x1b[36m╔══════════════════════════════╗\x1b[0m");
 	printText("\x1b[1m\x1b[36m║   RAG 01 — Core Agent    ║\x1b[0m");

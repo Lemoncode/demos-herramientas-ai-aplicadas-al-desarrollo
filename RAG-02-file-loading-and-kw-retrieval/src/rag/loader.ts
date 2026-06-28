@@ -9,6 +9,11 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CV_PATH = path.resolve(__dirname, "../../data/cv.md");
 
+/**
+ * Reads the CV markdown file used as the retrieval corpus.
+ *
+ * @returns Raw markdown content from `data/cv.md`.
+ */
 export async function loadCV(): Promise<string> {
 	return fs.readFile(CV_PATH, "utf-8");
 }

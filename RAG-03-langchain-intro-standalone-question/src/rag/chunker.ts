@@ -3,6 +3,17 @@ export interface Chunk {
 	content: string;
 }
 
+/**
+ * Splits a markdown document into retrieval chunks using level-2 headings.
+ *
+ * The document title (`# ...`) is copied into the first chunk so document-level
+ * words are still available to BM25. This matters because RAG-03 rewrites
+ * conversational follow-ups into retrieval queries, and those queries may use
+ * terms from the document title as well as section bodies.
+ *
+ * @param markdown Full markdown document to split.
+ * @returns Non-empty chunks created from `##` sections.
+ */
 export function chunkByHeaders(markdown: string): Chunk[] {
 	// Split the document before each level-2 heading.
 	// The lookahead keeps the "## Title" line inside the resulting section.

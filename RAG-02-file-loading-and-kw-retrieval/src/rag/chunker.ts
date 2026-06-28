@@ -3,6 +3,16 @@ export interface Chunk {
 	content: string;
 }
 
+/**
+ * Splits a markdown document into retrieval chunks using level-2 headings.
+ *
+ * The document title (`# ...`) is copied into the first chunk so document-level
+ * words are still available to the retriever. Each returned chunk keeps the
+ * heading text as `title` and the section body as `content`.
+ *
+ * @param markdown Full markdown document to split.
+ * @returns Non-empty chunks created from `##` sections.
+ */
 export function chunkByHeaders(markdown: string): Chunk[] {
 	// Split the document before each level-2 heading.
 	// The lookahead keeps the "## Title" line inside the resulting section.

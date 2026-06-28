@@ -12,6 +12,15 @@ import { loadCV } from "./rag/loader.js";
 import type { Index } from "./rag/retriever.js";
 import { buildIndex } from "./rag/retriever.js";
 
+/**
+ * Builds the provider selected by the `PROVIDER` environment variable.
+ *
+ * Supported values are `anthropic`, `openai`, and `ollama`. The Ollama path uses
+ * the OpenAI-compatible adapter so the rest of the RAG pipeline can stay
+ * provider-agnostic.
+ *
+ * @returns Configured provider instance.
+ */
 export function buildProvider(): Provider {
 	const name = (process.env.PROVIDER ?? "ollama").toLowerCase();
 	try {
@@ -39,6 +48,14 @@ export function buildProvider(): Provider {
 	}
 }
 
+/**
+ * Loads the CV, splits it into chunks, and builds the BM25 retrieval index.
+ *
+ * This runs once at startup. Query-time code reuses the returned index instead
+ * of reading and tokenizing the markdown on every question.
+ *
+ * @returns In-memory BM25 index for the CV.
+ */
 export async function buildRagIndex(): Promise<Index> {
 	const markdown = await loadCV();
 	// Break the markdown into chunks separating by ## headers.

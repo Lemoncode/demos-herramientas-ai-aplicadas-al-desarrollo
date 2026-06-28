@@ -6,6 +6,15 @@
 
 import * as readline from "readline";
 
+/**
+ * Asks the user to approve a potentially sensitive tool action.
+ *
+ * This helper defaults to denial: only `y` or `yes` approves the action. Empty
+ * input, EOF, or any other answer returns `false`.
+ *
+ * @param prompt Human-readable approval prompt.
+ * @returns Whether the user explicitly approved.
+ */
 export async function confirm(prompt: string): Promise<boolean> {
   return new Promise((resolve) => {
     // Create a fresh readline for each question. Safe because the REPL

@@ -17,6 +17,13 @@ export class AnthropicProvider implements Provider {
   // Provider owns it so the loop never has to handle it specially.
   private system: string;
 
+  /**
+   * Creates an Anthropic provider adapter.
+   *
+   * @param system System prompt sent through Anthropic's top-level system field.
+   * @param modelId Anthropic model identifier.
+   * @param apiKey Anthropic API key.
+   */
   constructor(
     system: string,
     modelId = "claude-opus-4-7-20251101",
@@ -28,6 +35,13 @@ export class AnthropicProvider implements Provider {
     this.system = system;
   }
 
+  /**
+   * Sends harness messages and tools to Anthropic and converts the response back.
+   *
+   * @param messages Harness-format conversation messages.
+   * @param tools Tool definitions exposed to the model.
+   * @returns Harness-format model response.
+   */
   async send(messages: Message[], tools: ToolDef[]): Promise<LLMResponse> {
     try {
       const resp = await this.client.messages.create({
@@ -54,9 +68,26 @@ export class AnthropicProvider implements Provider {
     }
   }
 
+  /**
+   * Returns the configured Anthropic model name.
+   *
+   * @returns Current model identifier.
+   */
   model(): string { return this.currentModel; }
+
+  /**
+   * Updates the Anthropic model name for future requests.
+   *
+   * @param name New model identifier.
+   */
   setModel(name: string): void { this.currentModel = name; }
 
+  /**
+   * Converts harness messages into Anthropic SDK message parameters.
+   *
+   * @param messages Harness-format messages.
+   * @returns Anthropic message parameters.
+   */
   private toAnthropicMessages(messages: Message[]): Anthropic.MessageParam[] {
     return messages.map((msg) => ({
       role: msg.role,
@@ -83,6 +114,12 @@ export class AnthropicProvider implements Provider {
     }));
   }
 
+  /**
+   * Converts harness tool definitions into Anthropic tool schemas.
+   *
+   * @param tools Harness tool definitions.
+   * @returns Anthropic tool definitions sorted by name.
+   */
   private toAnthropicTools(tools: ToolDef[]): Anthropic.Tool[] {
     // §17 Sort by name for stable ordering — random ordering invalidates
     // the prompt cache prefix on every call (applied in harness-03).
@@ -99,6 +136,12 @@ export class AnthropicProvider implements Provider {
       }));
   }
 
+  /**
+   * Converts Anthropic response blocks into harness content blocks.
+   *
+   * @param content Anthropic SDK content blocks.
+   * @returns Harness-format blocks consumed by the agent loop.
+   */
   private fromAnthropicContent(content: Anthropic.ContentBlock[]): Block[] {
     const blocks: Block[] = [];
     for (const b of content) {

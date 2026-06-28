@@ -9,12 +9,27 @@ export class OpenAIProvider implements Provider {
   private system: string;
   private textToolCallCounter = 0;
 
+  /**
+   * Creates an OpenAI-compatible provider adapter.
+   *
+   * @param system System prompt inserted as the first chat message.
+   * @param modelId Chat model identifier.
+   * @param apiKey API key, or a placeholder for local Ollama.
+   * @param baseURL OpenAI-compatible API base URL.
+   */
   constructor(system: string, modelId = "gpt-4o", apiKey?: string, baseURL?: string) {
     this.client = new OpenAI({ apiKey: apiKey ?? "ollama", baseURL });
     this.currentModel = modelId;
     this.system = system;
   }
 
+  /**
+   * Sends harness messages and tools to an OpenAI-compatible chat endpoint.
+   *
+   * @param messages Harness-format conversation messages.
+   * @param tools Tool definitions exposed to the model.
+   * @returns Harness-format model response.
+   */
   async send(messages: Message[], tools: ToolDef[]): Promise<LLMResponse> {
     try {
       const resp = await this.client.chat.completions.create({
@@ -45,9 +60,26 @@ export class OpenAIProvider implements Provider {
     }
   }
 
+  /**
+   * Returns the configured chat model name.
+   *
+   * @returns Current model identifier.
+   */
   model(): string { return this.currentModel; }
+
+  /**
+   * Updates the chat model name for future requests.
+   *
+   * @param name New model identifier.
+   */
   setModel(name: string): void { this.currentModel = name; }
 
+  /**
+   * Converts harness messages into OpenAI chat messages.
+   *
+   * @param messages Harness-format messages.
+   * @returns OpenAI-compatible chat messages.
+   */
   private toOpenAIMessages(messages: Message[]): OpenAI.ChatCompletionMessageParam[] {
     const result: OpenAI.ChatCompletionMessageParam[] = [];
     for (const msg of messages) {
@@ -71,6 +103,12 @@ export class OpenAIProvider implements Provider {
     return result;
   }
 
+  /**
+   * Converts harness tool definitions into OpenAI function-tool schemas.
+   *
+   * @param tools Harness tool definitions.
+   * @returns OpenAI-compatible tool definitions sorted by name.
+   */
   private toOpenAITools(tools: ToolDef[]): OpenAI.ChatCompletionTool[] {
     return [...tools].sort((a, b) => a.name.localeCompare(b.name)).map((t) => ({
       type: "function" as const,
@@ -78,6 +116,12 @@ export class OpenAIProvider implements Provider {
     }));
   }
 
+  /**
+   * Converts one OpenAI assistant message into harness blocks.
+   *
+   * @param msg OpenAI-compatible assistant message.
+   * @returns Harness-format text and tool-use blocks.
+   */
   private fromOpenAIMessage(msg: OpenAI.ChatCompletionMessage): Block[] {
     const blocks: Block[] = [];
     const textToolCalls = msg.tool_calls?.length ? [] : this.parseTextToolCalls(msg.content ?? "");
@@ -90,6 +134,12 @@ export class OpenAIProvider implements Provider {
     return blocks;
   }
 
+  /**
+   * Parses XML-like text tool calls emitted by some local models.
+   *
+   * @param content Assistant text that may contain `<function=...>` blocks.
+   * @returns Tool-use blocks extracted from the text.
+   */
   private parseTextToolCalls(content: string): Block[] {
     const blocks: Block[] = [];
     const functionRe = /<function=([A-Za-z0-9_-]+)>\s*([\s\S]*?)<\/function>\s*(?:<\/tool_call>)?/g;
@@ -106,6 +156,12 @@ export class OpenAIProvider implements Provider {
     return blocks;
   }
 
+  /**
+   * Removes XML-like text tool calls from assistant text after parsing them.
+   *
+   * @param content Assistant text that may contain text tool calls.
+   * @returns Remaining assistant text.
+   */
   private removeTextToolCalls(content: string): string {
     return content.replace(/<function=([A-Za-z0-9_-]+)>\s*[\s\S]*?<\/function>\s*(?:<\/tool_call>)?/g, "");
   }

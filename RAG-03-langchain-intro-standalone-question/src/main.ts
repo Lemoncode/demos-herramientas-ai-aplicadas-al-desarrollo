@@ -23,6 +23,14 @@ import type { RAGIndex } from "./rag/retriever.js";
 import { search } from "./rag/retriever.js";
 import { buildChatModel, buildRagIndex } from "./setup.js";
 
+/**
+ * Starts the RAG-03 terminal demo.
+ *
+ * The demo builds a BM25 index once at startup. Each turn rewrites the user
+ * question into a standalone retrieval query, searches BM25, asks the answer
+ * chain to respond from retrieved context, and stores the original conversation
+ * turns for future rewrites.
+ */
 async function main(): Promise<void> {
 	printText("\x1b[1m\x1b[36m╔══════════════════════════════════╗\x1b[0m");
 	printText("\x1b[1m\x1b[36m║  RAG-03 — LangChain Intro        ║\x1b[0m");

@@ -33,7 +33,17 @@ export interface RAGIndex {
 	avgChunkLength: number;
 }
 
-// Break a piece of text into lowercase words, stripping punctuation.
+/**
+ * Converts free text into the normalized terms used by the BM25 index.
+ *
+ * This deliberately keeps tokenization simple for teaching: lowercase text,
+ * remove punctuation, preserve Spanish accented letters, split on whitespace,
+ * and drop empty strings. BM25 only understands exact token overlap, so this
+ * normalization defines what "the same word" means for the retriever.
+ *
+ * @param text Text from a chunk title, chunk body, or retrieval query.
+ * @returns Normalized tokens used for indexing and scoring.
+ */
 function tokenize(text: string): string[] {
 	return text
 		.toLowerCase()
@@ -42,8 +52,16 @@ function tokenize(text: string): string[] {
 		.filter(Boolean);
 }
 
-// Build an in-memory search index from the list of chunks.
-// This runs once at startup — the result is reused for every query.
+/**
+ * Builds the in-memory BM25 index used by the demo.
+ *
+ * This runs once at startup. It tokenizes each chunk, computes average chunk
+ * length for length normalization, and precomputes IDF-style word rarity so
+ * query-time scoring can stay small and easy to inspect.
+ *
+ * @param chunks Markdown chunks produced by `chunkByHeaders`.
+ * @returns Indexed chunks plus BM25 statistics needed by `search`.
+ */
 export function buildIndex(chunks: Chunk[]): RAGIndex {
 	// We create an object with Title / Id / Content / Tokens
 	const indexedChunks: IndexedChunk[] = chunks.map((chunk, id) => ({
@@ -92,7 +110,20 @@ export function buildIndex(chunks: Chunk[]): RAGIndex {
 	return { chunks: indexedChunks, wordRarity, avgChunkLength };
 }
 
-// Score every chunk against the query and return the top-k matches.
+/**
+ * Scores every indexed chunk against a query using BM25 and returns the best
+ * matches.
+ *
+ * BM25 rewards rare query words, saturates repeated words so ten mentions are
+ * not ten times better than one, and penalizes very long chunks so they do not
+ * dominate just because they contain more text. In RAG-03 the query is usually
+ * produced by the condense chain before reaching this function.
+ *
+ * @param index Precomputed BM25 index from `buildIndex`.
+ * @param query Retrieval query to compare against the indexed chunks.
+ * @param topK Maximum number of chunks to return.
+ * @returns Matching chunks sorted from highest to lowest BM25 score.
+ */
 export function search(
 	index: RAGIndex,
 	query: string,

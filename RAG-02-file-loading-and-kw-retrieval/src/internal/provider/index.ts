@@ -7,6 +7,13 @@ export interface Provider {
 }
 
 export class ProviderError extends Error {
+	/**
+	 * Creates an error wrapper for provider API failures.
+	 *
+	 * @param message Error message from the provider.
+	 * @param statusCode Optional HTTP status code.
+	 * @param retryable Whether retry logic could reasonably try again.
+	 */
 	constructor(
 		message: string,
 		public readonly statusCode?: number,
