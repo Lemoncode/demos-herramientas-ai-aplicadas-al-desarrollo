@@ -1,5 +1,19 @@
 # RAG-02 — File Loading + BM25 Keyword Retrieval
 
+## Project learnings
+
+By the end of this module you should understand:
+
+- How to move knowledge out of the prompt and into a source file.
+- How to split a markdown document into searchable chunks.
+- How BM25 ranks chunks using exact keyword overlap.
+- How retrieval reduces the amount of context sent to the LLM.
+- Why keyword search is transparent and fast, but misses semantically similar wording.
+
+## Viewing diagrams
+
+This README uses Mermaid diagrams. GitHub renders them automatically. If you read this in VS Code or another editor, install a Mermaid preview extension, such as **Markdown Preview Mermaid Support**, to view the diagrams properly.
+
 ## What this demo shows
 
 The CV is no longer in the system prompt. It lives on disk as `data/cv.md`. Before every user question, the system **searches the document** for the most relevant sections and injects only those into the LLM context.
@@ -94,11 +108,8 @@ The `[rag]` line shows exactly which chunks were retrieved. This transparency is
 
 BM25 is fast and needs no GPU, but it only matches the exact words in the query. If you ask "Has he worked in e-commerce?" and the chunk says "online retail platform", BM25 scores zero — the terms don't overlap.
 
-That is what RAG-03 solves with semantic embeddings.
+RAG-03 first solves a different problem: follow-up questions in a conversation. RAG-04 then solves this semantic mismatch with local embeddings.
 
-## Running it
+## How to start
 
-```bash
-cp .env.example .env   # PROVIDER=ollama by default
-npm run dev
-```
+See [`HOW_TO_START.md`](./HOW_TO_START.md) for setup, provider configuration, and run commands.

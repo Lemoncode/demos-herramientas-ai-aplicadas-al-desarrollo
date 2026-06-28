@@ -1,5 +1,18 @@
 # RAG-01 — Static Context Injection
 
+## Project learnings
+
+By the end of this module you should understand:
+
+- The simplest way to ground an LLM with private knowledge: put the whole document in the prompt.
+- Why static context injection is useful for small documents and demos.
+- Why this approach becomes expensive, stale, and fragile when the knowledge base grows.
+- The baseline problem that later RAG modules improve: sending all context every time.
+
+## Viewing diagrams
+
+This README uses Mermaid diagrams. GitHub renders them automatically. If you read this in VS Code or another editor, install a Mermaid preview extension, such as **Markdown Preview Mermaid Support**, to view the diagrams properly.
+
 ## What this demo shows
 
 The simplest possible way to give an LLM knowledge about a specific topic: **paste the document directly into the system prompt**.
@@ -58,9 +71,6 @@ Imagine the CV grows to 50 pages, or you have 1000 employees' CVs. You cannot fi
 
 That is what RAG-02 solves.
 
-## Running it
+## How to start
 
-```bash
-cp .env.example .env   # set OLLAMA_MODEL and OLLAMA_BASE_URL
-npm run dev
-```
+See [`HOW_TO_START.md`](./HOW_TO_START.md) for setup, provider configuration, and run commands.

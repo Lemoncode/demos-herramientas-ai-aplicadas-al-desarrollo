@@ -1,5 +1,19 @@
 # RAG-03 — LangChain + BM25 + Condense Question
 
+## Project learnings
+
+By the end of this module you should understand:
+
+- How LangChain changes the code from raw provider calls into composable chains.
+- How chat history makes short conversational questions ambiguous.
+- How a question-rewriting step can turn conversational input into a better retrieval query.
+- How the same BM25 retriever from RAG-02 behaves inside a multi-step pipeline.
+- Why rewriting helps conversation flow but does not fix keyword-search limitations.
+
+## Viewing diagrams
+
+This README uses Mermaid diagrams. GitHub renders them automatically. If you read this in VS Code or another editor, install a Mermaid preview extension, such as **Markdown Preview Mermaid Support**, to view the diagrams properly.
+
 ## Why LangChain
 
 LangChain is a **framework** for building LLM-powered applications. It gives you:
@@ -110,9 +124,12 @@ The `[condense]` line shows the rewritten question — this transparency lets yo
 
 RAG-02's BM25 only matches exact words. If the user asks a **follow-up** like "What about the e-commerce one?" after "Where did Aridane work in 2022?", the raw question has no overlap with any chunk. The condense step rewrites it using conversation history so BM25 can find the right chunks.
 
-## Running it
+## Remaining limitation: keyword retrieval
 
-```bash
-cp .env.example .env   # OLLAMA_MODEL and OLLAMA_BASE_URL
-npm run dev
-```
+RAG-03 still uses BM25 after the question is rewritten. That means it is better at conversational search, but it still depends on word overlap.
+
+If the user asks "Has Aridane worked on online shops?" and the CV says "e-commerce frontend", BM25 may miss the best chunk because the wording is different. RAG-04 solves that next by replacing keyword retrieval with local semantic embeddings.
+
+## How to start
+
+See [`HOW_TO_START.md`](./HOW_TO_START.md) for setup, Ollama configuration, and run commands.
