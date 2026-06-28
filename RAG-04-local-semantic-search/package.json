@@ -1,0 +1,22 @@
+{
+	"name": "rag-04-local-semantic-search",
+	"version": "1.0.0",
+	"description": "RAG demo 04: local Ollama embeddings with in-memory semantic retrieval",
+	"type": "module",
+	"scripts": {
+		"dev": "tsx src/main.ts",
+		"test": "tsx --test src/**/*.test.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@langchain/core": "^0.3.0",
+		"@langchain/ollama": "^0.2.0",
+		"langchain": "^0.3.0",
+		"ollama": "^0.5.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.20.0",
+		"tsx": "^4.19.0",
+		"typescript": "^5.8.0"
+	}
+}
