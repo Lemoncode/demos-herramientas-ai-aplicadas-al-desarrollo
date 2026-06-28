@@ -32,6 +32,7 @@ Role: Full-Stack Developer. Built a booking application covering both frontend a
 
 ## Achievements and Talks
 
+- Trainer at Lemoncode (2026): joined Lemoncode as a trainer for the course 'Herramientas IA aplicadas al desarrollo', teaching developers how to understand LLMs from the ground up — tokens, context, costs, prompting strategies, agent workflows, and AI tooling in the IDE. The goal is to move from using AI 'on autopilot' to making conscious, efficient, and secure decisions in real development workflows.
 - SpainSkills Mentor (2025, 2023): guided students to national competition wins in web technologies.
 - Speaker at Openbank OpenCommit Fest: presented on developer productivity and AI-assisted workflows.
 
