@@ -575,6 +575,110 @@
           </div>
         </section>
 
+        <!-- ── Agent file structure ── -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">02 — Agents in Copilot</div>
+          <div class="cols">
+            <div>
+              <h2>Custom agents<br />in Visual Studio</h2>
+              <p>
+                Define agents as <code>.agent.md</code> files in
+                <code>.github/agents/</code>. YAML frontmatter + Markdown instructions.
+              </p>
+              <table style="font-size:0.82rem;margin-top:1rem;">
+                <tr>
+                  <th style="font-family:'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:0.05em;font-size:0.68rem;border-bottom:2px solid var(--ink);padding:0.4rem 0.6rem;">Property</th>
+                  <th style="font-family:'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:0.05em;font-size:0.68rem;border-bottom:2px solid var(--ink);padding:0.4rem 0.6rem;">Description</th>
+                </tr>
+                <tr>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;"><code>name</code></td>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;">Display name in agent picker</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;"><code>description</code></td>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;">Shown on hover (required)</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;"><code>model</code></td>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;">AI model override (optional)</td>
+                </tr>
+                <tr>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;"><code>tools</code></td>
+                  <td style="border-bottom:1px solid rgba(17,17,17,0.1);padding:0.4rem 0.6rem;">Allowed tool names (optional)</td>
+                </tr>
+              </table>
+              <p style="font-size:0.78rem;margin-top:0.8rem;">
+                <strong>File location:</strong> <code>.github/agents/&lt;name&gt;.agent.md</code>
+              </p>
+              <p style="font-size:0.78rem;">
+                Combine with <strong>MCP servers</strong> for external knowledge — docs, APIs, DBs, style guides.
+              </p>
+            </div>
+            <div>
+              <pre><code>---
+name: Code Reviewer
+description: Reviews PRs against
+  team coding standards
+model: claude-opus-4-6
+tools: ["code_search",
+  "readfile"]
+---
+
+You are a code reviewer. Check:
+
+1. Naming: PascalCase for
+   public, camelCase for private
+2. Error handling: every async
+   call needs try/catch
+3. Test coverage: every public
+   method needs a unit test
+4. Docs: public APIs need XML
+   comments
+
+Flag violations with inline fixes.</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Subagents in Claude Code ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">03 — Agents in Claude Code</div>
+          <div class="cols">
+            <div>
+              <h2>Subagents in<br />Claude Code</h2>
+              <p style="color:rgba(255,255,255,0.85);">
+                Claude Code has built-in subagents (<strong>Explore</strong> — read-only research,
+                <strong>Plan</strong> — codebase analysis, <strong>General-purpose</strong> — all tools)
+                and lets you create custom ones.
+              </p>
+              <ul style="margin-top:0.6rem;">
+                <li style="color:rgba(255,255,255,0.8);">Files: <code>.claude/agents/&lt;name&gt;.md</code> (project) or <code>~/.claude/agents/</code> (user)</li>
+                <li style="color:rgba(255,255,255,0.8);">YAML frontmatter with <code>name</code>, <code>description</code>, <code>tools</code>, <code>model</code></li>
+                <li style="color:rgba(255,255,255,0.8);">Markdown body becomes the system prompt</li>
+                <li style="color:rgba(255,255,255,0.8);">Claude delegates automatically or you @-mention them</li>
+                <li style="color:rgba(255,255,255,0.8);">Each runs in its own context window</li>
+              </ul>
+            </div>
+            <div>
+              <pre><code>---
+name: code-reviewer
+description: Reviews code for
+  quality and best practices
+tools: Read, Glob, Grep
+model: sonnet
+---
+
+You are a code reviewer.
+Analyze the code and provide
+specific, actionable feedback
+on quality, security, and
+best practices.</code></pre>
+            </div>
+          </div>
+        </section>
+
         <!-- ═══════════════════════════════════════════
          MODULE 01 — PROMPT / CONTEXT / HARNESS / LOOP ENGINEERING
     ════════════════════════════════════════════════ -->

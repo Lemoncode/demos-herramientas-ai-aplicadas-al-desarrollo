@@ -2,6 +2,18 @@
 
 ---
 
+## Módulo 07 — Subagents
+
+### Cover
+
+### 01 — What is a subagent
+
+### 02 — Agents in Copilot
+
+### 03 — Agents in Claude Code
+
+---
+
 ## Módulo 08 — From prompt to Loop
 
 ### Cover
