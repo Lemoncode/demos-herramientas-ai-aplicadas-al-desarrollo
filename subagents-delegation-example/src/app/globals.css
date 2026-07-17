@@ -1,1 +1,48 @@
-/* Foundation will populate this file with design tokens (Editorial Energy palette + type scale + spacing). */
+:root {
+  --color-primary: #1a3d2b;
+  --color-background: #f2ede4;
+  --color-accent: #ceda0a;
+  --color-text: #0e1f16;
+  --color-text-muted: #4a5c4f;
+  --color-surface: #ffffff;
+  --color-border: #c8c3b8;
+
+  --font-size-display: clamp(2.5rem, 5vw, 4rem);
+  --font-size-section: 2rem;
+  --font-size-body: 1rem;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 64px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-body);
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
