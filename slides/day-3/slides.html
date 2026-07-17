@@ -419,6 +419,14 @@
         animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
         animation-delay: 3320ms;
       }
+      .reveal .slides section.present .flow > *:nth-child(8) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 3820ms;
+      }
+      .reveal .slides section.present .flow > *:nth-child(9) {
+        animation: entryFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 4320ms;
+      }
 
       /* ── Two-column staggered slide-in ── */
       @keyframes slideInLeft {
@@ -1088,92 +1096,74 @@ Images stay local. Metadata in SQLite.</code></pre>
           </div>
         </section>
 
-        <!-- The 4-phase flow -->
+        <!-- Matt Pocock methodology — new 5-step flow -->
         <section class="dark">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">03 — Grill-me methodology</div>
-          <h2>Grill → PRD → Issues → Loop</h2>
-          <div class="cols cols-3" style="margin-top: 1.2rem">
+          <div class="module-num">03 — Matt Pocock methodology</div>
+          <h2>From Grill to Review</h2>
+          <div class="flow" style="margin-top: 2rem; gap: 0.35rem">
+            <div class="flow-node">
+              <span class="flow-icon">🔥</span>
+              <strong>grill-with-docs</strong>
+              <span>interview until aligned</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="border-style: dashed; opacity: 0.85; position: relative">
+              <span style="position: absolute; top: -0.6rem; background: var(--ink); color: var(--yellow); font-family: 'Archivo Black', sans-serif; font-size: 0.55rem; letter-spacing: 0.12em; padding: 0.15rem 0.5rem; border: 2px solid var(--yellow);">OPTIONAL</span>
+              <span class="flow-icon">📋</span>
+              <strong>to-spec</strong>
+              <span>compress to PRD</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="border-style: dashed; opacity: 0.85; position: relative">
+              <span style="position: absolute; top: -0.6rem; background: var(--ink); color: var(--yellow); font-family: 'Archivo Black', sans-serif; font-size: 0.55rem; letter-spacing: 0.12em; padding: 0.15rem 0.5rem; border: 2px solid var(--yellow);">OPTIONAL</span>
+              <span class="flow-icon">🎫</span>
+              <strong>to-tickets</strong>
+              <span>split into sessions</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">🚀</span>
+              <strong>implement</strong>
+              <span>execute ticket by ticket</span>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">
+              <span class="flow-icon">✅</span>
+              <strong>code-review</strong>
+              <span>final check vs spec</span>
+            </div>
+          </div>
+          <div style="margin: 2.4rem 0">
             <div>
-              <div class="tag">Phase 1 — Human in the loop</div>
-              <p>
-                <strong>Grill Me</strong><br />Dialogue session that surfaces
-                all assumptions, decisions, and open questions. Output: a shared
-                design concept.
-              </p>
-              <p>
-                <strong>Write PRD</strong><br />Summarizes the conversation into
-                a destination document — user stories, module map, out-of-scope
-                items.
+              <div class="tag">Fast path</div>
+              <p style="font-size: 0.85rem">
+                Small change fits one context window? Skip 2 &amp; 3 —
+                <code>grill-with-docs</code> → <code>implement</code> →
+                <code>code-review</code>.
               </p>
             </div>
             <div>
-              <div class="tag">Phase 2 — Human review</div>
-              <p>
-                <strong>PRD → Issues</strong><br />Breaks the PRD into a Kanban
-                board of independently-grabbable issues with blocking
-                relationships.
-              </p>
-              <p>
-                Issues use <strong>vertical slices</strong> (traceable bullets)
-                so every task crosses all layers — DB, API, UI — for instant
-                feedback.
-              </p>
-            </div>
-            <div>
-              <div class="tag">Phase 3 — AFK</div>
-              <p>
-                <strong>Ralph Loop</strong><br />Agent picks the next unblocked
-                issue, applies TDD, runs feedback loops, commits, and repeats.
-              </p>
-              <p>
-                Human is away from the keyboard. Parallelization is possible
-                across unblocked issues.
+              <div class="tag">Multi-session path</div>
+              <p style="font-size: 0.85rem">
+                Work exceeds the <strong>smart zone</strong> (~140k tokens)?
+                Compress to a spec, split into tickets, run each ticket in its
+                own clean context, then review the whole against the spec.
               </p>
             </div>
           </div>
-        </section>
-
-        <!-- Vertical slices -->
-        <section>
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">06 — Vertical slices</div>
-          <h2>Traceable<br />bullets</h2>
-          <div class="cols">
-            <div>
-              <p><strong>AI codes horizontally by default:</strong></p>
-              <ul>
-                <li>Phase 1: all database/schema work</li>
-                <li>Phase 2: all API / service layer</li>
-                <li>Phase 3: all front-end work</li>
-              </ul>
-              <p style="margin-top: 0.8rem">
-                ❌ No feedback until phase 3 — you're coding blind.
-              </p>
-            </div>
-            <div>
-              <p><strong>Vertical slices instead:</strong></p>
-              <ul>
-                <li>Each issue touches DB + API + UI together</li>
-                <li>Working end-to-end feature at the end of every slice</li>
-                <li>Enables parallelization — issues form a DAG, not a list</li>
-              </ul>
-              <p style="margin-top: 0.8rem">
-                ✅ Feedback after every task. System is always integrated.
-              </p>
-              <p class="idea-clave">
-                <strong>Traceable bullets</strong> — from
-                <em>The Pragmatic Programmer</em>. Like phosphor on a bullet:
-                you see where you're aiming as you go.
-              </p>
-            </div>
-          </div>
+          <p class="idea-clave" style="margin-top: 1.4rem;">
+            <code>implement</code> runs a per-ticket review internally.
+            <code>code-review</code> is the final pass across the whole
+            change — spec compliance + coding standards, in fresh sub-agents so
+            the author isn't grading their own homework.
+          </p>
         </section>
 
         <!-- Day shift / Night shift -->
         <section>
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">07 — Human vs AFK</div>
+          <div class="module-num">04 — Human vs AFK</div>
           <h2>Day shift<br />Night shift</h2>
           <div class="cols">
             <div>
@@ -1210,7 +1200,7 @@ Images stay local. Metadata in SQLite.</code></pre>
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
           <div class="cols">
             <div>
-              <div class="module-num">08 — When to use</div>
+              <div class="module-num">05 — When to use</div>
               <h2>Pick the<br />right tool</h2>
     </div>
 <div>
@@ -1252,7 +1242,7 @@ Images stay local. Metadata in SQLite.</code></pre>
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
           <div class="cols" style="align-items: center">
             <div>
-              <div class="module-num">09 — More to explore</div>
+              <div class="module-num">06 — More to explore</div>
               <h2>Other<br />frameworks</h2>
               <ul>
                 <li>
