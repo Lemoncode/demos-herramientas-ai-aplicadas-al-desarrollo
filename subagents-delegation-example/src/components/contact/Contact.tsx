@@ -1,10 +1,14 @@
 import { Section } from '@/components/section/Section'
-import { Heading } from '@/components/heading/Heading'
+import { ContactForms } from './ContactForms'
+import { ContactFooter } from './ContactFooter'
 
 export function Contact() {
   return (
-    <Section id="contact">
-      <Heading level={2}>Contact — coming soon</Heading>
-    </Section>
+    <>
+      <Section id="contact" title="Contacto">
+        <ContactForms />
+      </Section>
+      <ContactFooter />
+    </>
   )
 }
