@@ -26,7 +26,7 @@ Parse the Mission Brief from your prompt. It MUST contain:
 
 Locate yourself in the harness:
 ```bash
-cd "$(git rev-parse --show-toplevel)/harness-example"
+cd "$(git rev-parse --show-toplevel)/subagents-delegation-example"
 git status
 ```
 

@@ -1,5 +1,5 @@
 {
-  "name": "harness-example",
+  "name": "subagents-delegation-example",
   "private": true,
   "version": "0.1.0",
   "type": "module",

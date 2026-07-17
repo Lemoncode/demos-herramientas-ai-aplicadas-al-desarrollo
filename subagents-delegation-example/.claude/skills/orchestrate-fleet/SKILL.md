@@ -33,7 +33,7 @@ Save the parsed Mission Briefs in memory for the rest of the run. **Do not** wri
 ### 1.1 Pre-flight
 
 ```bash
-cd "$(git rev-parse --show-toplevel)/harness-example"
+cd "$(git rev-parse --show-toplevel)/subagents-delegation-example"
 git status
 git branch --show-current  # expect: main
 ```
@@ -189,12 +189,12 @@ Agent(
     Review accessibility for these six Worker worktrees. For each Section, return a verdict (pass / warning / fail) and structured findings.
 
     Worktrees:
-      hero:           <worktree_path from Phase 2>/harness-example/src/components/hero/
-      catalog:        <worktree_path>/harness-example/src/components/catalog/
-      sustainability: <worktree_path>/harness-example/src/components/sustainability/
-      faq:            <worktree_path>/harness-example/src/components/faq/
-      certifications: <worktree_path>/harness-example/src/components/certifications/
-      contact:        <worktree_path>/harness-example/src/components/contact/
+      hero:           <worktree_path from Phase 2>/subagents-delegation-example/src/components/hero/
+      catalog:        <worktree_path>/subagents-delegation-example/src/components/catalog/
+      sustainability: <worktree_path>/subagents-delegation-example/src/components/sustainability/
+      faq:            <worktree_path>/subagents-delegation-example/src/components/faq/
+      certifications: <worktree_path>/subagents-delegation-example/src/components/certifications/
+      contact:        <worktree_path>/subagents-delegation-example/src/components/contact/
 )
 
 Agent(
@@ -236,7 +236,7 @@ If a Section was blocked in Phase 2, the Reviewer skips it (verdict: `—`).
 For each Section where `build_pass && tests_pass`:
 
 ```bash
-cd <worktree_path>/harness-example
+cd <worktree_path>/subagents-delegation-example
 git push -u origin fleet/<section_id>
 gh pr create \
   --title "feat(<section_id>): <one-line title from copy_spec>" \
