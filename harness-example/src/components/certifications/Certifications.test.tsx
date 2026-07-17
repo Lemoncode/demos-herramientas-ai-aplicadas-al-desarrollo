@@ -18,14 +18,16 @@ describe('Certifications', () => {
     ).toBeInTheDocument()
   })
 
-  it('gives every logo a descriptive aria-label', () => {
+  it('gives every logo a descriptive aria-label containing the certification name', () => {
     render(<Certifications />)
     for (const label of CERT_LABELS) {
-      expect(screen.getByRole('img', { name: label })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: `${label} certification logo` }),
+      ).toBeInTheDocument()
     }
   })
 
-  it('renders the certifications grid container', () => {
+  it('renders the certifications grid container as a list', () => {
     render(<Certifications />)
     const grid = screen.getByRole('list')
     expect(grid).toBeInTheDocument()

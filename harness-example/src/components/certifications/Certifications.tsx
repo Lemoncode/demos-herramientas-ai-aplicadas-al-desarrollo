@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Section } from '@/components/section/Section'
 
 interface Certification {
@@ -18,17 +19,33 @@ const CERTIFICATIONS: Certification[] = [
 
 const SUBHEAD = 'Homologado para venta en Europa, Reino Unido y Norteamérica.'
 
+const GRID_STYLE: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '1.5rem',
+  listStyle: 'none',
+  padding: 0,
+  margin: '1.5rem 0 0',
+}
+
+const ITEM_STYLE: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+
 function CertificationLogo({ label }: { label: string }) {
   return (
-    <li className="certifications__item">
+    <li style={ITEM_STYLE}>
       <svg
         role="img"
-        aria-label={label}
-        className="certifications__logo"
+        aria-label={`${label} certification logo`}
         viewBox="0 0 80 80"
         xmlns="http://www.w3.org/2000/svg"
+        width={80}
+        height={80}
       >
-        <rect width="80" height="80" rx="8" fill="currentColor" opacity="0.12" />
+        <rect width="80" height="80" rx="8" fill="#e8f4f8" />
         <text
           x="50%"
           y="54%"
@@ -36,7 +53,7 @@ function CertificationLogo({ label }: { label: string }) {
           textAnchor="middle"
           fontSize="14"
           fontWeight="600"
-          fill="currentColor"
+          fill="#1a3a4a"
         >
           {label}
         </text>
@@ -48,8 +65,8 @@ function CertificationLogo({ label }: { label: string }) {
 export function Certifications() {
   return (
     <Section id="certifications" title="Certificaciones">
-      <p className="certifications__subhead">{SUBHEAD}</p>
-      <ul className="certifications__grid">
+      <p>{SUBHEAD}</p>
+      <ul style={GRID_STYLE}>
         {CERTIFICATIONS.map((cert) => (
           <CertificationLogo key={cert.id} label={cert.label} />
         ))}
