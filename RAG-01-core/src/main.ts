@@ -3,15 +3,10 @@
 // - src/setup.ts   builds the provider and tool registry
 // - src/internal/agent/loop.ts  handles one assistant turn
 
-import * as readline from "readline";
+import * as readline from "node:readline";
 import { runAgentLoop } from "./internal/agent/loop.js";
 import type { Message } from "./internal/api/types.js";
-import {
-	printError,
-	printInfo,
-	printPrompt,
-	printText,
-} from "./internal/ui/output.js";
+import { printError, printInfo, printPrompt, printText } from "./internal/ui/output.js";
 import { buildProvider, buildRegistry } from "./setup.js";
 
 /**
@@ -76,9 +71,7 @@ async function main(): Promise<void> {
 			content: [{ type: "text", text: trimmed }],
 		});
 
-		await runAgentLoop(provider, registry, messages, {
-			requireConfirm: true,
-		});
+		await runAgentLoop(provider, registry, messages);
 
 		printText("");
 		printPrompt();

@@ -53,10 +53,7 @@ export class Registry {
 	 * @param input Raw JSON input requested by the model.
 	 * @returns Tool result plus an error marker.
 	 */
-	async execute(
-		name: string,
-		input: string,
-	): Promise<{ result: string; isError: boolean }> {
+	async execute(name: string, input: string): Promise<{ result: string; isError: boolean }> {
 		const tool = this.tools.get(name);
 		if (!tool) {
 			return { result: `unknown tool: ${name}`, isError: true };

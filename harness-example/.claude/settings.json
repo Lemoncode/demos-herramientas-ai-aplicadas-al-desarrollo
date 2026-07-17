@@ -18,6 +18,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/commit-guard.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/destructive-guard.sh"
           }
         ]
       }

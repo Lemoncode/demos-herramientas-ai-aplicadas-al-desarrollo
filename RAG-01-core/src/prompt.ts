@@ -55,4 +55,3 @@ Frontend development, backend development, e-commerce platforms, responsive desi
 ---
 
 Answer only questions about the CV above. For anything unrelated, respond: "I can only answer questions about Aridane Martín's professional profile. Feel free to ask about his experience, education, or skills."`;
-

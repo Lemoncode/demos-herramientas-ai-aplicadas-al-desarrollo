@@ -16,16 +16,21 @@ export type StopReason = "end_turn" | "tool_use" | "max_tokens" | string;
 // §02: isError must be true on denials and tool failures — setting it false
 // misleads the model into thinking the call succeeded.
 export type Block =
-  | { type: "text"; text: string }
-  | { type: "tool_use"; toolUseId: string; toolName: string; toolInput: string }
-  | { type: "tool_result"; toolUseId: string; toolResult: string; isError: boolean };
+	| { type: "text"; text: string }
+	| { type: "tool_use"; toolUseId: string; toolName: string; toolInput: string }
+	| {
+			type: "tool_result";
+			toolUseId: string;
+			toolResult: string;
+			isError: boolean;
+	  };
 
 // A single turn in the conversation.
 // §06 Conversation State: models are stateless. Every API call receives the
 // full message history. Clearing state = truncating this array to length 0.
 export interface Message {
-  role: Role;
-  content: Block[];
+	role: Role;
+	content: Block[];
 }
 
 // Describes a tool the model can invoke.
@@ -34,15 +39,15 @@ export interface Message {
 // Each provider adapter wraps it in { type: "object", properties: ..., required: ... }.
 // The required field here is lifted into that wrapper by each adapter.
 export interface ToolDef {
-  name: string;
-  description: string;
-  inputSchema: Record<string, unknown>;
-  required?: string[];
+	name: string;
+	description: string;
+	inputSchema: Record<string, unknown>;
+	required?: string[];
 }
 
 // What the provider returns after one API round-trip.
 // Named LLMResponse (not Response) to avoid shadowing the global Fetch API Response.
 export interface LLMResponse {
-  content: Block[];
-  stopReason: StopReason;
+	content: Block[];
+	stopReason: StopReason;
 }
