@@ -1,6 +1,8 @@
 import './globals.css'
 import type { ReactNode } from 'react'
 import { Playfair_Display, Inter } from 'next/font/google'
+import { Navbar } from '@/components/navbar/Navbar'
+import { Footer } from '@/components/footer/Footer'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -26,7 +28,11 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es" className={`${playfair.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }

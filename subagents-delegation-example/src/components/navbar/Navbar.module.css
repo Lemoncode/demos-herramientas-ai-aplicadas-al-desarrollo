@@ -1,0 +1,182 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #1a3d2b;
+  border-bottom: 2px solid #ceda0a;
+}
+
+.nav {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo:focus-visible {
+  outline: 2px solid #ceda0a;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.logoBolt {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.logoName {
+  font-family: var(--font-heading, 'Playfair Display', Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.links {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+  flex: 1;
+  justify-content: center;
+}
+
+.link {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.link:hover {
+  color: #ffffff;
+}
+
+.link:focus-visible {
+  color: #ffffff;
+  outline: 2px solid #ceda0a;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  background-color: #ceda0a;
+  color: #0e1f16;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.cta:hover {
+  background-color: #d8e830;
+}
+
+.cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.burger:focus-visible {
+  outline: 2px solid #ceda0a;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.burgerLine {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.burgerLineTop {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burgerLineMid {
+  opacity: 0;
+}
+
+.burgerLineBot {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  .links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background-color: #1a3d2b;
+    padding: 16px 20px 24px;
+    gap: 0;
+    border-bottom: 2px solid #ceda0a;
+  }
+
+  .linksOpen {
+    display: flex;
+  }
+
+  .link {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1rem;
+  }
+
+  .links li:last-child .link {
+    border-bottom: none;
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .burger {
+    display: flex;
+  }
+}

@@ -872,13 +872,85 @@
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
           <div class="module-num">Setup</div>
           <h2>Install Spec Kit</h2>
-          <p>You need the <strong>Specify CLI</strong> to scaffold the project pick your version (<a href="https://github.com/github/spec-kit/releases" target="_blank">the releases page</a>):</p>
+          <p>Pick your version from <a href="https://github.com/github/spec-kit/releases" target="_blank">the releases page</a> and install the <strong>Specify CLI</strong>:</p>
           <pre><code>uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@vX.Y.Z</code></pre>
           <br>
-          <p>Then run <code>init</code> in your project folder:</p>
-          <pre><code>specify init . <br>specify init [project-name] // If you want specify to create a new project</code></pre>
-          <br>
-          <p>This creates the <code>.specify/</code> folder with the full<br>workflow scaffolding — prompts, templates, and memory.</p>
+          <p>Then scaffold your project:</p>
+          <pre><code>specify init .
+specify init [project-name]   # creates a new folder</code></pre>
+        </section>
+
+        <!-- What init creates — overview -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Setup</div>
+          <h2>What <code>init</code> creates</h2>
+          <div class="cols">
+            <div>
+              <h4>Project scaffold (once)</h4>
+              <ul>
+                <li><code>.specify/</code> — workflow engine</li>
+                <li><code>.claude/skills/</code> — speckit commands</li>
+                <li><code>CLAUDE.md</code> — AI context pointer</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Per feature (on demand)</h4>
+              <ul>
+                <li><code>specs/001-feature/spec.md</code></li>
+                <li><code>specs/001-feature/plan.md</code></li>
+                <li><code>specs/001-feature/tasks.md</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- .specify/ -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Setup</div>
+          <h2><code>.specify/</code></h2>
+          <h4>The workflow engine — committed to version control</h4>
+          <pre><code>.specify/
+├── memory/
+│   └── constitution.md    ← AI reads this every session
+├── templates/
+│   ├── spec-template.md   ← used by /speckit-specify
+│   ├── plan-template.md   ← used by /speckit-plan
+│   └── tasks-template.md  ← used by /speckit-tasks
+└── extensions.yml         ← git hooks (auto-branch, auto-commit)</code></pre>
+        </section>
+
+        <!-- .claude/skills/ -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Setup</div>
+          <h2><code>.claude/skills/</code></h2>
+          <h4>Speckit commands wired as Claude Code skills</h4>
+          <pre><code>.claude/skills/
+├── speckit-constitution/   ← define project principles
+├── speckit-specify/        ← turn a description into a spec
+├── speckit-clarify/        ← fill spec gaps with questions
+├── speckit-plan/           ← generate implementation plan
+├── speckit-tasks/          ← break plan into ordered tasks
+├── speckit-implement/      ← execute tasks one by one
+├── speckit-checklist/      ← generate QA checklist
+└── speckit-analyze/        ← cross-artifact consistency check</code></pre>
+          <p class="idea-clave">Each folder is a <code>SKILL.md</code> — one per workflow phase</p>
+        </section>
+
+        <!-- specs/ per feature -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Setup</div>
+          <h2><code>specs/</code></h2>
+          <h4>Created on demand — one folder per feature, one folder per branch</h4>
+          <pre><code>specs/
+└── 001-shopping-cart/
+    ├── spec.md    ← /speckit-specify  (user stories, requirements)
+    ├── plan.md    ← /speckit-plan     (tech decisions, file structure)
+    └── tasks.md   ← /speckit-tasks    (ordered, dependency-aware)</code></pre>
+          <p class="idea-clave">Each folder maps 1:1 to a git feature branch — created automatically by the git extension hook</p>
         </section>
 
         <!-- Yellow interstitial -->
@@ -960,146 +1032,16 @@ Images stay local. Metadata in SQLite.</code></pre>
 
         <section class="hero">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-title">
+          <div class="module-title" style="gap: 0.4rem;">
             <span class="module-tag">&lt;Module 18/&gt;</span>
           </div>
-          <h1>Spec Kit<br />vs Superpowers<br />vs Grill-me</h1>
+          <h1>Spec Kit</h1><p style="font-size: 3rem;">vs</p><h1>Superpowers</h1><p style="font-size: 3rem;">vs</p><h1>Grill-me</h1>
         </section>
 
-        <!-- Superpowers in action -->
-        <section>
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="cols" style="align-items: center">
-            <div>
-              <div class="module-num">01 — Superpowers</div>
-              <h2>Workflow<br />enforced<br />by design</h2>
-              <ul>
-                <li>Plugin-based — installs into Claude&nbsp;Code</li>
-                <li>14 auto-activating skills per context</li>
-                <li>Process discipline: design → plan → TDD → review</li>
-                <li>Works inside the agent loop</li>
-              </ul>
-              <p style="margin-top:0.4rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.55;">
-                Install in: <strong>Claude&nbsp;Code</strong> · <strong>OpenCode</strong> · <strong>Cursor</strong> · <strong>Gemini&nbsp;CLI</strong> · <strong>Copilot&nbsp;CLI</strong> · <strong>Codex</strong> · <strong>Kimi</strong> · <strong>Pi</strong> · <strong>Antigravity</strong> · <strong>Factory&nbsp;Droid</strong>
-              </p>
-            </div>
-            <div>
-              <img
-                src="./images/superpowers-tasks.png"
-                alt="Superpowers brainstorming task list in Claude Code"
-                style="
-                  width: 100%;
-                  border-radius: 0.85rem;
-                  border: 2px solid var(--ink);
-                  box-shadow: 6px 6px 0 var(--ink);
-                  display: block;
-                "
-              />
-            </div>
-          </div>
-        </section>
-
-        <!-- Superpowers: execution pipeline -->
+            <!-- Matt Pocock methodology — new 5-step flow -->
         <section class="dark">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">Execution flow</div>
-          <h2>Prompt to<br />merge: 4 phases</h2>
-          <div class="flow">
-            <div class="flow-node">
-              <span class="flow-icon">🧠</span>
-              <strong>Brainstorm</strong>
-              <span>spec + design doc</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <span class="flow-icon">📋</span>
-              <strong>Plan</strong>
-              <span>bite-sized tasks</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <span class="flow-icon">🤖</span>
-              <strong>Subagents</strong>
-              <span>implement + review</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <span class="flow-icon">🚀</span>
-              <strong>Finish</strong>
-              <span>merge or PR</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Superpowers: per-task triple gate -->
-        <section>
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">Per task</div>
-          <h2>Triple<br />quality gate</h2>
-          <div class="flow">
-            <div class="flow-node">
-              <span class="flow-icon">💻</span>
-              <strong>Implementer</strong>
-              <span>code + self-review</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <span class="flow-icon">📋</span>
-              <strong>Spec review</strong>
-              <span>did it build the right thing?</span>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <span class="flow-icon">✨</span>
-              <strong>Quality review</strong>
-              <span>is it built well?</span>
-            </div>
-          </div>
-          <p style="margin-top:1.4rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.55;">
-            Each gate re-reviews until approved — only then does the next task start.
-          </p>
-        </section>
-
-        <!-- Three approaches -->
-        <section>
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="cols">
-            <div>
-              <div class="module-num">02 — Three approaches</div>
-              <h2>Same goal,<br />different<br />philosophy</h2>
-            </div>
-<div> <h3>Spec Kit</h3>
-              <ul>
-                <li>CLI-based — scaffolds files and slash commands</li>
-                <li>
-                  5-phase workflow: Constitution → Specify → Plan → Tasks →
-                  Implement
-                </li>
-                <li>Agent-agnostic — works with Copilot, Cursor, Gemini, Codex, OpenCode, Kimi, Pi…</li>
-                <li>3 levels: <strong>spec-first</strong> (doc before code), <strong>spec-anchored</strong> (spec lives on), <strong>spec-as-source</strong> (human edits spec, never code)</li>
-                <li style="margin-top: 0.6rem; font-size: 0.75rem; opacity: 0.65"><a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank" style="color: var(--yellow)">Birgitta Böckeler — martinfowler.com</a></li>
-              </ul>
-              
-              <h3 style="margin-top: 2.8rem">Superpowers</h3>
-              <ul>
-                <li>Plugin-based — installs into Claude Code</li>
-                <li>14 auto-activating skills per context</li>
-                <li>Process discipline: design → plan → TDD → review</li>
-              </ul>
-              
-              <h3 style="margin-top: 2.8rem">Grill-me</h3>
-              <ul>
-                <li>Dialogue-first — aligns before any planning</li>
-                <li>Reaches a shared design concept via questions</li>
-                <li>Code stays in focus throughout (anti-spec-to-code)</li>
-              </ul></div>
-          </div>
-        </section>
-
-        <!-- Matt Pocock methodology — new 5-step flow -->
-        <section class="dark">
-          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">03 — Matt Pocock methodology</div>
+          <div class="module-num">01 — Matt Pocock methodology</div>
           <h2>From Grill to Review</h2>
           <div class="flow" style="margin-top: 2rem; gap: 0.35rem">
             <div class="flow-node">
@@ -1159,6 +1101,77 @@ Images stay local. Metadata in SQLite.</code></pre>
             the author isn't grading their own homework.
           </p>
         </section>
+
+        <!-- Superpowers in action -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols" style="align-items: center">
+            <div>
+              <div class="module-num">02 — Superpowers</div>
+              <h2>Workflow<br />enforced<br />by design</h2>
+              <ul>
+                <li>Plugin-based — installs into Claude&nbsp;Code</li>
+                <li>14 auto-activating skills per context</li>
+                <li>Process discipline: design → plan → TDD → review</li>
+                <li>Works inside the agent loop</li>
+              </ul>
+              <p style="margin-top:0.4rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.55;">
+                Install in: <strong>Claude&nbsp;Code</strong> · <strong>OpenCode</strong> · <strong>Cursor</strong> · <strong>Gemini&nbsp;CLI</strong> · <strong>Copilot&nbsp;CLI</strong> · <strong>Codex</strong> · <strong>Kimi</strong> · <strong>Pi</strong> · <strong>Antigravity</strong> · <strong>Factory&nbsp;Droid</strong>
+              </p>
+            </div>
+            <div>
+              <img
+                src="./images/superpowers-tasks.png"
+                alt="Superpowers brainstorming task list in Claude Code"
+                style="
+                  width: 100%;
+                  border-radius: 0.85rem;
+                  border: 2px solid var(--ink);
+                  box-shadow: 6px 6px 0 var(--ink);
+                  display: block;
+                "
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Three approaches -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">03 — Three approaches</div>
+              <h2>Same goal,<br />different<br />philosophy</h2>
+            </div>
+<div> <h3>Spec Kit</h3>
+              <ul>
+                <li>CLI-based — scaffolds files and slash commands</li>
+                <li>
+                  5-phase workflow: Constitution → Specify → Plan → Tasks →
+                  Implement
+                </li>
+                <li>Agent-agnostic — works with Copilot, Cursor, Gemini, Codex, OpenCode, Kimi, Pi…</li>
+                <li>3 levels: <strong>spec-first</strong> (doc before code), <strong>spec-anchored</strong> (spec lives on), <strong>spec-as-source</strong> (human edits spec, never code)</li>
+                <li style="margin-top: 0.6rem; font-size: 0.75rem; opacity: 0.65"><a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html" target="_blank" style="color: var(--yellow)">Birgitta Böckeler — martinfowler.com</a></li>
+              </ul>
+              
+              <h3 style="margin-top: 2.8rem">Superpowers</h3>
+              <ul>
+                <li>Plugin-based — installs into Claude Code</li>
+                <li>14 auto-activating skills per context</li>
+                <li>Process discipline: design → plan → TDD → review</li>
+              </ul>
+              
+              <h3 style="margin-top: 2.8rem">Grill-me</h3>
+              <ul>
+                <li>Dialogue-first — aligns before any planning</li>
+                <li>Reaches a shared design concept via questions</li>
+                <li>Code stays in focus throughout (anti-spec-to-code)</li>
+              </ul></div>
+          </div>
+        </section>
+
+    
 
         <!-- Day shift / Night shift -->
         <section>
