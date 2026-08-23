@@ -297,6 +297,35 @@
         opacity: 0.9;
       }
 
+      /* ── Table ── */
+      .reveal table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+      }
+      .reveal table th {
+        font-family: "Archivo Black", sans-serif;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        padding: 0.5rem 0.75rem;
+        border-bottom: 2px solid var(--ink);
+        text-align: left;
+      }
+      .reveal table td {
+        padding: 0.55rem 0.75rem;
+        border-bottom: 1px solid rgba(17, 17, 17, 0.15);
+        vertical-align: top;
+        line-height: 1.4;
+      }
+      .reveal .slides section.dark table th {
+        border-bottom-color: rgba(255, 255, 255, 0.3);
+      }
+      .reveal .slides section.dark table td {
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+      }
+
       /* ── Slide entry animation ── */
       @keyframes entryFade {
         from {
@@ -2195,6 +2224,247 @@
             <span class="module-tag">&lt;Module 04/&gt;</span>
           </div>
           <h1>Let's build<br />our setup</h1>
+        </section>
+
+        <!-- IDE vs ADE · 01 — Framing -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-title">
+            <span class="module-tag">&lt;Frame/&gt;</span>
+          </div>
+          <h1 style="font-size: 4.5rem">IDE → ADE</h1>
+          <p style="font-size: 1.15rem; color: rgba(255, 255, 255, 0.85)">
+            From driving the editor — to directing the agent.
+          </p>
+          <p class="idea-clave">
+            <strong>Same keyboard. New seat.</strong> The environment you code
+            in is changing faster than the cursor moves.
+          </p>
+        </section>
+
+        <!-- IDE · ADE · 02 — Comparison table -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">IDE vs ADE</div>
+          <h2>Two seats behind<br />the same screen</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th><strong>IDE</strong> — VS Code, JetBrains</th>
+                <th><strong>ADE</strong> — Claude Code, Cursor, Windsurf</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Interaction</strong></td>
+                <td>You type every edit</td>
+                <td>You state the goal, the agent executes</td>
+              </tr>
+              <tr>
+                <td><strong>Scope</strong></td>
+                <td>Single file / symbol</td>
+                <td>Multi-file → plan → run → iterate</td>
+              </tr>
+              <tr>
+                <td><strong>Context owner</strong></td>
+                <td>Your working memory</td>
+                <td>Agent's context window + harness</td>
+              </tr>
+              <tr>
+                <td><strong>Feedback loop</strong></td>
+                <td>You run, debug, fix</td>
+                <td>Agent self-tests and self-reviews</td>
+              </tr>
+              <tr>
+                <td><strong>Extension</strong></td>
+                <td>Editor plugins / snippets</td>
+                <td>Skills, hooks, MCP servers, sub-agents</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- IDE · ADE · 03 — Orca vs herdr -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Two ADEs in the wild</div>
+          <h2>Orca <span style="color: var(--yellow)">vs</span> herdr</h2>
+          <div
+              class="cols"
+              style="gap: 1.2rem; margin-top: 0.2rem; align-items: stretch"
+            >
+            <div
+              style="
+                background: var(--cream);
+                color: var(--ink);
+                border: 2px solid var(--ink);
+                border-radius: 1.2rem;
+                padding: 1rem 1.2rem;
+                box-shadow: 5px 5px 0 var(--yellow);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 0.8rem">
+                <img
+                  src="./images/orca-logo-dark.svg"
+                  alt="Orca logo"
+                  style="
+                    height: 48px;
+                    width: 48px;
+                    flex: 0 0 auto;
+                    object-fit: contain;
+                    background: #ffffff;
+                    filter: invert(1);
+                    border-radius: 8px;
+                    padding: 6px;
+                    box-sizing: border-box;
+                  "
+                />
+                <div>
+                  <strong
+                    style="
+                      font-family: 'Archivo Black', sans-serif;
+                      font-size: 1.05rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.04em;
+                      display: block;
+                    "
+                    >Orca</strong
+                  >
+                  <a
+                    href="https://onorca.dev"
+                    target="_blank"
+                    style="
+                      font-family: 'IBM Plex Mono', monospace;
+                      font-size: 0.72rem;
+                      color: var(--ink);
+                      opacity: 0.75;
+                    "
+                    >onorca.dev</a
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  font-size: 0.78rem;
+                  margin: 0.6rem 0 0;
+                  color: var(--ink);
+                  opacity: 0.75;
+                "
+              >
+                The agentic IDE for <strong>parallel coding agents</strong> —
+                prompts to merged PRs in isolated git worktrees.
+              </p>
+            </div>
+            <div
+              style="
+                background: var(--cream);
+                color: var(--ink);
+                border: 2px solid var(--ink);
+                border-radius: 1.2rem;
+                padding: 1rem 1.2rem;
+                box-shadow: 5px 5px 0 var(--yellow);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 0.8rem">
+                <img
+                  src="./images/herdr-logo.png"
+                  alt="herdr logo"
+                  style="
+                    height: 48px;
+                    width: auto;
+                    background: #d9dad8;
+                    border-radius: 8px;
+                  "
+                />
+                <div>
+                  <strong
+                    style="
+                      font-family: 'Archivo Black', sans-serif;
+                      font-size: 1.05rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.04em;
+                      display: block;
+                    "
+                    >herdr</strong
+                  >
+                  <a
+                    href="https://herdr.dev"
+                    target="_blank"
+                    style="
+                      font-family: 'IBM Plex Mono', monospace;
+                      font-size: 0.72rem;
+                      color: var(--ink);
+                      opacity: 0.75;
+                    "
+                    >herdr.dev</a
+                  >
+                </div>
+              </div>
+              <p
+                style="
+                  font-size: 0.78rem;
+                  margin: 0.6rem 0 0;
+                  color: var(--ink);
+                  opacity: 0.75;
+                "
+              >
+                The <strong>agent runtime</strong> — real terminals on a
+                server. Detach, agents keep working.
+              </p>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Orca</th>
+                <th>herdr</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kind</strong></td>
+                <td>Agentic IDE (GUI app)</td>
+                <td>Agent runtime (terminal + server)</td>
+              </tr>
+              <tr>
+                <td><strong>Model</strong></td>
+                <td>4.6k★ · MIT · YC</td>
+                <td>31.6k★ · Apache-2.0 · YC</td>
+              </tr>
+              <tr>
+                <td><strong>Agents</strong></td>
+                <td>Claude Code · Codex · Gemini · Cursor CLI</td>
+                <td>Claude Code · Codex · opencode · Cursor… (20+ detected)</td>
+              </tr>
+              <tr>
+                <td><strong>Parallelism</strong></td>
+                <td>Isolated git worktrees</td>
+                <td>Panes · tabs · workspaces</td>
+              </tr>
+              <tr>
+                <td><strong>UI closes?</strong></td>
+                <td>Agents run inside the IDE</td>
+                <td>Server owns terminals — work survives</td>
+              </tr>
+              <tr>
+                <td><strong>Agent state</strong></td>
+                <td>—</td>
+                <td>blocked · working · done · idle</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="idea-clave" style="margin-top: 0.8rem; font-size: 0.9rem">
+            <strong>Same philosophy, different layer:</strong> Orca is the
+            window you drive, herdr is the runtime your agents keep living on.
+          </p>
         </section>
 
         <!-- Setup · 01 — Global vs local tools -->
