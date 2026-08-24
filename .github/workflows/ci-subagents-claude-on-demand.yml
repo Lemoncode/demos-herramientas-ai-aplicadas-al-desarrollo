@@ -1,4 +1,4 @@
-name: Claude Assistant (on-demand)
+name: Claude Assistant (ci-subagents-claude, on-demand)
 
 on:
   issue_comment:
@@ -13,6 +13,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: anthropics/claude-code-action@v1
         with:

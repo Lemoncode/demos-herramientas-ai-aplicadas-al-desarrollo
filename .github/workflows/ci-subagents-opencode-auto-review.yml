@@ -1,8 +1,10 @@
-name: opencode Review
+name: opencode Review (ci-subagents-opencode)
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'ci-subagents-opencode/**'
 
 jobs:
   review:
@@ -21,7 +23,7 @@ jobs:
         env:
           # NOTE: rename this (and the secret behind it) to match whichever
           # provider your local opencode config actually uses, e.g.
-          # OPENROUTER_API_KEY. See this folder's README.
+          # OPENROUTER_API_KEY. See ci-subagents-opencode/README.md.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

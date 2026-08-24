@@ -1,8 +1,10 @@
-name: Claude Code Review
+name: Claude Code Review (ci-subagents-claude)
 
 on:
   pull_request:
     types: [opened, synchronize]
+    paths:
+      - 'ci-subagents-claude/**'
 
 jobs:
   code-review:
@@ -10,6 +12,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -20,7 +23,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          track_progress: true
           prompt: |
             Review the PR changes. Focus on code quality, potential bugs,
             and security issues. Suggest improvements where appropriate.
-            Write your review as markdown text.
