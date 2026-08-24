@@ -1,0 +1,10 @@
+{
+  "name": "ci-subagents-opencode-sample-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tiny sample app with intentionally planted issues, used to demo an AI code reviewer in CI.",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  }
+}
