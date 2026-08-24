@@ -24,6 +24,12 @@ AI harness for **QA engineers**. Configures Claude and Copilot for read-only PR 
 ### `mcp-example`
 Minimal MCP (Model Context Protocol) server implementation showing how to expose custom tools to AI coding assistants.
 
+### `ci-subagents-claude`
+Demo of an AI reviewer agent wired into a GitHub Actions pipeline using Anthropic's official `claude-code-action`. Shows both an automatic PR review trigger and an on-demand `@claude`-comment trigger, authenticated via a Claude Pro/Max subscription (no metered API spend).
+
+### `ci-subagents-opencode`
+Same demo as `ci-subagents-claude`, using opencode's official GitHub Action (`anomalyco/opencode/github`) instead. Shows the same automatic vs. on-demand trigger contrast, authenticated via whatever provider key you already have opencode configured with.
+
 ### `RAG-01-core`
 Baseline RAG demo — static context injection. The CV is hardcoded in the system prompt; no document loading or vector search involved.
 
