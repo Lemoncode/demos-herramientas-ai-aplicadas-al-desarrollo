@@ -1,0 +1,36 @@
+name: opencode Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          # NOTE: rename this (and the secret behind it) to match whichever
+          # provider your local opencode config actually uses, e.g.
+          # OPENROUTER_API_KEY. See this folder's README.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # NOTE: swap this model to match your provider above.
+          model: anthropic/claude-sonnet-4-5
+          use_github_token: true
+          prompt: |
+            Review this pull request:
+            - Check for code quality issues
+            - Look for potential bugs
+            - Look for security issues
+            - Suggest improvements
