@@ -1513,7 +1513,8 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              flex: 1;
+              flex: 1 1 auto;
+              min-height: 0;
             "
           >
             <img
@@ -1521,7 +1522,7 @@
               alt="Choose the Right Tools"
               style="
                 max-width: 100%;
-                max-height: 65vh;
+                max-height: 100%;
                 height: auto;
                 object-fit: contain;
                 border: 2px solid var(--ink);
@@ -2483,14 +2484,20 @@
             </div>
           </div>
           <div
-            style="margin-top: 1.25rem; display: flex; align-items: flex-end"
+            style="
+              margin-top: 1.25rem;
+              display: flex;
+              align-items: flex-end;
+              flex: 1 1 auto;
+              min-height: 0;
+            "
           >
             <img
               src="./images/skills-global-local.png"
               alt="Global vs local skills diagram"
               style="
                 width: 100%;
-                max-height: 38vh;
+                height: 100%;
                 object-fit: contain;
                 object-position: left bottom;
                 border-radius: 0.75rem;
