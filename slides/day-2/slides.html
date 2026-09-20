@@ -810,14 +810,20 @@ model: sonnet
                 <li>
                   Fire on lifecycle events: <code>PreToolUse</code>,
                   <code>PostToolUse</code>, <code>Stop</code>,
-                  <code>Notification</code>
+                  <code>Notification</code>, among many others
                 </li>
                 <li>
                   Output is injected back into the agent's context as feedback
                 </li>
                 <li>
-                  Exit <code>0</code> → continue · Exit <code>2</code> → block
-                  and force the agent to react to our feedback
+                  Exit <code>0</code> → continue · Exit <code>2</code> → blocking
+                  error
+                </li>
+                <li>
+                  What that blocks is event-dependent: <code>PreToolUse</code>
+                  blocks the tool call, <code>PostToolUse</code> only feeds stderr
+                  back, <code>Stop</code> keeps the turn going,
+                  <code>Notification</code> ignores it
                 </li>
                 <li>No token cost — they run entirely outside the LLM</li>
               </ul>
