@@ -1,5 +1,9 @@
 # RAG-01 — Static Context Injection
 
+## Dependency scope
+
+This teaching example is a compatibility baseline for the major versions declared in `package.json` (OpenAI SDK 4.x and Anthropic SDK 0.x). It does not claim compatibility with newer major versions; review the provider migration guides before upgrading them.
+
 ## Project learnings
 
 By the end of this module you should understand:

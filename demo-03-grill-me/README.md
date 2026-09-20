@@ -8,11 +8,11 @@ Based on Matt Pocock's workshop: [youtube.com/watch?v=-QFHIoCo-Ko](https://www.y
 
 ## Core idea
 
-LLMs have a **smart zone** and a **dumb zone**. The smart zone is roughly the first ~100K tokens of a context window — where attention relationships are healthy and the model does its best work. Beyond that, it gets progressively dumber.
+Context quality can degrade as a task fills a model's context window, but there is no universal “smart zone” token threshold. Treat available context as a task-specific heuristic: keep work focused and preserve important decisions outside the conversation.
 
 This workflow is designed around two constraints:
 
-1. **The smart zone** — keep tasks small enough to fit in it. Clear context rather than compact: compacting adds sediment; clearing resets to a known-good state.
+1. **Focused context** — keep tasks small enough to reason about clearly. Clear context rather than compact when a clean handoff is more useful: compacting adds sediment; clearing resets to a known-good state.
 2. **The Memento problem** — LLMs forget everything on a clear. The workflow produces durable artifacts (PRD, issue files) so that clearing context loses nothing important.
 
 ---

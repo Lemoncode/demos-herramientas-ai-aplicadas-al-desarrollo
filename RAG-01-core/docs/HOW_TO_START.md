@@ -17,33 +17,15 @@ npm install
 cp .env.example .env
 ```
 
-The example file supports three providers:
+RAG-01 uses Ollama through its OpenAI-compatible endpoint:
 
 ```bash
-# Provider selection: anthropic | openai | ollama
-PROVIDER=anthropic
-
-# Anthropic (required when PROVIDER=anthropic)
-ANTHROPIC_API_KEY=sk-ant-...
-
-# OpenAI (required when PROVIDER=openai)
-OPENAI_API_KEY=sk-...
-OPENAI_BASE_URL=https://api.openai.com/v1
-
-# Ollama (required when PROVIDER=ollama)
+# Ollama connection
 OLLAMA_BASE_URL=http://localhost:11434/v1
-OLLAMA_MODEL=llama3.2
+OLLAMA_MODEL=qwen3-coder:30b
 ```
 
-## 3. Local Ollama option
-
-If you want to run it locally for free, use Ollama:
-
-```bash
-PROVIDER=ollama
-OLLAMA_BASE_URL=http://localhost:11434/v1
-OLLAMA_MODEL=llama3.2
-```
+## 3. Start Ollama
 
 Make sure Ollama is running:
 
@@ -54,7 +36,7 @@ curl http://localhost:11434/api/tags
 Pull the chat model if needed:
 
 ```bash
-ollama pull llama3.2
+ollama pull qwen3-coder:30b
 ```
 
 ## 4. Run the demo

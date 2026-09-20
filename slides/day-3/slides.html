@@ -651,13 +651,13 @@
               </tr>
               <tr>
                 <td><strong>Caveman Claude</strong></td>
-                <td>75%</td>
+                <td>65%</td>
                 <td>Simplified output language</td>
                 <td><a href="https://github.com/juliusbrussee/caveman" target="_blank" style="color:var(--yellow);font-size:0.7rem">github.com/juliusbrussee/caveman</a></td>
               </tr>
               <tr>
                 <td><strong>Graphify</strong></td>
-                <td>70%</td>
+                <td>Varies by codebase</td>
                 <td>Codebase summary / graph exploration</td>
                 <td><a href="https://graphify.net" target="_blank" style="color:var(--yellow);font-size:0.7rem">graphify.net</a></td>
               </tr>
@@ -984,7 +984,7 @@ Images stay local. Metadata in SQLite.</code></pre>
               <h2>Workflow<br />enforced<br />by design</h2>
               <ul>
                 <li>Plugin-based — installs into Claude&nbsp;Code</li>
-                <li>14 auto-activating skills per context</li>
+                <li>15 auto-activating skills per context</li>
                 <li>Process discipline: design → plan → TDD → review</li>
                 <li>Works inside the agent loop</li>
               </ul>
@@ -1092,7 +1092,7 @@ Images stay local. Metadata in SQLite.</code></pre>
               <h3 style="margin-top: 2.8rem">Superpowers</h3>
               <ul>
                 <li>Plugin-based — installs into Claude Code</li>
-                <li>14 auto-activating skills per context</li>
+                <li>15 auto-activating skills per context</li>
                 <li>Process discipline: design → plan → TDD → review</li>
               </ul>
               
@@ -1155,17 +1155,15 @@ Images stay local. Metadata in SQLite.</code></pre>
             <div>
               <div class="tag">Multi-session path</div>
               <p style="font-size: 0.85rem">
-                Work exceeds the <strong>smart zone</strong> (~140k tokens)?
+                Work no longer fits comfortably in one <strong>context window</strong>?
                 Compress to a spec, split into tickets, run each ticket in its
                 own clean context, then review the whole against the spec.
               </p>
             </div>
           </div>
           <p class="idea-clave" style="margin-top: 1.4rem;">
-            <code>implement</code> runs a per-ticket review internally.
-            <code>code-review</code> is the final pass across the whole
-            change — spec compliance + coding standards, in fresh sub-agents so
-            the author isn't grading their own homework.
+            Use <code>code-review</code> as the documented final pass across
+            the whole change — verify spec compliance and coding standards.
           </p>
         </section>
 

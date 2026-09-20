@@ -1066,14 +1066,14 @@
         <!-- 03 · Temperature -->
         <section class="dark">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="cols" style="align-items: flex-start">
+          <div class="cols" style="align-items: center">
             <div>
               <div class="module-num">03 — Temperature</div>
               <h2>How random<br />is the output</h2>
               <p>
                 Temperature controls how the model samples the next token. Low
-                values make output deterministic; high values make it creative —
-                and unpredictable.
+                values reduce variation; high values make it more varied —
+                but no setting guarantees identical runs.
               </p>
               <p class="idea-clave">
                 <strong
@@ -1102,11 +1102,11 @@
                       color: rgba(130, 200, 255, 0.9);
                     "
                   >
-                    T = 0 · Deterministic
+                    T = 0 · Lowest variation
                   </div>
                   <p style="font-size: 0.8rem; margin: 0; color: #fff">
-                    Always picks the most probable token. Reproducible across
-                    runs.
+                    Favors high-probability tokens. Results can still vary
+                    across runs.
                   </p>
                   <p
                     style="font-size: 0.72rem; margin-top: 0.3rem; opacity: 0.5"
@@ -2208,8 +2208,8 @@
 
             <p class="idea-clave">
               <strong
-                >Use /handoff to compact a conversation and delegate it to a
-                sub-agent</strong
+                >Use your harness's documented compaction command before
+                delegating a new subtask</strong
               >
             </p>
           </ul>
@@ -2436,13 +2436,13 @@
               </tr>
               <tr>
                 <td><strong>Model</strong></td>
-                <td>4.6k★ · MIT · YC</td>
-                <td>31.6k★ · Apache-2.0 · YC</td>
+                <td>Open source · worktree-first</td>
+                <td>Open source · persistent terminals</td>
               </tr>
               <tr>
                 <td><strong>Agents</strong></td>
-                <td>Claude Code · Codex · Gemini · Cursor CLI</td>
-                <td>Claude Code · Codex · opencode · Cursor… (20+ detected)</td>
+                <td>Runs compatible coding agents in isolated worktrees</td>
+                <td>Detects and supervises configured terminal agents</td>
               </tr>
               <tr>
                 <td><strong>Parallelism</strong></td>
@@ -2527,8 +2527,8 @@
               </p>
               <ul>
                 <li>
-                  Compatible with Copilot, Cursor, Devin and more (Not with
-                  Claude / Gemini ATM)
+                  Compatible with Claude Code, Gemini CLI, Copilot, Cursor,
+                  Devin, and more
                 </li>
                 <li>Supported in more than 60,000 open source projects</li>
                 <li>
@@ -3082,7 +3082,8 @@ paths: src/components/**        ← Claude Code
                 </li>
               </ul>
               <p class="idea-clave" style="font-size: 0.75rem; margin-top: 0.5rem;">
-                ✅ Supported in every provider (Claude, Gemini, Copilot, Cursor, Windsurf, Devin, etc.)
+                ✅ Widely supported — verify the current format and location
+                in each provider's documentation.
               </p>
             </div>
             <div>
@@ -3180,8 +3181,8 @@ fix       Bug fix
               </p>
               <p class="idea-clave" style="font-size: 0.75rem; margin-top: 0.5rem;">
                 ⚠️ <strong>Not part of the Agent Skills spec.</strong> Native in
-                Claude Code; GitHub Copilot in VS&nbsp;Code added experimental,
-                opt-in support. Cursor, Windsurf and other assistants don't.
+                Claude Code. Check each assistant's current documentation
+                before relying on equivalent support elsewhere.
               </p>
             </div>
             <div>

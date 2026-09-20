@@ -1,5 +1,9 @@
 # RAG-03 — LangChain + BM25 + Condense Question
 
+## Dependency scope
+
+This teaching example is a compatibility baseline for the LangChain 0.3 and `@langchain/ollama` 0.2 APIs declared in `package.json`. It does not claim compatibility with newer major versions; review the relevant migration guides before upgrading them.
+
 ## Project learnings
 
 By the end of this module you should understand:
