@@ -581,7 +581,7 @@
           <div class="cols">
             <div>
               <div class="module-num">02 — Agents in Copilot</div>
-              <h2>Custom agents<br />in Visual Studio</h2>
+              <h2>Custom agents<br />in VS Code</h2>
               <p>
                 Define agents as <code>.agent.md</code> files in
                 <code>.github/agents/</code>. YAML frontmatter + Markdown instructions.
@@ -677,6 +677,64 @@ on quality, security, and
 best practices.</code></pre>
             </div>
           </div>
+        </section>
+
+        <!-- ── Define a custom agent ── -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">04 — Define a custom agent</div>
+          <h2>Same idea,<br />three file formats</h2>
+          <p>
+            A <strong>custom agent</strong> is a saved persona: YAML frontmatter for
+            <code>name</code>, <code>description</code> and <code>tools</code>, plus a Markdown
+            body that becomes the system prompt. Only the folder and the keys change.
+          </p>
+          <div class="cols cols-3" style="gap: 1.6rem; align-items: start; margin-top: 0.8rem">
+            <div>
+              <h3>opencode</h3>
+              <pre style="font-size: 0.62rem; padding: 0.9rem 1rem; box-shadow: 4px 4px 0 var(--ink)"><code>---
+description: Reviews PRs for style.
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: deny
+  bash: ask
+---</code></pre>
+              <p style="font-size: 0.72rem; margin-top: 0.5rem">
+                <code>.opencode/agent/&lt;name&gt;.md</code><br />
+                or <code>~/.config/opencode/agents/</code>
+              </p>
+            </div>
+            <div>
+              <h3>VS Code</h3>
+              <pre style="font-size: 0.62rem; padding: 0.9rem 1rem; box-shadow: 4px 4px 0 var(--ink)"><code>---
+name: react-reviewer
+description: Reviews React components
+tools: [read, search]
+---</code></pre>
+              <p style="font-size: 0.72rem; margin-top: 0.5rem">
+                <code>.github/agents/&lt;name&gt;.agent.md</code>
+              </p>
+            </div>
+            <div>
+              <h3>Claude Code</h3>
+              <pre style="font-size: 0.62rem; padding: 0.9rem 1rem; box-shadow: 4px 4px 0 var(--ink)"><code>---
+name: react-reviewer
+description: Reviews React components
+tools: Read, Glob, Grep
+model: sonnet
+---</code></pre>
+              <p style="font-size: 0.72rem; margin-top: 0.5rem">
+                <code>.claude/agents/&lt;name&gt;.md</code><br />
+                or <code>~/.claude/agents/</code>
+              </p>
+            </div>
+          </div>
+          <p style="font-size: 0.78rem; margin-top: 1rem">
+            <strong>Rename alert:</strong> VS Code used to call these <em>chat modes</em>
+            (<code>.chatmode.md</code>) — renamed to <strong>custom agents</strong> in v1.106, and
+            old files still load. Bonus: VS Code also reads <code>.claude/agents/*.md</code> as-is.
+          </p>
         </section>
 
         <!-- ═══════════════════════════════════════════
