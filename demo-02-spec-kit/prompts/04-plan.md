@@ -1,6 +1,6 @@
-# Step 5 — Plan
+# Step 4 — Plan
 
-**Command:** `/speckit.plan`
+**Command:** `/speckit-plan`
 
 Translate the validated spec into a concrete technical plan. This is the first step where technology choices are made. The agent checks every decision against the constitution before committing to it.
 
@@ -9,7 +9,7 @@ Translate the validated spec into a concrete technical plan. This is the first s
 ## Prompt
 
 ```
-/speckit.plan specs/task-manager/spec.md
+/speckit-plan specs/task-manager/spec.md
 
 Stack: React 19, TypeScript strict, Vitest + @testing-library/react.
 No backend. Components in src/components/task-manager/.

@@ -1,6 +1,6 @@
 # Step 1 — Constitution
 
-**Command:** `/speckit.constitution`
+**Command:** `/speckit-constitution`
 
 Run this once when starting a new project. The agent will ask about your principles and produce `.specify/memory/constitution.md`. Every subsequent step will check all decisions against this document.
 
@@ -9,7 +9,7 @@ Run this once when starting a new project. The agent will ask about your princip
 ## Prompt
 
 ```
-/speckit.constitution
+/speckit-constitution
 
 This is a React + TypeScript web application. These are the principles I want enforced across the entire project:
 

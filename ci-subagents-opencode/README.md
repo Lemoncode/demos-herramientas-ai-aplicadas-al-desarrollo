@@ -24,11 +24,13 @@ This costs nothing beyond whatever provider/API key you already have
 opencode configured with locally. GitHub Actions minutes are free for
 public repos (and included free minutes on private repos).
 
-**Important:** the example workflows default to `ANTHROPIC_API_KEY` with
-`model: anthropic/claude-sonnet-4-5`, matching opencode's own documented
-default. If your local opencode setup uses a different provider (e.g.
-OpenRouter), rename the secret/env var and the `model` input in both
-workflow files to match — do not add a second, unrelated key.
+**Important:** the example workflows pin `ANTHROPIC_API_KEY` with
+`model: anthropic/claude-sonnet-4-5` explicitly — opencode itself has no
+fixed default model; it resolves one at startup via priority order
+(`--model` flag → config file → last-used model → internal fallback). If
+your local opencode setup uses a different provider (e.g. OpenRouter),
+rename the secret/env var and the `model` input in both workflow files to
+match — do not add a second, unrelated key.
 
 Unlike the Claude demo (subscription-backed OAuth), an `ANTHROPIC_API_KEY`
 is billed per token — the auto-review workflow fires on every push to an

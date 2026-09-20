@@ -1,6 +1,6 @@
 # Step 3 — Clarify *(full path only)*
 
-**Command:** `/speckit.clarify`
+**Command:** `/speckit-clarify`
 
 Before technical planning, resolve every ambiguity in the spec. The agent surfaces questions the spec doesn't answer and records the resolved answers in a dedicated Clarifications section.
 
@@ -9,7 +9,7 @@ Before technical planning, resolve every ambiguity in the spec. The agent surfac
 ## Prompt
 
 ```
-/speckit.clarify specs/task-manager/spec.md
+/speckit-clarify specs/task-manager/spec.md
 
 Focus on: task ordering, maximum list length, and what happens to tasks on page reload.
 ```
@@ -17,7 +17,7 @@ Focus on: task ordering, maximum list length, and what happens to tasks on page 
 You can also let the agent decide what to ask:
 
 ```
-/speckit.clarify specs/task-manager/spec.md
+/speckit-clarify specs/task-manager/spec.md
 ```
 
 ---

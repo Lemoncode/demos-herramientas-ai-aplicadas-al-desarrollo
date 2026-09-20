@@ -1,6 +1,6 @@
 # Step 6 — Tasks
 
-**Command:** `/speckit.tasks`
+**Command:** `/speckit-tasks`
 
 Convert the plan into an ordered, executable task list. Each task maps to a user story. Independent tasks are marked `[P]` for parallel execution. No task writes implementation before its test exists.
 
@@ -9,7 +9,7 @@ Convert the plan into an ordered, executable task list. Each task maps to a user
 ## Prompt
 
 ```
-/speckit.tasks specs/task-manager/plan.md
+/speckit-tasks specs/task-manager/plan.md
 ```
 
 ---

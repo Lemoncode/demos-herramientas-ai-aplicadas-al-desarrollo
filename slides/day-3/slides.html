@@ -884,7 +884,7 @@
         <!-- Yellow interstitial -->
         <section>
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <h1>The flow<br />in 5 phases</h1>
+          <h1>The flow<br />in 6 phases</h1>
           <h3>(Short version)</h3>
         </section>
 
@@ -900,7 +900,7 @@
             <li>Naming and architecture conventions</li>
           </ul>
           <br>
-          <pre><code>/speckit.constitution Quality, testing, and UX consistency principles</code></pre>
+          <pre><code>/speckit-constitution Quality, testing, and UX consistency principles</code></pre>
         </section>
 
         <!-- Phase 02 -->
@@ -909,7 +909,7 @@
           <div class="module-num">Phase 02</div>
           <h2>Specify</h2>
           <h4>Describe the what and the why — no technical decisions (Business requirements)</h4>
-          <pre><code>/speckit.specify Build an app to organize photos in albums,
+          <pre><code>/speckit-specify Build an app to organize photos in albums,
 grouped by date, with drag-and-drop reordering.
 Albums are never nested inside other albums.</code></pre>
           <p class="idea-clave">
@@ -924,10 +924,10 @@ Albums are never nested inside other albums.</code></pre>
           <div class="module-num">Phase 03</div>
           <h2>Plan</h2>
           <h4>The framework works in architecture decisions, stack, and technical design</h4>
-          <pre><code>/speckit.plan Vite, vanilla HTML/CSS/JS.
+          <pre><code>/speckit-plan Vite, vanilla HTML/CSS/JS.
 Images stay local. Metadata in SQLite.</code></pre>
           <p class="idea-clave">
-            <strong>Optional before:</strong> <code>/speckit.clarify</code> to
+            <strong>Optional before:</strong> <code>/speckit-clarify</code> to
             detect underspecified areas.
           </p>
         </section>
@@ -938,9 +938,9 @@ Images stay local. Metadata in SQLite.</code></pre>
           <div class="module-num">Phase 04</div>
           <h2>Tasks</h2>
           <h4>Ordered task list with clear dependencies</h4>
-          <pre><code>/speckit.tasks</code></pre>
+          <pre><code>/speckit-tasks</code></pre>
           <p class="idea-clave">
-            <strong>Optional after:</strong> <code>/speckit.analyze</code> to
+            <strong>Optional after:</strong> <code>/speckit-analyze</code> to
             validate consistency across artifacts.
           </p>
         </section>
@@ -951,7 +951,16 @@ Images stay local. Metadata in SQLite.</code></pre>
           <div class="module-num">Phase 05</div>
           <h2>Implement</h2>
           <h4>Execute all tasks using all artifacts as context</h4>
-          <pre><code>/speckit.implement</code></pre>
+          <pre><code>/speckit-implement</code></pre>
+        </section>
+
+        <!-- Phase 06 -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="module-num">Phase 06</div>
+          <h2>Converge</h2>
+          <h4>Check the implementation against the spec; loop back to Implement until it reports Converged</h4>
+          <pre><code>/speckit-converge</code></pre>
         </section>
 
         <!-- ═══════════════════════════════════════════
@@ -975,7 +984,7 @@ Images stay local. Metadata in SQLite.</code></pre>
               <h2>Workflow<br />enforced<br />by design</h2>
               <ul>
                 <li>Plugin-based — installs into Claude&nbsp;Code</li>
-                <li>14 auto-activating skills per context</li>
+                <li>15 auto-activating skills per context</li>
                 <li>Process discipline: design → plan → TDD → review</li>
                 <li>Works inside the agent loop</li>
               </ul>
@@ -1072,8 +1081,8 @@ Images stay local. Metadata in SQLite.</code></pre>
               <ul>
                 <li>CLI-based — scaffolds files and slash commands</li>
                 <li>
-                  5-phase workflow: Constitution → Specify → Plan → Tasks →
-                  Implement
+                  6-phase workflow: Constitution → Specify → Plan → Tasks →
+                  Implement ⇄ Converge
                 </li>
                 <li>Agent-agnostic — works with Copilot, Cursor, Gemini, Codex, OpenCode, Kimi, Pi…</li>
                 <li>3 levels: <strong>spec-first</strong> (doc before code), <strong>spec-anchored</strong> (spec lives on), <strong>spec-as-source</strong> (human edits spec, never code)</li>
@@ -1083,7 +1092,7 @@ Images stay local. Metadata in SQLite.</code></pre>
               <h3 style="margin-top: 2.8rem">Superpowers</h3>
               <ul>
                 <li>Plugin-based — installs into Claude Code</li>
-                <li>14 auto-activating skills per context</li>
+                <li>15 auto-activating skills per context</li>
                 <li>Process discipline: design → plan → TDD → review</li>
               </ul>
               

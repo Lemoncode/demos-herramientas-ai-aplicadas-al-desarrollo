@@ -1,6 +1,6 @@
 # Step 8 — Implement
 
-**Command:** `/speckit.implement`
+**Command:** `/speckit-implement`
 
 Execute the task list. The agent works through `tasks.md` in dependency order, writes tests before implementation, confirms each test fails before writing code, and marks tasks complete as it goes.
 
@@ -9,13 +9,13 @@ Execute the task list. The agent works through `tasks.md` in dependency order, w
 ## Prompt
 
 ```
-/speckit.implement specs/task-manager/tasks.md
+/speckit-implement specs/task-manager/tasks.md
 ```
 
 To start from a specific task:
 
 ```
-/speckit.implement specs/task-manager/tasks.md --start T10
+/speckit-implement specs/task-manager/tasks.md --start T10
 ```
 
 ---

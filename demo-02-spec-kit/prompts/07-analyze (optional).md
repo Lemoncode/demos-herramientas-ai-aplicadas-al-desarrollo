@@ -1,6 +1,6 @@
 # Step 7 — Analyze *(full path only)*
 
-**Command:** `/speckit.analyze`
+**Command:** `/speckit-analyze`
 
 Cross-check the spec, plan, and tasks for consistency before any code is written. Catches missing pieces, incomplete task sequences, plan decisions that contradict the spec, and over-engineered components.
 
@@ -9,7 +9,7 @@ Cross-check the spec, plan, and tasks for consistency before any code is written
 ## Prompt
 
 ```
-/speckit.analyze specs/task-manager/
+/speckit-analyze specs/task-manager/
 ```
 
 The agent reads all artifacts in the folder:
@@ -47,7 +47,7 @@ Analysis: specs/task-manager/
 
 ✅ Constitution compliance — all 5 articles satisfied in plan.md
 
-1 issue found. Resolve before running /speckit.implement.
+1 issue found. Resolve before running /speckit-implement.
 ```
 
 ---

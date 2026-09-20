@@ -1,6 +1,6 @@
-# Step 4 — Checklist *(full path only)*
+# Step 5 — Checklist *(full path only)*
 
-**Command:** `/speckit.checklist`
+**Command:** `/speckit-checklist`
 
 Validate the spec against a quality rubric before any technical work begins. Catches vague requirements, untestable stories, missing edge cases, and acceptance criteria that can't be verified.
 
@@ -9,7 +9,7 @@ Validate the spec against a quality rubric before any technical work begins. Cat
 ## Prompt
 
 ```
-/speckit.checklist specs/task-manager/spec.md
+/speckit-checklist specs/task-manager/spec.md
 ```
 
 ---

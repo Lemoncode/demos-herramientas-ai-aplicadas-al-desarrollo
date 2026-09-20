@@ -649,9 +649,10 @@ Flag violations with inline fixes.</code></pre>
             <div>
               <h2>Subagents in<br />Claude Code</h2>
               <p style="color:rgba(255,255,255,0.85);">
-                Claude Code has built-in subagents (<strong>Explore</strong> — read-only research,
-                <strong>Plan</strong> — codebase analysis, <strong>General-purpose</strong> — all tools)
-                and lets you create custom ones.
+                Claude Code ships 6 built-in subagents — <strong>Explore</strong> (read-only research),
+                <strong>Plan</strong> (codebase analysis), <strong>General-purpose</strong> (all tools),
+                plus <strong>claude</strong>, <strong>statusline-setup</strong>, and
+                <strong>claude-code-guide</strong> — and lets you create custom ones.
               </p>
               <ul style="margin-top:0.6rem;">
                 <li style="color:rgba(255,255,255,0.8);">Files: <code>.claude/agents/&lt;name&gt;.md</code> (project) or <code>~/.claude/agents/</code> (user)</li>
@@ -701,7 +702,7 @@ permission:
   bash: ask
 ---</code></pre>
               <p style="font-size: 0.72rem; margin-top: 0.5rem">
-                <code>.opencode/agent/&lt;name&gt;.md</code><br />
+                <code>.opencode/agents/&lt;name&gt;.md</code><br />
                 or <code>~/.config/opencode/agents/</code>
               </p>
             </div>

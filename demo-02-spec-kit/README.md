@@ -30,13 +30,15 @@ After `specify init`, the project gets a `.specify/` folder with memory, scripts
 ## The workflow
 
 ```
-Constitution → Specify → Clarify → Checklist → Plan → Tasks → Analyze → Implement
+Constitution → Specify → Clarify → Plan → Checklist → Tasks → Analyze → Implement ⇄ Converge
 ```
+
+`Implement` and `Converge` repeat until Converge reports the feature converged.
 
 For quick experiments, use the **lean path** (skip Clarify, Checklist, and Analyze):
 
 ```
-Constitution → Specify → Plan → Tasks → Implement
+Constitution → Specify → Plan → Tasks → Implement ⇄ Converge
 ```
 
 ---
@@ -47,7 +49,7 @@ Constitution → Specify → Plan → Tasks → Implement
 
 Establish the project's immutable principles before writing a single spec. This runs once per project and produces `.specify/memory/constitution.md`.
 
-**Command:** `/speckit.constitution`
+**Command:** `/speckit-constitution`
 
 **Prompt example:** [`prompts/01-constitution.md`](prompts/01-constitution.md)
 
@@ -59,7 +61,7 @@ Establish the project's immutable principles before writing a single spec. This 
 
 Describe what to build — focusing on *what* and *why*, not how. The agent creates a numbered feature spec with user stories and acceptance criteria.
 
-**Command:** `/speckit.specify`
+**Command:** `/speckit-specify`
 
 **Prompt example:** [`prompts/02-specify.md`](prompts/02-specify.md)
 
@@ -71,7 +73,7 @@ Describe what to build — focusing on *what* and *why*, not how. The agent crea
 
 Before planning, surface and resolve every ambiguity in the spec. The agent asks targeted questions and writes answers into a Clarifications section.
 
-**Command:** `/speckit.clarify`
+**Command:** `/speckit-clarify`
 
 **Prompt example:** [`prompts/03-clarify.md`](prompts/03-clarify.md)
 
@@ -79,32 +81,32 @@ Before planning, surface and resolve every ambiguity in the spec. The agent asks
 
 ---
 
-### Step 4 — Checklist *(full path only)*
+### Step 4 — Plan
 
-Validate that the spec meets quality standards before any technical work begins. Catches missing acceptance criteria, vague requirements, and untestable stories.
+Translate the spec into a concrete technical plan: stack choices, architecture, data models, interface contracts, and a quickstart guide. This is where technology decisions are first made.
 
-**Command:** `/speckit.checklist`
+**Command:** `/speckit-plan`
 
-**Prompt example:** [`prompts/04-checklist.md`](prompts/04-checklist.md)
-
-**Output:** Quality report; spec updated where gaps are found
-
----
-
-### Step 5 — Plan
-
-Translate the spec into a concrete technical plan: stack choices, architecture, data models, API contracts, and a quickstart guide. This is where technology decisions are first made.
-
-**Command:** `/speckit.plan`
-
-**Prompt example:** [`prompts/05-plan.md`](prompts/05-plan.md)
+**Prompt example:** [`prompts/04-plan.md`](prompts/04-plan.md)
 
 **Output:**
 - `specs/[feature-id]/plan.md`
 - `specs/[feature-id]/data-model.md`
-- `specs/[feature-id]/api-spec.json`
+- `specs/[feature-id]/contracts/` (interface contracts, one file per external interface)
 - `specs/[feature-id]/research.md`
 - `specs/[feature-id]/quickstart.md`
+
+---
+
+### Step 5 — Checklist *(full path only)*
+
+Validate that the spec meets quality standards before any technical work begins. Catches missing acceptance criteria, vague requirements, and untestable stories.
+
+**Command:** `/speckit-checklist`
+
+**Prompt example:** [`prompts/05-checklist.md`](prompts/05-checklist.md)
+
+**Output:** Quality report; spec updated where gaps are found
 
 ---
 
@@ -112,7 +114,7 @@ Translate the spec into a concrete technical plan: stack choices, architecture, 
 
 Break the plan into an ordered, executable task list. Parallel tasks are marked `[P]`. Tasks map directly to user stories and respect dependencies.
 
-**Command:** `/speckit.tasks`
+**Command:** `/speckit-tasks`
 
 **Prompt example:** [`prompts/06-tasks.md`](prompts/06-tasks.md)
 
@@ -124,7 +126,7 @@ Break the plan into an ordered, executable task list. Parallel tasks are marked 
 
 Cross-check spec, plan, and tasks for consistency before coding starts. Catches missing pieces, incomplete sequences, and over-engineered components.
 
-**Command:** `/speckit.analyze`
+**Command:** `/speckit-analyze`
 
 **Prompt example:** [`prompts/07-analyze.md`](prompts/07-analyze.md)
 
@@ -136,11 +138,23 @@ Cross-check spec, plan, and tasks for consistency before coding starts. Catches 
 
 Execute the task list. The agent works through `tasks.md` in dependency order, writing tests first, then implementation, respecting the constitution throughout.
 
-**Command:** `/speckit.implement`
+**Command:** `/speckit-implement`
 
 **Prompt example:** [`prompts/08-implement.md`](prompts/08-implement.md)
 
 **Output:** Working code, passing tests
+
+---
+
+### Step 9 — Converge
+
+Check the implementation against the spec and report whether the feature has converged. Repeat `Implement → Converge` until Converge reports **Converged**.
+
+**Command:** `/speckit-converge`
+
+**Prompt example:** not yet written for this demo — see [Spec Kit's quickstart](https://github.com/github/spec-kit/blob/main/docs/quickstart.md) for usage until a local prompt file is added here.
+
+**Output:** Convergence report; loops back to Implement if gaps remain
 
 ---
 
@@ -163,12 +177,12 @@ project-root/
 └── specs/
     └── [feature-id]/
         ├── spec.md                  ← Step 2
-        ├── plan.md                  ← Step 5
+        ├── plan.md                  ← Step 4
         ├── tasks.md                 ← Step 6
-        ├── data-model.md            ← Step 5
-        ├── api-spec.json            ← Step 5
-        ├── research.md              ← Step 5
-        └── quickstart.md            ← Step 5
+        ├── data-model.md            ← Step 4
+        ├── contracts/               ← Step 4
+        ├── research.md              ← Step 4
+        └── quickstart.md            ← Step 4
 ```
 
 ---
@@ -177,11 +191,12 @@ project-root/
 
 | Step | Command | Path | Prompt file |
 |---|---|---|---|
-| 1 — Constitution | `/speckit.constitution` | Full + Lean | [`01-constitution.md`](prompts/01-constitution.md) |
-| 2 — Specify | `/speckit.specify` | Full + Lean | [`02-specify.md`](prompts/02-specify.md) |
-| 3 — Clarify | `/speckit.clarify` | Full only | [`03-clarify.md`](prompts/03-clarify.md) |
-| 4 — Checklist | `/speckit.checklist` | Full only | [`04-checklist.md`](prompts/04-checklist.md) |
-| 5 — Plan | `/speckit.plan` | Full + Lean | [`05-plan.md`](prompts/05-plan.md) |
-| 6 — Tasks | `/speckit.tasks` | Full + Lean | [`06-tasks.md`](prompts/06-tasks.md) |
-| 7 — Analyze | `/speckit.analyze` | Full only | [`07-analyze.md`](prompts/07-analyze.md) |
-| 8 — Implement | `/speckit.implement` | Full + Lean | [`08-implement.md`](prompts/08-implement.md) |
+| 1 — Constitution | `/speckit-constitution` | Full + Lean | [`01-constitution.md`](prompts/01-constitution.md) |
+| 2 — Specify | `/speckit-specify` | Full + Lean | [`02-specify.md`](prompts/02-specify.md) |
+| 3 — Clarify | `/speckit-clarify` | Full only | [`03-clarify.md`](prompts/03-clarify.md) |
+| 4 — Plan | `/speckit-plan` | Full + Lean | [`04-plan.md`](prompts/04-plan.md) |
+| 5 — Checklist | `/speckit-checklist` | Full only | [`05-checklist.md`](prompts/05-checklist.md) |
+| 6 — Tasks | `/speckit-tasks` | Full + Lean | [`06-tasks.md`](prompts/06-tasks.md) |
+| 7 — Analyze | `/speckit-analyze` | Full only | [`07-analyze.md`](prompts/07-analyze.md) |
+| 8 — Implement | `/speckit-implement` | Full + Lean | [`08-implement.md`](prompts/08-implement.md) |
+| 9 — Converge | `/speckit-converge` | Full + Lean | not yet added |
