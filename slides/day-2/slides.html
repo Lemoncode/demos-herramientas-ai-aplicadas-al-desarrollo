@@ -825,7 +825,10 @@ model: sonnet
                   back, <code>Stop</code> keeps the turn going,
                   <code>Notification</code> ignores it
                 </li>
-                <li>No token cost — they run entirely outside the LLM</li>
+                <li>
+                  Hooks run outside the LLM, so the command itself costs no
+                  tokens — but any output injected into context does
+                </li>
               </ul>
              
             </div>
@@ -842,8 +845,7 @@ if [[ "$command" == rm* ]]; then
 fi
 
 exit 0</code></pre>
-<pre><code></code>
-{
+<pre><code>{
   "session_id": "abc123",
   "transcript_path": "/Users/aridane/.claude/projects/my-app/transcript.jsonl",
   "cwd": "/Users/aridane/projects/my-app",

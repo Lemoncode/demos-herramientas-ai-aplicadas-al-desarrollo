@@ -1816,7 +1816,7 @@
             </div>
             <div class="ct-msg ai" data-id="s4">
               <span class="role">AI</span>In tokens — roughly 4 characters each
-              on average.
+              on average for English text.
             </div>
             <div class="ct-msg user" data-id="s5">
               <span class="role">USER</span>What happens when it fills up?
@@ -1866,7 +1866,7 @@
             </div>
             <div class="ct-msg ai faded" data-id="s4">
               <span class="role">AI</span>In tokens — roughly 4 characters each
-              on average.
+              on average for English text.
             </div>
             <div class="ct-msg user faded" data-id="s5">
               <span class="role">USER</span>What happens when it fills up?
@@ -2537,7 +2537,8 @@
               </ul>
               <p class="idea-clave">
                 <strong>BE AWARE:</strong> it is the context the agent loads on
-                each request remember thatevery line you add has a token cost.
+                each request — remember that every line you add has a token
+                cost.
               </p>
               <p style="margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;opacity:0.75;line-height:1.8;">
                 <a href="https://arxiv.org/abs/2602.11988" target="_blank" style="color:var(--ink);text-decoration:underline">AGENTS.md — The Open Standard for AI Agent Instructions (arXiv, 2026)</a>
@@ -2704,7 +2705,7 @@ src/hooks/       Custom React hooks
                 >
               </div>
               <p style="font-size: 0.82rem">
-                Supports CLAUDE.md and <code>claude/rules/</code> files. Use
+                Supports CLAUDE.md and <code>.claude/rules/</code> files. Use
                 <code>@AGENTS.md</code> to import shared rules and add
                 tool-specific overrides below.
               </p>
@@ -3263,11 +3264,15 @@ If YES → do not use `context: fork`.
         <!-- Prompts · 02 — Slash commands -->
         <section class="dark">
           <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
-          <div class="module-num">02 — Slash commands</div>
+          <div class="module-num">02 — Claude Code · slash commands</div>
           <h2>
             Default slash commands
             <span style="color: var(--yellow)">( / )</span>
           </h2>
+          <p style="font-size: 0.82rem; opacity: 0.8">
+            The commands below are built into Claude Code — other agents ship
+            their own sets.
+          </p>
           <ul>
             <li><code>/clear</code> — clear current context</li>
             <li><code>/plan</code> — create an implementation plan</li>
