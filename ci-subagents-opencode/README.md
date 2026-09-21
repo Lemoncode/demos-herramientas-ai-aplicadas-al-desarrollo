@@ -18,34 +18,54 @@ this folder even though the file itself can't physically live here:
   only reviews when someone comments `/oc` or `/opencode` on the PR.
   Human-in-the-loop.
 
+## Provider: NaN (nan.builders)
+
+Both workflows run `model: nan/deepseek-v4-flash` against
+[NaN](https://nan.builders), an OpenAI-compatible endpoint at
+`https://api.nan.builders/v1`.
+
+NaN is not a built-in opencode provider, so its definition lives in
+`ci-subagents-opencode/opencode.ci.json` and is loaded in CI through the
+`OPENCODE_CONFIG` env var:
+
+```json
+{
+  "provider": {
+    "nan": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://api.nan.builders/v1",
+        "apiKey": "{env:NAN_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+`{env:NAN_API_KEY}` is interpolated from the `NAN_API_KEY` secret, so the
+key is never committed. The file sits outside the repo root on purpose, so
+it doesn't shadow anyone's local `opencode.json`.
+
 ## Cost
 
-This costs nothing beyond whatever provider/API key you already have
-opencode configured with locally. GitHub Actions minutes are free for
-public repos (and included free minutes on private repos).
+This costs nothing beyond the NaN quota you already have. GitHub Actions
+minutes are free for public repos (and included free minutes on private
+repos).
 
-**Important:** the example workflows pin `ANTHROPIC_API_KEY` with
-`model: anthropic/claude-sonnet-4-5` explicitly — opencode itself has no
-fixed default model; it resolves one at startup via priority order
-(`--model` flag → config file → last-used model → internal fallback). If
-your local opencode setup uses a different provider (e.g. OpenRouter),
-rename the secret/env var and the `model` input in both workflow files to
-match — do not add a second, unrelated key.
-
-Unlike the Claude demo (subscription-backed OAuth), an `ANTHROPIC_API_KEY`
-is billed per token — the auto-review workflow fires on every push to an
-open PR touching this folder, so if you're cost-conscious while
-iterating, consider relying on the on-demand workflow instead.
+NaN is billed per token (with per-model caps on your plan), so the
+auto-review workflow fires on every push to an open PR touching this
+folder. If you're cost-conscious while iterating, rely on the on-demand
+workflow instead.
 
 ## One-time setup
 
-1. Take the same API key your local `opencode` CLI is already configured
-   with (check `opencode auth login` / your opencode config for which
-   provider and key you use).
-2. In the GitHub repo, add it as a repository secret named
-   `ANTHROPIC_API_KEY` (or rename to match your provider — see above)
+1. Store your NaN API key as a repository secret named `NAN_API_KEY`
    under Settings → Secrets and variables → Actions → New repository
    secret. Never commit the key to the repo.
+2. Optional — to use a different NaN model, change the `model:` input in
+   both workflow files. Options include `nan/glm5.3-flash`,
+   `nan/qwen3.8-flash` and `nan/mimo-v2.5`; add the model id to
+   `opencode.ci.json` first if it isn't listed there.
 
 ## Running the demo live
 

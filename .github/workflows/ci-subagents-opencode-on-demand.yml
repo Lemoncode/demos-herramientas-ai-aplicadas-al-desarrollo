@@ -24,6 +24,9 @@ jobs:
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # NaN (nan.builders) provider config lives in the committed file
+          # referenced by OPENCODE_CONFIG. See ci-subagents-opencode/README.md.
+          NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
+          OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
         with:
-          model: anthropic/claude-sonnet-4-5
+          model: nan/deepseek-v4-flash
