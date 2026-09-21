@@ -1,2 +1,5 @@
 # Playwright MCP artifacts
 .playwright-mcp/
+
+# Superpowers tool working directory
+.superpowers/
