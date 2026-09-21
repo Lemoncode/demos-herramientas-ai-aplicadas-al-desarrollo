@@ -64,7 +64,7 @@ available there too.
 |---|---|---|
 | `react-reviewer` | TypeScript strictness (`any`, unchecked casts), hook rules (conditional hooks, incomplete deps), prop drilling | edit deny, bash deny |
 | `accessibility-reviewer` | Semantic HTML, headings, image `alt`, accessible names, form labels, keyboard, ARIA, colour-only signals | edit deny, bash deny |
-| `4r-reviewer` | Risk, Readability, Reliability, Resilience — criteria defined in `docs/references/4r-framework.md` | edit deny, bash deny |
+| `4r-reviewer` | Risk, Readability, Reliability, Resilience — criteria defined inline in the agent | edit deny, bash deny |
 
 None of them can edit a file or run a command. They return findings as JSON —
 `file`, `line`, `severity`, `issue`, `fix` — and the coordinator turns each
