@@ -1,4 +1,4 @@
-# QA Harness — Claude Code
+# QA Harness — Agent Instructions
 
 **Objective**: Create a comprehensive summary of all findings organized by categories such as accessibility, bugs, UI/UX issues, and test coverage. This is a dedicated harness for QA engineers in a Frontend (FE) project.
 

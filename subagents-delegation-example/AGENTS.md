@@ -83,7 +83,7 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 ```
 subagents-delegation-example/
-├── CLAUDE.md                       ← this file
+├── AGENTS.md                       ← this file
 ├── CONTEXT.md                      ← vocabulary (Mission, Worker, Fleet, etc.)
 ├── docs/
 │   ├── adr/                        ← 6 accepted architectural decisions

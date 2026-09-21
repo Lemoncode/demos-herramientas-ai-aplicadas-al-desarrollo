@@ -37,7 +37,7 @@ Use the Agent tool to spawn subagents for:
 
 ## Step 4 — compile report
 
-Aggregate all subagent findings into the final QA Review Report format from CLAUDE.md.
+Aggregate all subagent findings into the final QA Review Report format from AGENTS.md.
 
 ## Constraints
 
