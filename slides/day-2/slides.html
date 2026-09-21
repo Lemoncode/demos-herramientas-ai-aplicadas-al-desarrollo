@@ -536,6 +536,7 @@
           <div class="cols" style="align-items: start">
             <ul>
               <li>Subagents</li>
+              <li>Agents in CI</li>
               <li>From prompt to Loop engineering</li>
               <li>Agent Hooks</li>
               <li>MCP and CLIs</li>
@@ -736,6 +737,118 @@ model: sonnet
             (<code>.chatmode.md</code>) — renamed to <strong>custom agents</strong> in v1.106, and
             old files still load. Bonus: VS Code also reads <code>.claude/agents/*.md</code> as-is.
           </p>
+        </section>
+
+        <!-- ── Agents in CI ── -->
+        <section class="dark">
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">05 — Agents in CI</div>
+              <h2>Reviewers<br />on autopilot</h2>
+              <p style="max-width: 42ch">
+                The same reviewer agents you just defined — now running on
+                GitHub Actions, with no local session and nobody typing a prompt.
+              </p>
+              <ul style="margin-top: 0.8rem">
+                <li style="color: rgba(255, 255, 255, 0.8)">
+                  <strong>Automatic</strong> — fires on every PR that touches the
+                  folder and posts a review on open
+                </li>
+                <li style="color: rgba(255, 255, 255, 0.8)">
+                  <strong>On-demand</strong> — fires only when a human comments
+                  <code>/opencode</code>, <code>/oc</code> or <code>@claude</code>
+                </li>
+                <li style="color: rgba(255, 255, 255, 0.8)">
+                  Same agent prompt, two entry points
+                </li>
+                <li style="color: rgba(255, 255, 255, 0.8)">
+                  Two demos: <code>ci-subagents-claude/</code> and
+                  <code>ci-subagents-opencode/</code>
+                </li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Key idea:</strong> the agent stops being a local tool and
+                becomes part of the pipeline.
+              </p>
+            </div>
+            <div>
+              <pre
+                style="font-size: 0.7rem; line-height: 1.5"
+              ><code># .github/workflows/…-auto-review.yml
+name: opencode Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: ['ci-subagents-opencode/**']
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: anomalyco/opencode/github@latest
+        with:
+          model: nan/deepseek-v4-flash</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Bring your own provider ── -->
+        <section>
+          <img class="slide-logo" src="logo.svg" alt="Lemoncode" />
+          <div class="cols">
+            <div>
+              <div class="module-num">06 — Any model, in CI</div>
+              <h2>Bring your<br />own provider</h2>
+              <p>
+                The opencode action is provider-agnostic. NaN is not built in, so
+                declare it once and hand the key in as a repository secret.
+              </p>
+              <ul>
+                <li>
+                  Secret <code>NAN_API_KEY</code> → passed to the job as an env
+                  var
+                </li>
+                <li>
+                  <code>OPENCODE_CONFIG</code> points at a committed provider
+                  file — not the repo root
+                </li>
+                <li>
+                  <code>{env:NAN_API_KEY}</code> is interpolated at runtime, so
+                  the key itself is never committed
+                </li>
+                <li>
+                  Swap <code>baseURL</code> + <code>model</code> for any
+                  OpenAI-compatible endpoint
+                </li>
+              </ul>
+              <p class="idea-clave">
+                <strong>Key idea:</strong> switching providers is a one-file edit
+                — the workflow does not change.
+              </p>
+            </div>
+            <div>
+              <pre style="font-size: 0.68rem; line-height: 1.5"><code>{
+  "provider": {
+    "nan": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://api.nan.builders/v1",
+        "apiKey": "{env:NAN_API_KEY}"
+      },
+      "models": {
+        "deepseek-v4-flash": { "name": "deepseek-v4-flash" }
+      }
+    }
+  }
+}</code></pre>
+              <p style="font-size: 0.72rem; margin-top: 0.6rem">
+                <code>ci-subagents-opencode/opencode.ci.json</code>
+              </p>
+            </div>
+          </div>
         </section>
 
         <!-- ═══════════════════════════════════════════

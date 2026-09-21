@@ -1,10 +1,20 @@
 {
+  "//": "EDUCATIONAL SAMPLE APP - INTENTIONALLY BROKEN. Written with deliberate mistakes so the reviewer agents in CI have something to find. Do not copy, and do not fix the mistakes: they are the point.",
   "name": "ci-subagents-opencode-sample-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Tiny sample app with intentionally planted issues, used to demo an AI code reviewer in CI.",
-  "main": "src/index.ts",
+  "description": "Tiny React sample app with intentionally planted issues, used to demo reviewer agents in CI. Not meant to be run.",
+  "main": "src/main.tsx",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
   }
 }

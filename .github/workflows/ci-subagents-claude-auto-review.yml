@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      issues: read
       id-token: write
     steps:
       - name: Checkout code
@@ -19,11 +20,34 @@ jobs:
         with:
           fetch-depth: 0
 
+      # The agent and skill definitions live in `.github/`, which is the
+      # convention both tools can be pointed at — but Claude Code only
+      # discovers project subagents and skills in `.claude/agents/*.md` and
+      # `.claude/skills/` at the repository root. Stage them, renaming
+      # `*.agent.md` to the `.md` Claude Code expects. The committed source of
+      # truth stays in `ci-subagents-claude/.github/`.
+      - name: Stage agents and coordinator skill for Claude Code
+        run: |
+          mkdir -p .claude/agents .claude/skills
+          for f in ci-subagents-claude/.github/agents/*.agent.md; do
+            cp "$f" ".claude/agents/$(basename "${f%.agent.md}").md"
+          done
+          cp -R ci-subagents-claude/.github/skills/. .claude/skills/
+
       - name: Run Claude Code Review
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           track_progress: true
+          # All of the review logic lives in the `pr-review` skill, not here.
           prompt: |
-            Review the PR changes. Focus on code quality, potential bugs,
-            and security issues. Suggest improvements where appropriate.
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Run the `pr-review` skill.
+          # `Skill` runs the coordinator, `Task` (Claude Code 1.x) and `Agent`
+          # (2.x) dispatch the reviewer subagents. Both spellings are listed so
+          # the workflow keeps working across versions. `gh api` is the primary
+          # way to post inline comments; the MCP tool is the fallback.
+          claude_args: |
+            --allowedTools "Skill,Task,Agent,Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh api:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh repo view:*)"

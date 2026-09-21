@@ -13,27 +13,40 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
-      issues: read
+      issues: write
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
+      # The agents (`ci-reviewer`, `react-reviewer`, `accessibility-reviewer`,
+      # `4r-reviewer`) and the `pr-review` skill live in
+      # `ci-subagents-opencode/.opencode/`, the opencode-specific layout.
+      # opencode discovers project agents and skills by walking up from the cwd
+      # to the worktree root, and here the cwd is the repository root — so stage
+      # them at `.opencode/` for the job, the same way the Claude workflow
+      # stages `.claude/`. Nothing is committed outside the demo folder.
+      - name: Stage opencode AI setup
+        run: |
+          mkdir -p .opencode
+          cp -R ci-subagents-opencode/.opencode/. .opencode/
+
       - uses: anomalyco/opencode/github@latest
         env:
           # NaN (nan.builders) is an OpenAI-compatible provider, so it can't
-          # be inferred from the env var name alone. It is declared in the
-          # committed config referenced by OPENCODE_CONFIG below.
+          # be inferred from the env var name alone. Declared in the committed
+          # config referenced by OPENCODE_CONFIG below.
           # See ci-subagents-opencode/README.md.
           NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
           OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
+          agent: ci-reviewer
           use_github_token: true
+          # All of the review logic lives in the `pr-review` skill, not here.
           prompt: |
-            Review this pull request:
-            - Check for code quality issues
-            - Look for potential bugs
-            - Look for security issues
-            - Suggest improvements
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Run the `pr-review` skill.

@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: read
+      pull-requests: write
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -21,12 +24,24 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      # Same agents and `pr-review` skill as the auto-review workflow. opencode
+      # only walks up from the cwd (the repository root here) looking for
+      # `.opencode`, so stage the demo's AI setup there for the job.
+      - name: Stage opencode AI setup
+        run: |
+          mkdir -p .opencode
+          cp -R ci-subagents-opencode/.opencode/. .opencode/
+
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
-          # NaN (nan.builders) provider config lives in the committed file
-          # referenced by OPENCODE_CONFIG. See ci-subagents-opencode/README.md.
+          # `use_github_token` is deliberately NOT set here, so the action still
+          # exchanges the OIDC token and refuses to run for commenters without
+          # write access. GITHUB_TOKEN is passed only so the `gh` CLI is
+          # authenticated when the agent posts inline review comments.
           NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
           OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
+          agent: ci-reviewer
