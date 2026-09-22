@@ -7,7 +7,7 @@ paths:
 
 # Component Rules
 
-These rules apply to all files inside `src/components/` — Foundation primitives (Heading, Button, Card, Section, tokens) and Section folders (hero, catalog, etc.).
+These rules apply to all files inside `src/components/`.
 
 ## Structure
 
@@ -23,19 +23,15 @@ These rules apply to all files inside `src/components/` — Foundation primitive
   ```
 
 - **One component per file** — if a file needs a second component, extract it
-- Every component file must have a colocated test file: `Heading.tsx` → `Heading.test.tsx`
+- Every component file must have a colocated test file: `PersonRow.tsx` → `PersonRow.test.tsx`
 
-## Section import rules
+## Composition and ownership
 
-Files inside `src/components/<id>/` (Section folders) may import from:
-- `react`, `next/*`
-- `@/components/*` (Foundation primitives only — `Heading`, `Button`, `Card`, `Section`, `tokens`)
+Files inside a feature folder (e.g. `src/components/directory/`) may import sibling files in the same folder — composition across files in one feature is normal and expected (`DirectoryList.tsx` imports `PersonRow.tsx` and `StatusBadge.tsx`).
 
-Files inside `src/components/<id>/` may **not** import from:
-- `@/components/<other_id>/*` (no cross-Section imports — Sections are isolated)
-- Any external UI library (no Material, Chakra, etc. — Foundation primitives only)
-
-If a Section needs a UI element that does not exist in the Foundation, build it inside its own folder. Do not extend the Foundation from a Section.
+What's not allowed:
+- Importing an external UI library (no Material, Chakra, etc.)
+- Editing a file that isn't the one your current backlog ticket names — the boundary the `fix-backlog` workflow relies on is per-ticket file ownership (see `docs/backlog.md`), not an import restriction. Most tickets own a file no other ticket touches; a couple deliberately share one to demonstrate that git worktree isolation, not import restrictions, is what actually keeps two parallel Fix Subagents from colliding while they work.
 
 ## Props
 
@@ -63,7 +59,7 @@ If a Section needs a UI element that does not exist in the Foundation, build it 
 | Page section | `<section>`, `<main>`, `<nav>`, `<footer>` | `<div className="section">` |
 | List of items | `<ul>` / `<ol>` + `<li>` | `<div>` wrappers |
 | Form field label | `<label htmlFor>` | `<span>` adjacent to input |
-| Heading | the `Heading` primitive | bare `<h1>`/`<h2>` (drift risk) |
+| Heading | `<h1>`–`<h6>` matching document outline order | skipped levels, `<div>` styled to look like a heading |
 
 ## Accessibility
 
@@ -77,4 +73,4 @@ If a Section needs a UI element that does not exist in the Foundation, build it 
 
 - `useCallback` and `useMemo` only when a profiler shows a measurable issue — not by default
 - Avoid inline object/array literals as JSX props in components that re-render frequently
-- Prefer server components for static Sections; add `"use client"` only at the lowest necessary boundary
+- Prefer server components for static content; add `"use client"` only at the lowest necessary boundary

@@ -1,7 +1,10 @@
+import { DirectorySearch } from '@/components/directory/DirectorySearch'
+
 export default function Page() {
   return (
     <main>
-      <p>Foundation has not been built yet. Run /goal to dispatch the Fleet.</p>
+      <h1>JivaEnergy — Team Directory</h1>
+      <DirectorySearch />
     </main>
   )
 }

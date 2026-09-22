@@ -37,15 +37,16 @@ Is it really tested? Useful coverage, not vanity coverage. Explicit edge cases. 
 What happens when this fails? Retries, graceful degradation, observability? Or does a local failure cause a cascade?
 
 **Verifiable signals for UI / Next.js code:**
-- Error boundary or `error.tsx` covers the Section.
-- Loading state via `loading.tsx` or Suspense boundary.
+- Empty / edge-case input renders a fallback (empty state, "no results"), not a crash.
+- Error boundary or `error.tsx` covers routes that fetch data.
+- Loading state via `loading.tsx` or Suspense boundary where a route fetches data.
 - Failed `fetch()` in a server component returns a fallback render, not an uncaught throw.
-- No unbounded `while` / recursive renders.
+- No unbounded `while` / recursive renders, and no unmemoized work that scales with unrelated re-renders.
 - `console.error` or telemetry hook is invoked on caught errors (not swallowed).
 
 ## How a 4R Reviewer applies these
 
-For each PR (or each worktree in a Fleet Phase) the Reviewer:
+For each PR (or each worktree in a Fix phase) the Reviewer:
 
 1. Reads the changed files.
 2. For each of the 4 Rs, runs the verifiable signals against the diff.
@@ -57,16 +58,16 @@ For each PR (or each worktree in a Fleet Phase) the Reviewer:
 
 ```json
 {
-  "pr": "section-hero",
+  "pr": "fix-B3",
   "verdict": "merge_with_fixes",
   "findings": [
     {
       "r": "readability",
       "severity": "major",
-      "file": "src/components/hero/Hero.tsx",
-      "line": 42,
-      "issue": "Magic number 0.85 in JSX without a named constant",
-      "fix": "Extract as HERO_OPACITY constant at module level"
+      "file": "src/components/directory/DirectorySearch.tsx",
+      "line": 20,
+      "issue": "Filter recomputed on every render without useMemo",
+      "fix": "Wrap the filtered list in useMemo(() => ..., [query])"
     }
   ],
   "tally": { "blocker": 0, "major": 1, "minor": 2, "info": 0 }

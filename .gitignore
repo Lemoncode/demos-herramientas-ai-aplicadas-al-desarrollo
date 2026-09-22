@@ -3,3 +3,6 @@
 
 # Superpowers tool working directory
 .superpowers/
+
+# Ephemeral git worktrees created by subagents-delegation-example's fix-backlog skill
+.worktrees/

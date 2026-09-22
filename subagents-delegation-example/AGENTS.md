@@ -1,29 +1,44 @@
-# Harness Example — Autonomous Fleet Demo
+# Harness Example — Backlog Fix Demo
 
-Demo harness for the "AI tools applied to development" course. Shows how a single `/goal` prompt dispatches a **fleet of parallel autonomous agents** that build a marketing landing page section by section, with TDD enforced by hooks and a two-Reviewer quality gate.
+Demo harness for the "AI tools applied to development" course. Shows how a single `/fix-backlog` prompt dispatches **parallel autonomous subagents** that each fix one real, independent bug from a small backlog, with TDD enforced by an explicit quality-gate step and a three-Reviewer quality gate.
 
 **Stack:** Next.js 15 (App Router) · React 19 · TypeScript strict · Vitest 4 · @testing-library/react · ESLint 9 (jsx-a11y)
 
-For the architectural reasoning behind every choice below, see `CONTEXT.md` (vocabulary) and `docs/adr/` (six accepted decisions).
+For the vocabulary behind every term below, see `CONTEXT.md`. For the "why", see Design notes at the bottom of this file.
 
 ---
 
 ## How to run the demo
 
 ```
-/goal
+/fix-backlog
 ```
 
-One prompt. The Orchestrator runs four phases and prints a Final Report when done.
+One prompt. The Orchestrator runs three phases and prints a Final Report when done. Pass ticket ids to fix a subset, e.g. `/fix-backlog B1 B3`.
 
 | Phase | What happens | Visible to audience |
 |---|---|---|
-| **1. Foundation** | Orchestrator generates tokens, primitives (`Heading`, `Button`, `Card`, `Section`), app shell, Section stubs. Commits to main. | ~90s sequential output |
-| **2. Fleet** | Orchestrator dispatches 6 Workers in parallel via `Agent(isolation: "worktree")`. Each Worker owns one Section folder, runs Red→Green→Refactor, returns a structured contract. | 6 transcripts running concurrently |
-| **3. Review** | Orchestrator dispatches `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer` in parallel. Each reads all 6 worktrees and emits per-Section verdicts. | 3 review reports + 3 markdown files in `docs/reports/` |
-| **4. Ship & Report** | Orchestrator opens one PR per Section that passed Build + Tests, then prints the Final Report (6×4 matrix + PR URLs). HALT. | Final Report on screen |
+| **1. Fix** | Orchestrator reads `docs/backlog.md`, creates one `git worktree` per ticket itself, then dispatches one `ticket-fixer` per ticket (each told which worktree to `cd` into). Each fixes its one owned file, running Red→Green→Refactor. | 5 transcripts running concurrently |
+| **2. Review** | Orchestrator dispatches `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer` in parallel. Each reads across all fixed worktrees and emits per-ticket verdicts. | 3 review reports + 3 markdown files in `docs/reports/` |
+| **3. Ship & Report** | Orchestrator opens one PR per ticket that passed Build + Tests, removes every worktree, then prints the Final Report (status matrix + PR URLs). HALT. | Final Report on screen |
 
 Stop condition: the Final Report prints. Nothing else happens.
+
+---
+
+## The backlog
+
+`docs/backlog.md` lists five tickets against `src/components/directory/` (a small Team Directory page):
+
+| Ticket | File | Kind |
+|---|---|---|
+| B1 | `DirectoryList.tsx` | Accessibility — icon-only button has no real accessible name |
+| B2 | `PersonRow.tsx` | Correctness — tenure calculation ignores the anniversary date |
+| B3 | `DirectorySearch.tsx` | React/perf — filtering isn't memoized, recomputes every render |
+| B4 | `StatusBadge.tsx` | Test gap — correct component, zero test coverage |
+| B5 | `DirectoryList.tsx` | Accessibility — filtered result count isn't announced (`aria-live`) |
+
+Four of the five own a file no other ticket touches. **B1 and B5 are the deliberate exception** — both target `DirectoryList.tsx`, to demonstrate that worktree isolation doesn't require file-exclusive tickets, only a separate checkout per ticket. See the note at the top of `docs/backlog.md`.
 
 ---
 
@@ -33,10 +48,9 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Skill | Invoke when | Used by |
 |---|---|---|
-| `orchestrate-fleet` | Running `/goal` | the Orchestrator (you, in the main session) |
-| `build-section` | Dispatched as a Section Worker | `section-worker` agent |
-| `vitest-tdd` | Implementing any feature or bugfix | `build-section` references this for Red→Green→Refactor discipline |
-| `frontend-design` | Generating tokens + primitives in Foundation Phase | `orchestrate-fleet` invokes it once with Editorial Energy constraints |
+| `fix-backlog` | Running `/fix-backlog` | the Orchestrator (you, in the main session) |
+| `fix-ticket` | Dispatched as a Fix Subagent | `ticket-fixer` agent |
+| `vitest-tdd` | Implementing any feature or bugfix | `fix-ticket` references this for Red→Green→Refactor discipline |
 
 ---
 
@@ -44,7 +58,7 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Command | What it does |
 |---|---|
-| `/goal` | Runs the full Fleet workflow against `docs/demo/goal-prompt.md` (or the argument you pass). |
+| `/fix-backlog` | Runs the full backlog workflow against `docs/backlog.md` (or a ticket-id filter you pass as arguments). |
 
 ---
 
@@ -52,10 +66,10 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Agent | Dispatched when | Tools |
 |---|---|---|
-| `section-worker` | Phase 2, 6× in parallel (`isolation: "worktree"`) | Read, Write, Edit, Bash, Glob, Grep |
-| `react-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
-| `accessibility-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
-| `4r-reviewer` | Phase 3, once | Read, Glob, Grep, Write |
+| `ticket-fixer` | Phase 1, one per ticket in parallel, each pointed at a worktree the Orchestrator already created | Read, Write, Edit, Bash, Glob, Grep |
+| `react-reviewer` | Phase 2, once | Read, Glob, Grep |
+| `accessibility-reviewer` | Phase 2, once | Read, Glob, Grep, Write |
+| `4r-reviewer` | Phase 2, once | Read, Glob, Grep, Write |
 
 ---
 
@@ -63,8 +77,8 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Rule file | Scope | Covers |
 |---|---|---|
-| `react-conventions.md` | All `.ts` / `.tsx` files | Folder layout (`src/app`, `src/components`), server vs client components, naming, strict TypeScript, imports |
-| `components.md` | `src/components/**` | One component per file, named exports, props ≤ 6, semantic HTML, accessibility, no cross-Section imports |
+| `components.md` | `src/components/**` | One component per file, named exports, props ≤ 6, semantic HTML, accessibility, per-ticket file ownership instead of import restrictions |
+| `testing-conventions.md` | All test files | Query priority (`getByRole` first), `userEvent` over `fireEvent`, one behavior per test |
 
 ---
 
@@ -72,10 +86,28 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 | Hook | Trigger | What it enforces |
 |---|---|---|
-| `section-ownership.sh` | PreToolUse on Write / Edit / MultiEdit | When the current branch is `fleet/<id>`, writes are restricted to `src/components/<id>/`. Foundation Phase (main branch) is unrestricted. |
-| `commit-guard.sh` | PreToolUse on Bash containing `git commit` | All tests must pass. |
-| `quality-gate.sh` | PostToolUse on Write / Edit / MultiEdit | ESLint zero errors + TypeScript zero type errors. |
-| `status-summary.sh` | Stop (after each turn) | Prints lint / type / test status — informational only. |
+| `commit-guard.sh` | PreToolUse on Bash containing `git commit` | All tests must pass before the commit is allowed. |
+| `destructive-guard.sh` | PreToolUse on Bash | Blocks destructive commands (`rm -rf`, `git reset --hard`, `git push --force`, etc.) unless explicitly overridden. |
+
+These are the only two hooks in this harness. Per-ticket file ownership is *not* hook-enforced — it's a discipline `fix-ticket` documents explicitly, backed by the fact that each ticket runs in its own `git worktree` so a Fix Subagent physically cannot see another ticket's in-progress edits, even on the two tickets (B1, B5) that share a file. The typecheck/lint quality gate is likewise an explicit step inside `fix-ticket`, not a hidden `PostToolUse` hook — visible discipline over invisible enforcement.
+
+---
+
+## Providers
+
+This harness runs under three AI coding tools, each reading the same source of truth with its own discovery rules:
+
+| Tool | Agents from | Skills from | Commands from | Rules from |
+|---|---|---|---|---|
+| Claude Code | `.claude/agents/` | `.claude/skills/` | `.claude/commands/` | `.claude/rules/` (path-conditional) |
+| GitHub Copilot | `.github/agents/` | `.github/skills/` | `.github/prompts/` | `.github/instructions/` (path-conditional) |
+| opencode | `.opencode/agents/` | `.claude/skills/` directly (Claude-compat — no separate copy needed) | `.opencode/commands/` (no Claude-compat fallback — must exist here) | `opencode.jsonc`'s `instructions` array (always-on, not path-conditional) |
+
+Two things don't fit that table:
+- **`AGENTS.md`** (this file) is read by all three natively — no per-tool copy needed.
+- **Agents and commands have no cross-tool fallback anywhere.** opencode reads `.claude/skills/` automatically, but it will *not* find `.claude/agents/` or `.claude/commands/` — hence the separate `.opencode/agents/` and `.opencode/commands/fix-backlog.md`.
+
+To run with opencode: `cd subagents-delegation-example && opencode`, then `/fix-backlog`. opencode discovers project config by walking up from the current directory to the git worktree root, so running it from inside this folder is enough — no staging step required (unlike the CI demos elsewhere in this repo, which run from the monorepo root and have to copy `.opencode/` there first).
 
 ---
 
@@ -83,57 +115,46 @@ Invoke a skill before any task it matches. Skills are rigid — follow every ste
 
 ```
 subagents-delegation-example/
-├── AGENTS.md                       ← this file
-├── CONTEXT.md                      ← vocabulary (Mission, Worker, Fleet, etc.)
+├── AGENTS.md                       ← this file, read natively by all three tools
+├── CONTEXT.md                      ← vocabulary (Backlog, Ticket, Fix Subagent, etc.)
+├── opencode.jsonc                  ← opencode-only: always-on instructions (component/testing rules)
 ├── docs/
-│   ├── adr/                        ← 6 accepted architectural decisions
-│   ├── demo/goal-prompt.md         ← the canonical Goal prompt for /goal
-│   ├── references/4r-framework.md  ← Cristian's 4Rs — read by 4r-reviewer
+│   ├── backlog.md                  ← the five tickets — canonical input to /fix-backlog
+│   ├── references/4r-framework.md  ← the 4Rs — read by 4r-reviewer
 │   └── reports/                    ← Reviewer outputs land here per run
 ├── .claude/
-│   ├── commands/goal.md
-│   ├── agents/                     ← section-worker, react-reviewer, accessibility-reviewer, 4r-reviewer
-│   ├── skills/                     ← orchestrate-fleet, build-section, vitest-tdd, frontend-design
-│   ├── rules/                      ← react-conventions, components
-│   ├── hooks/                      ← section-ownership, commit-guard, quality-gate, status-summary
+│   ├── commands/fix-backlog.md
+│   ├── agents/                     ← ticket-fixer, react-reviewer, accessibility-reviewer, 4r-reviewer
+│   ├── skills/                     ← fix-backlog, fix-ticket, vitest-tdd, plus git-* and review skills (opencode reads these too)
+│   ├── rules/                      ← components, testing-conventions
+│   ├── hooks/                      ← commit-guard, destructive-guard
 │   └── settings.json
+├── .github/                        ← Copilot's portable mirror: agents/, skills/, prompts/, instructions/
+├── .opencode/
+│   ├── agents/                     ← ticket-fixer, react-reviewer, accessibility-reviewer, 4r-reviewer
+│   └── commands/fix-backlog.md     ← opencode has no .claude/commands fallback, so this must exist
 └── src/
     ├── app/                        ← Next.js App Router (layout, page, globals.css)
-    └── components/                 ← All components, each in its own folder
-        ├── tokens.ts               ← shared design tokens
-        ├── heading/                 ← Foundation primitive
-        │   ├── Heading.tsx
-        │   └── Heading.test.tsx
-        ├── button/
-        ├── card/
-        ├── section/
-        ├── hero/                    ← Section (one per Worker)
-        ├── catalog/
-        ├── sustainability/
-        ├── faq/
-        ├── certifications/
-        └── contact/
+    └── components/
+        └── directory/              ← the seeded app: people.ts, DirectoryList, PersonRow, DirectorySearch, StatusBadge
 ```
 
 ---
 
 ## Prerequisites
 
-- `gh` authenticated against this repo's `origin` remote (Phase 4 opens PRs).
+- `gh` authenticated against this repo's `origin` remote (Phase 3 opens PRs).
 - `node` and `npm` installed; `npm install` run within the last day.
-- Start `/goal` from `main` with a clean working tree.
+- `opencode` CLI installed if you're running via opencode instead of Claude Code or Copilot.
+- Start `/fix-backlog` from `main` with a clean working tree.
 
 ---
 
-## Architectural reasoning
+## Design notes
 
-The non-obvious choices are captured in `docs/adr/`:
+Why this harness looks the way it does:
 
-| ADR | Decision |
-|---|---|
-| 0001 | Editorial Energy via the `frontend-design` skill |
-| 0002 | Dispatch via `Agent(isolation: "worktree")` for native worktree forking |
-| 0003 | Migrated from Vite to Next.js 15 App Router |
-| 0004 | The Goal prompt is the full spec — no external fetch |
-| 0005 | Four-phase orchestration with measurable stop and a dedicated Review phase |
-| 0006 | `build-section` is strict; file ownership enforced by a hook |
+- **No design-token / primitive-generation phase.** The seed app (`src/components/directory/`) already exists and already ships — a real team fixing bugs doesn't invent a design system first. The Orchestrator's job starts at Fix, not at scaffolding.
+- **Explicit `git worktree add`, not a tool-specific isolation parameter.** Claude Code's `Agent` tool has an `isolation: "worktree"` convenience parameter that creates the worktree for you; opencode's `Task` tool and Copilot's agent dispatch have no equivalent. `fix-backlog` therefore has the Orchestrator run plain `git worktree add` itself in Phase 1, then tells each Fix Subagent which path to `cd` into — the exact same mechanism regardless of which of the three tools is reading the skill. It's more explicit than relying on Claude-only magic, and it's the only version that actually runs correctly on all three.
+- **Worktree isolation, no ownership hook — and it doesn't require file-exclusive tickets.** Four of the five tickets happen to own a file no other ticket touches, but B1 and B5 deliberately don't: both target `DirectoryList.tsx`. That's the point — isolation comes from each ticket getting its own worktree, not from the backlog being written to avoid overlap. Two Fix Subagents editing the same file in two different worktrees never see each other's in-progress state; they just might produce two PRs that need a normal merge resolution, exactly like two engineers touching the same file would.
+- **Three phases, not four.** Cutting the design-system phase collapses what was a 4-phase flow into Fix → Review → Ship & Report — fewer moving parts to explain, and each phase still demonstrates a distinct delegation pattern (parallel writers, then parallel read-only reviewers, then sequential shipping).

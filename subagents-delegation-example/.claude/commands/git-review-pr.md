@@ -39,9 +39,8 @@ You are a code reviewer for a React + TypeScript project. Review this pull reque
 ## Project Rules to Check
 
 Read these rule files before reviewing:
-- `.claude/rules/react-conventions.md`
-- `.claude/rules/testing-conventions.md`
 - `.claude/rules/components.md` (applies to files in `src/components/`)
+- `.claude/rules/testing-conventions.md`
 
 ## What to Check
 
@@ -59,19 +58,14 @@ Flag any new source file that has no test, or any changed behavior that has no c
 
 For every file in the diff, check whether the project rules were followed:
 
-**For all `.tsx`/`.ts` files** (from `react-conventions.md`):
-- Named exports only (no `export default` except in `main.tsx`)
-- `interface` used for object shapes (not `type`)
-- No `any` types
-- Custom hooks named with `use` prefix and placed in `src/hooks/`
-- `useCallback`/`useMemo` only where justified
-
 **For files in `src/components/`** (from `components.md`):
-- One component per file
+- Named exports only, one component per file
+- `interface` used for props (not `type`), no `any` types
 - Semantic HTML (no `<div onClick>`, no `<span onClick>`)
 - All interactive elements have accessible names
 - All `<img>` have `alt`
 - Form inputs are associated with `<label htmlFor>`
+- `useCallback`/`useMemo` only where justified
 
 **For test files** (from `testing-conventions.md`):
 - Tests colocated next to source files

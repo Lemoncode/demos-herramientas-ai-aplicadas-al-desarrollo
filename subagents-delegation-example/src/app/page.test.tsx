@@ -3,10 +3,9 @@ import { describe, it, expect } from 'vitest'
 import Page from './page'
 
 describe('Page', () => {
-  it('renders the foundation-not-built placeholder', () => {
+  it('renders the team directory', () => {
     render(<Page />)
-    expect(
-      screen.getByText(/foundation has not been built/i),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /team directory/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/search teammates/i)).toBeInTheDocument()
   })
 })

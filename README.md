@@ -16,7 +16,7 @@ Hands-on walkthrough of [Spec-Driven Development](https://github.com/github/spec
 Demo of the **Grill Me** workflow (based on Matt Pocock's workshop). Goes from a vague client brief to AFK agent implementation through a structured sequence: Grill → PRD → Issues → Ralph Loop → QA.
 
 ### `subagents-delegation-example`
-Next.js 15 harness for the **Autonomous Fleet** demo. A single `/goal` prompt dispatches an Orchestrator that runs four phases: builds UI primitives, dispatches 6 parallel Section Workers (each in an isolated git worktree), runs 3 parallel Reviewers, and opens GitHub PRs for sections that pass all quality gates. AI setup: Claude Code (`.claude/`), Copilot (`.github/`).
+Next.js 15 harness for a **parallel bug-fix backlog** demo. A single `/fix-backlog` prompt dispatches an Orchestrator that reads a small backlog of independent, planted bugs, dispatches one Fix Subagent per ticket (each in an isolated git worktree), runs 3 parallel Reviewers, and opens GitHub PRs for tickets that pass all quality gates. AI setup: Claude Code (`.claude/`), Copilot (`.github/`), opencode (`.opencode/`).
 
 ### `harness-example-qa`
 AI harness for **QA engineers**. Configures Claude and Copilot for read-only PR reviews: fetches Jira acceptance criteria, runs parallel subagent analysis (AC coverage, accessibility, contrast, tests, regression risk), and produces a structured QA Review Report. AI setup: Claude Code (`.claude/`), Copilot (`.github/`).

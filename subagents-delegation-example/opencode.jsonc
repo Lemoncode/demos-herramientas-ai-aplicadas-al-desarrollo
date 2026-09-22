@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // opencode has no per-path conditional rule loading like Claude Code's
+  // `.claude/rules/*.md` (paths: frontmatter) or Copilot's `.github/instructions/*`
+  // (applyTo: glob). These two files are always included instead — coarser,
+  // but the project is small enough that "always on" costs nothing.
+  "instructions": [".claude/rules/components.md", ".claude/rules/testing-conventions.md"]
+}

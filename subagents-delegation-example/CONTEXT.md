@@ -1,47 +1,27 @@
 # Harness Example
 
-Demo harness for a course on AI-assisted development. Illustrates a **fleet of autonomous agents** delivering React features in parallel, each agent isolated in its own git worktree.
+Demo harness for a course on AI-assisted development. Illustrates **parallel subagent delegation**: a small backlog of independent, real bugs gets fixed by one subagent per ticket, each isolated in its own git worktree.
 
 ## Language
 
-**Mission**:
-A single self-contained piece of work that one Worker owns end-to-end — from failing test to merged PR. A Mission must not touch files owned by another concurrently-running Mission.
-_Avoid_: Ticket, story, task, issue
+**Backlog**:
+The list of open tickets against the current codebase, written in `docs/backlog.md`. Mirrors a real sprint backlog — plain issue descriptions, not a marketing brief.
+_Avoid_: Goal, brief, spec
 
-**Worker**:
-A single autonomous agent instance executing one Mission in its own git worktree. Workers do not communicate with each other; they coordinate only through the Orchestrator and through merged main.
-_Avoid_: Agent (too generic), bot, assistant
+**Ticket**:
+One bug or gap, scoped to exactly one file, owned end-to-end by one Fix Subagent. Most tickets own a file no other ticket touches; a few deliberately share a file with another ticket to demonstrate why worktree isolation matters (see `docs/backlog.md`) — each still gets its own git worktree, so the Fix Subagents never collide while working, even though the resulting PRs may still need a normal merge resolution.
+_Avoid_: Mission, story, issue (too generic in this doc), task
 
-**Fleet**:
-The set of Workers running concurrently against a single high-level Goal.
-_Avoid_: Swarm, team, group
+**Fix Subagent**:
+A single autonomous agent instance that resolves one Ticket in its own git worktree: reproduce the bug with a failing test, fix it, run the quality gate, commit, return a structured result. Fix Subagents do not communicate with each other; they coordinate only through the Orchestrator and through merged main.
+_Avoid_: Worker, agent (too generic), bot
 
 **Orchestrator**:
-The first agent in the session. Takes the user's Goal, decomposes it into independent Missions, and dispatches one Worker per Mission. Does not write feature code itself.
+The first agent in the session. Reads the Backlog, dispatches one Fix Subagent per Ticket, then dispatches the Reviewers, then ships PRs and prints the Final Report. Does not fix tickets itself.
 _Avoid_: Coordinator, dispatcher, manager
 
-**Goal**:
-The user's single high-level instruction to the Orchestrator, expressed as one prompt at session start. Example: _"Redesign the JivaEnergy homepage."_
-_Avoid_: Task, requirement, brief
-
-**Section**:
-The unit of parallelism in this harness. One homepage region (Hero, Catalog, FAQ, etc.) owned end-to-end by exactly one Worker. Sections never import from other Sections — only from the Foundation.
-_Avoid_: Block, module, panel, widget
-
-**Foundation**:
-The shared, read-only substrate every Section depends on: design tokens, layout shell, and primitive UI components. Built sequentially by the Orchestrator before any Worker is dispatched.
-_Avoid_: Shell, base, core, scaffold
-
-**Foundation Phase / Fleet Phase**:
-The two execution phases of a single session. Foundation Phase is sequential (Orchestrator alone). Fleet Phase is parallel (one Worker per Section, all dispatched together, no further input from the user).
-_Avoid_: Setup, build phase
-
-**Mission Brief**:
-The structured data payload the Orchestrator passes per Worker at dispatch — Section name, owned file path, copy spec, mock data, and any Section-specific overrides. The `build-section` skill is the behavior; the Mission Brief is the parameters.
-_Avoid_: Prompt, ticket spec, instructions, briefing
-
 **Reviewer**:
-A read-only specialist subagent dispatched after the Fleet finishes. Reviewers do not write feature code and do not have their own worktree — they read across the 6 Worker worktrees and emit findings. The harness ships three: `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer`.
+A read-only specialist subagent dispatched after all Fix Subagents finish. Reviewers do not write code and do not have their own worktree — they read across the fixed worktrees and emit findings. The harness ships three: `react-reviewer`, `accessibility-reviewer`, and `4r-reviewer`.
 _Avoid_: Auditor, checker, linter, critic
 
 **4R Framework**:
@@ -49,5 +29,5 @@ External code-review framework adopted as the standard for the `4r-reviewer`. Th
 _Avoid_: Quality framework, review framework, 4-pillar framework
 
 **Final Report**:
-The single printed artifact that closes a `/goal` run — a 6×4 pass/fail matrix plus PR URLs. The Orchestrator does not exit until the Final Report is printed; printing it is the explicit stop condition.
+The single printed artifact that closes a `/fix-backlog` run — a table of Ticket × Fix/React/a11y/4R status plus PR URLs. The Orchestrator does not exit until the Final Report is printed; printing it is the explicit stop condition.
 _Avoid_: Summary, status, results

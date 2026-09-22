@@ -2,8 +2,8 @@ import './globals.css'
 import type { ReactNode } from 'react'
 
 export const metadata = {
-  title: 'JivaEnergy',
-  description: 'Cargadores AC y DC para vehículos eléctricos.',
+  title: 'JivaEnergy — Team Directory',
+  description: 'Internal team directory for JivaEnergy staff.',
 }
 
 interface RootLayoutProps {
@@ -12,7 +12,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body>{children}</body>
     </html>
   )
