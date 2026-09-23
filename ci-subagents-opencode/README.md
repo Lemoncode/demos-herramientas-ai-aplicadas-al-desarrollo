@@ -249,6 +249,12 @@ tools review byte-identical code.
 | `OrderRow.tsx` | `<img>` with no `alt` | `accessibility-reviewer` |
 | `OrderRow.tsx` | `<select>` with no label | `accessibility-reviewer` |
 | `OrderRow.tsx` | Icon-only `!` button with no accessible name | `accessibility-reviewer` |
+| `OrderToolbar.tsx` | `useMemo` reads `orders` but the dep array is `[]` | `react-reviewer` |
+| `OrderToolbar.tsx` | Icon-only `↓` button with no accessible name | `accessibility-reviewer` |
+| `OrderToolbar.tsx` | Clickable `<div>` — no role, no keyboard handler | `accessibility-reviewer` |
+| `OrderToolbar.tsx` | 7-field props interface | `4r-reviewer` (Readability) |
+| `OrderToolbar.tsx` | `setTimeout` created on mount and never cleared | `4r-reviewer` (Resilience) |
+| `OrderToolbar.tsx` | Magic number `30000` delay in the effect | `4r-reviewer` (Readability) |
 | whole app | no colocated `*.test.tsx` anywhere | `4r-reviewer` (Reliability) |
 
 A good run produces comments from all three agents on the first pass —

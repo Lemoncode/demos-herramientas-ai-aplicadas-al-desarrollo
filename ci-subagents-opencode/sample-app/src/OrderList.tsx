@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import { fetchOrders, type Order } from "./api";
 import { OrderTable } from "./OrderTable";
+import { OrderToolbar } from "./OrderToolbar";
 
 // Issue (Readability): 7 fields — over the 6-field props budget.
 interface OrderListProps {
@@ -65,6 +66,16 @@ export function OrderList(props: OrderListProps) {
       <div style={{ padding: 24, marginTop: 16 }} onClick={() => setOrders([])}>
         Clear all
       </div>
+
+      <OrderToolbar
+        orders={visible}
+        currency={props.currency}
+        locale={props.locale}
+        timezone={props.timezone}
+        onExport={() => {}}
+        onArchiveAll={() => setOrders([])}
+        onClear={() => setOrders([])}
+      />
 
       {/* Issue (Accessibility): heading level jumps from h1 to h3. */}
       <h3>Results</h3>
