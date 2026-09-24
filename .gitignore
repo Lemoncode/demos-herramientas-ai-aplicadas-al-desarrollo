@@ -6,3 +6,6 @@
 
 # Ephemeral git worktrees created by subagents-delegation-example's fix-backlog skill
 .worktrees/
+
+# opencode AI setup staged at the repo root by the CI workflows (ephemeral, never committed)
+/.opencode/
