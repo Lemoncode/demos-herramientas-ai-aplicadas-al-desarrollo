@@ -1,0 +1,19 @@
+{
+  "name": "service-contracts-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server that exposes the legacy and new service contracts to an AI assistant",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.21",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}

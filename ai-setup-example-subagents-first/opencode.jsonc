@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // opencode has no per-path conditional rule loading, so the two rule files are listed
+  // here as always-on instructions instead. The `react-app` read-only rule is coarse (it is
+  // always on, rather than only applying when editing react-app/) — acceptable for a demo
+  // whose whole point is "do not touch the source".
+  "instructions": [
+    ".claude/rules/astro-components.md",
+    ".claude/rules/react-app-readonly.md"
+  ]
+}

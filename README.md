@@ -24,6 +24,19 @@ AI harness for **QA engineers**. Configures Claude and Copilot for read-only PR 
 ### `mcp-example`
 Minimal MCP (Model Context Protocol) server implementation showing how to expose custom tools to AI coding assistants.
 
+### AI setup examples (the depth ladder)
+
+Three self-contained, runnable examples that trace how far an AI setup can go — each is named after its **technique**, and each ships its own codebase plus a per-tool setup for Claude Code (`.claude/`), Copilot (`.github/`) and opencode (`.opencode/` / `opencode.jsonc`), scoped to the mechanisms it actually uses. Read them in order: each rung adds one idea.
+
+#### `ai-setup-example-instructions-first`
+Instructions-first — the minimum viable setup: an `AGENTS.md` plus path-scoped rules, and nothing else. No agents, no hooks, no commands, no MCP. Use case: add a feature to a greenfield Vite + React app. Teaches that a precise instruction set is often enough, and how the same rules reach all three tools.
+
+#### `ai-setup-example-subagents-first`
+Subagents-first — delegation. One `/migrate-react-to-astro` prompt fans a React → Astro migration out to one `component-migrator` subagent per source file, then verifies the result with a read-only `astro-verifier`. Teaches parallel fan-out, file-ownership isolation (no worktree needed when units don't share files), and a structured contract between orchestrator and subagent.
+
+#### `ai-setup-example-mcp-first`
+MCP-first — external context as tools. A small MCP server exposes a legacy Users API and a new Customers API to the assistant as tools (`get_contract`, `search_contract`, `read_route_handler`) so a service swap is planned against the real contracts, not a prose summary. Teaches that when *knowledge* is the bottleneck, tools beat instructions. No command and no subagents — the tool is the setup.
+
 ### `ci-subagents-opencode`
 Demo of a PR review *pipeline* wired into GitHub Actions using opencode's official GitHub Action (`anomalyco/opencode/github`). A `pr-review` skill coordinates three reviewer subagents (`react-reviewer`, `accessibility-reviewer`, `4r-reviewer`) that run in parallel over the changed files; every finding lands as an inline PR review comment. Shows both an automatic PR review trigger and an on-demand `/opencode`-comment trigger, the latter also able to apply a fix and commit it back to the PR. Authenticated via whatever provider key you already have opencode configured with. The 4R criteria live inline in the `4r-reviewer` agent definition, so each reviewer is self-contained.
 

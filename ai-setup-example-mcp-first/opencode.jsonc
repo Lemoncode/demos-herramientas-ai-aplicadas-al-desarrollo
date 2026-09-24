@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // opencode has no per-path conditional rule loading, so the two rule files are listed
+  // here as always-on instructions. The MCP server is registered under `mcp` (Claude Code
+  // spells the same thing `mcpServers`, VS Code spells it `servers`).
+  "instructions": [
+    ".claude/rules/new-service-conventions.md",
+    ".claude/rules/legacy-readonly.md"
+  ],
+  "mcp": {
+    "service-contracts": {
+      "type": "local",
+      "command": ["npx", "tsx", "mcp-server/src/index.ts"],
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: Legacy Users API
+  version: 1.0.0
+  description: The service currently used by the frontend. Read-only during the swap.
+servers:
+  - url: http://localhost:4001
+paths:
+  /api/v1/users:
+    get:
+      operationId: listUsers
+      summary: List all users
+      responses:
+        '200':
+          description: A bare array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /api/v1/users/{id}:
+    get:
+      operationId: getUser
+      summary: Fetch one user by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, name, email]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Agent",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(npm run check*)",
+      "Bash(npm run build*)",
+      "Bash(npm run dev*)",
+      "Bash(npm install*)",
+      "Bash(git status*)",
+      "Bash(git diff*)"
+    ],
+    "deny": [
+      "Edit(react-app/**)",
+      "Write(react-app/**)"
+    ]
+  }
+}

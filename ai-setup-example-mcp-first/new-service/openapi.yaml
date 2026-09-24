@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: Customers API v2
+  version: 2.0.0
+  description: The service we are migrating TO. Renamed paths and fields, enveloped responses.
+servers:
+  - url: http://localhost:4002
+paths:
+  /v2/customers:
+    get:
+      operationId: listCustomers
+      summary: List all customers
+      responses:
+        '200':
+          description: A `data` envelope around a customers array
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customer'
+                  total:
+                    type: integer
+  /v2/customers/{id}:
+    get:
+      operationId: getCustomer
+      summary: Fetch one customer by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A `data` envelope around a single customer
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+        '404':
+          description: Not found, returned as an `error` envelope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+components:
+  schemas:
+    Customer:
+      type: object
+      required: [id, fullName, emailAddress]
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
+        emailAddress:
+          type: string
+          format: email

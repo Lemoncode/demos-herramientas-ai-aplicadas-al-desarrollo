@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(npm install*)",
+      "Bash(npm start*)",
+      "Bash(npx tsx*)",
+      "Bash(git status*)",
+      "Bash(git diff*)"
+    ],
+    "deny": [
+      "Edit(legacy-service/**)",
+      "Write(legacy-service/**)"
+    ]
+  }
+}

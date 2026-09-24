@@ -1,0 +1,4 @@
+# Migrated .astro components land here.
+
+# One file per source React component, named exactly like the source file
+# (Header.tsx → Header.astro), created by the component-migrator subagent.
