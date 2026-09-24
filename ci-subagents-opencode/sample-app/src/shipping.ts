@@ -33,16 +33,18 @@ export function fetchRates(endpoint: string): Promise<number[]> {
   }).then((res) => res.json()) as Promise<number[]>;
 }
 
-// Issue (Resilience): no `.catch()` and no `await` — a failed request becomes
-// an unhandled promise rejection and the caller never learns about it.
 export function bookPickup(shipment: Shipment): void {
   fetch("https://carrier.example.com/pickups", {
     method: "POST",
     headers: { Authorization: `Bearer ${CARRIER_TOKEN}` },
     body: JSON.stringify(shipment),
-  }).then((res) => {
-    console.log("Pickup booked:", res.status);
-  });
+  })
+    .then((res) => {
+      console.log("Pickup booked:", res.status);
+    })
+    .catch((error) => {
+      console.error("Pickup booking failed:", error);
+    });
 }
 
 // Issue (Readability): magic numbers with no named constants.
