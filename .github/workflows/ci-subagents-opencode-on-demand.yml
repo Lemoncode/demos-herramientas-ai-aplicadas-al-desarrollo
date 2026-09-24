@@ -14,7 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      # The fixer edits the PR branch and the action commits + pushes the
+      # result, so this workflow needs write access. The auto-review workflow
+      # stays read-only (`contents: read`).
+      contents: write
       pull-requests: write
       issues: write
     steps:
@@ -32,6 +35,15 @@ jobs:
           mkdir -p .opencode
           cp -R ci-subagents-opencode/.opencode/. .opencode/
 
+      # The action commits whatever the agent edited (`git add` + `git commit`
+      # + `git push` to the PR branch), and `git commit` needs an identity on
+      # the runner. The staged `.opencode/` copy is gitignored, so it never
+      # lands in the commit.
+      - name: Configure git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
@@ -44,4 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
-          agent: ci-reviewer
+          # On-demand is the write entry point: the comment is the task, the
+          # agent edits the PR branch, and the action commits the result.
+          agent: ci-pr-fixer

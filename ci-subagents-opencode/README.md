@@ -15,8 +15,9 @@ this folder even though the file itself can't physically live here:
   reviews every PR touching this folder the moment it's opened or
   updated. No human action required.
 - **On-demand** (`.github/workflows/ci-subagents-opencode-on-demand.yml`) —
-  only reviews when someone comments `/oc` or `/opencode` on the PR.
-  Human-in-the-loop.
+  runs only when someone comments `/oc` or `/opencode` on the PR.
+  Human-in-the-loop, and the one entry point that can **write**: whatever the
+  comment asks for, the agent edits and the action commits it back to the PR.
 
 ## Where the AI setup lives
 
@@ -53,12 +54,12 @@ Nothing is committed outside the demo folder; the staged copy dies with the
 runner. It also means running `opencode` *inside* `ci-subagents-opencode/`
 locally picks up exactly the same agents and skill, with no config gymnastics.
 
-## The reviewer agents
+## The agents
 
 Three read-only reviewers live in `.opencode/agents/` (and, portably, in
 `.github/agents/`). The auto-review workflow dispatches all three in parallel;
-the on-demand workflow runs the same coordinator, so the same three are
-available there too.
+the on-demand workflow can dispatch them too, and additionally ships the one
+agent allowed to write.
 
 | Agent | Checks | Permissions |
 |---|---|---|
@@ -70,18 +71,32 @@ None of them can edit a file or run a command. They return findings as JSON —
 `file`, `line`, `severity`, `issue`, `fix` — and the coordinator turns each
 finding into an inline review comment.
 
-### Who orchestrates them
+### The one write agent
 
-`.opencode/agents/ci-reviewer.md` is the primary agent the action runs as,
-selected with one line of config:
+`ci-pr-fixer` is the only agent that edits anything, and only the on-demand
+workflow runs it. It does not review: it takes the comment that triggered the
+run as its task, makes the smallest change that satisfies it (scoped to
+`ci-subagents-opencode/`), and stops. The action then commits and pushes that
+change to the PR branch — see *Fix commits* below.
 
-```json
-"default_agent": "ci-reviewer"
-```
+| Agent | Role | Permissions |
+|---|---|---|
+| `ci-pr-fixer` | Applies the change a `/opencode …` comment asks for on the PR branch | edit allow (only `ci-subagents-opencode/`), bash read-only |
 
-`ci-reviewer` is the only agent allowed to touch the shell, and only for a
-narrow allowlist — `gh api`, `gh pr view`, `gh pr diff`, and read-only `git`.
-Everything else is denied, so a CI run can post comments but cannot push code:
+### Which agent each workflow runs
+
+The action runs **one** primary agent per workflow, picked in the workflow
+file, so the two entry points have different powers:
+
+| Workflow | Agent | Can edit? | Commits? |
+|---|---|---|---|
+| auto-review | `ci-reviewer` | no (`edit: deny`) | no |
+| on-demand | `ci-pr-fixer` | yes, under `ci-subagents-opencode/` | yes — the action commits the edits |
+
+`ci-reviewer` (`default_agent` in `opencode.ci.json`) is the review
+coordinator. It is allowed to touch the shell only for a narrow allowlist —
+`gh api`, `gh pr view`, `gh pr diff`, and read-only `git` — so the auto-review
+run can post comments but can never push code:
 
 ```yaml
 permission:
@@ -99,11 +114,51 @@ permission:
     "git status*": allow
 ```
 
+`ci-pr-fixer` is the on-demand write agent. It keeps the same read-only shell
+allowlist but flips `edit`, scoped so it can only change files inside
+`ci-subagents-opencode/`:
+
+```yaml
+permission:
+  edit:
+    "*": deny
+    "ci-subagents-opencode/**": allow
+  skill: allow
+  task:
+    "*": allow
+  bash:
+    "*": deny
+    # ...same read-only gh/git allowlist as ci-reviewer
+```
+
 Subagent permissions are declared per file rather than inherited, because
-opencode derives a subagent's sandbox from its own config. `ci-reviewer` is
-also the on-demand agent, which means **neither entry point can edit code** —
-that is deliberate for a review demo, and it is why `require write`-style
-requests in a `/oc` comment will be declined.
+opencode derives a subagent's sandbox from its own config — the three
+reviewers stay read-only no matter which primary agent dispatches them. What
+makes a fix commit possible is not the agent alone: the on-demand workflow
+grants `contents: write` and sets a git identity, because the action commits
+and pushes any change the agent leaves behind (see *Fix commits* below).
+
+## Fix commits
+
+Only the on-demand workflow can change code. When `ci-pr-fixer` leaves the
+working tree dirty, the action does the rest itself: `git add .`, a commit on
+the PR branch, and `git push`. Two things make that work:
+
+- **`contents: write`** in `ci-subagents-opencode-on-demand.yml` (the
+  auto-review workflow stays on `contents: read`).
+- A **git identity**, because the runner has none by default and `git commit`
+  fails with `Author identity unknown` without it:
+
+  ```yaml
+  - name: Configure git identity
+    run: |
+      git config --global user.name "github-actions[bot]"
+      git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  ```
+
+The staged `.opencode/` copy is gitignored (`/.opencode/` in the repository's
+`.gitignore`), so the action's `git add .` never sweeps CI's own setup into the
+fix commit.
 
 ## The coordinator skill
 
@@ -219,6 +274,11 @@ plus three reviewers — so a review costs roughly 4× a single-agent run.
    full review on demand, or `/opencode dispatch 4r-reviewer and focus on the
    security issue` to run one reviewer against a specific concern.
    `ci-subagents-opencode-on-demand.yml` fires and replies on the thread.
+4. To have the demo *fix* something, comment the change you want — e.g.
+   `/opencode fix the off-by-one in shipping.ts` — either as a top-level PR
+   comment or as an inline review comment on the line. Same workflow: the
+   `ci-pr-fixer` agent edits the file, the action commits and pushes, and the
+   PR ends up with a commit containing the fix.
 
 ## What's planted in the sample app
 
