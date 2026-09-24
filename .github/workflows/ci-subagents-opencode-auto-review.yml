@@ -44,6 +44,9 @@ jobs:
           model: nan/deepseek-v4-flash
           agent: ci-reviewer
           use_github_token: true
+          # No public session share: the demo posts to the PR, and the share
+          # service (opncd.ai) is an external dependency that can fail the job.
+          share: false
           # All of the review logic lives in the `pr-review` skill, not here.
           prompt: |
             REPO: ${{ github.repository }}

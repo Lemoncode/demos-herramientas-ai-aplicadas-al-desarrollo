@@ -64,6 +64,9 @@ jobs:
         with:
           model: nan/deepseek-v4-flash
           use_github_token: true
+          # No public session share: the demo posts to the PR, and the share
+          # service (opncd.ai) is an external dependency that can fail the job.
+          share: false
           # Kept for intent: on-demand is the write entry point — the comment is
           # the task, the agent edits the PR branch, and the action commits it.
           agent: ci-pr-fixer
