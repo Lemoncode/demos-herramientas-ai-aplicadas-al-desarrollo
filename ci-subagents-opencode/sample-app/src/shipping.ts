@@ -17,13 +17,11 @@ export interface Shipment {
   express?: boolean;
 }
 
-// Issue (Reliability): off-by-one — the last zone in the table is never used,
-// so every shipment is billed at the wrong rate.
 const ZONE_RATES = [4.5, 6.2, 8.9, 12.4];
 
 export function shippingCost(shipment: Shipment): number {
   let cost = 0;
-  for (let i = 0; i < ZONE_RATES.length - 1; i++) {
+  for (let i = 0; i < ZONE_RATES.length; i++) {
     cost += ZONE_RATES[i] * shipment.weightKg;
   }
   return shipment.express ? cost * 2 : cost;
