@@ -66,6 +66,11 @@ jobs:
           # With `use_github_token`, the action reads this env to configure the
           # git credential header it pushes with.
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Trigger context so `ci-pr-fixer` can answer on the right thread.
+          TRIGGER_EVENT: ${{ github.event_name }}
+          TRIGGER_REPO: ${{ github.repository }}
+          TRIGGER_PR: ${{ github.event.issue.number || github.event.pull_request.number }}
+          TRIGGER_COMMENT_ID: ${{ github.event.comment.id }}
         with:
           model: nan/deepseek-v4-flash
           use_github_token: true

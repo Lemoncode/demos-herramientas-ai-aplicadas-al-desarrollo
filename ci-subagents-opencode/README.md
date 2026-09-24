@@ -297,10 +297,17 @@ plus three reviewers — so a review costs roughly 4× a single-agent run.
    security issue` to run one reviewer against a specific concern.
    `ci-subagents-opencode-on-demand.yml` fires and replies on the thread.
 4. To have the demo *fix* something, comment the change you want — e.g.
-   `/opencode fix the off-by-one in shipping.ts` — either as a top-level PR
-   comment or as an inline review comment on the line. Same workflow: the
-   `ci-pr-fixer` agent edits the file, the action commits and pushes, and the
-   PR ends up with a commit containing the fix.
+   `/opencode fix the off-by-one in shipping.ts` — as a top-level PR comment
+   or as an inline review comment on the line. Same workflow: `ci-pr-fixer`
+   edits the file, explains the fix on your comment's thread, and the action
+   commits and pushes the change.
+
+> **Trigger rules.** opencode only reacts to `issue_comment` and
+> `pull_request_review_comment`, and the comment **must** contain `/opencode`
+> or `/oc` — that check is built into the action. A review submission with no
+> inline comment fires `pull_request_review`, which the action does not
+> support, so nothing runs; put the `/opencode …` on an inline line comment or
+> a normal PR comment instead.
 
 ## What's planted in the sample app
 

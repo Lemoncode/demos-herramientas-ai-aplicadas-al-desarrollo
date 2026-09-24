@@ -40,6 +40,10 @@ jobs:
           NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
           OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The action reads this env to skip its own actor permission check.
+          # Without it, a review triggered by the bot's own fix commit fails with
+          # "User github-actions[bot] does not have write permissions".
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
           agent: ci-reviewer
