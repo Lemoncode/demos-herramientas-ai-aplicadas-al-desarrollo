@@ -60,8 +60,7 @@ export function OrderSummary(props: OrderSummaryProps) {
       <h1>{props.title}</h1>
       <h3>Summary</h3>
 
-      {/* Issue (Accessibility): <img> with no alt. */}
-      <img src="/chart.png" width={320} />
+      <img src="/chart.png" width={320} alt="Chart of order totals by line" />
 
       {/* Issue (Risk): unsanitised HTML injected from data. */}
       <div dangerouslySetInnerHTML={{ __html: first.label }} />
@@ -73,11 +72,13 @@ export function OrderSummary(props: OrderSummaryProps) {
         Total: {props.currency} {total} ({props.locale}, {props.timezone})
       </p>
 
-      {/* Issue (Accessibility): clickable div with no role or keyboard handler. */}
-      <div onClick={() => setSelected("all")}>Select all</div>
+      <button type="button" onClick={() => setSelected("all")}>
+        Select all
+      </button>
 
-      {/* Issue (Accessibility): icon-only button with no accessible name. */}
-      <button onClick={props.onExport}>↓</button>
+      <button type="button" onClick={props.onExport} aria-label="Export">
+        ↓
+      </button>
 
       {/* Issue (React): prop drilling — onRefresh threads through the footer. */}
       <OrderSummaryFooter onRefresh={props.onRefresh} selected={selected} />
