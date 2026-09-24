@@ -8,12 +8,15 @@ on:
 
 jobs:
   opencode:
+    # Only a maintainer's comment can trigger this job. The action runs with
+    # GITHUB_TOKEN below, which skips its own actor permission check, so this
+    # `author_association` gate is what keeps write access to maintainers.
     if: |
-      contains(github.event.comment.body, '/oc') ||
-      contains(github.event.comment.body, '/opencode')
+      (contains(github.event.comment.body, '/oc') ||
+       contains(github.event.comment.body, '/opencode')) &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       # The fixer edits the PR branch and the action commits + pushes the
       # result, so this workflow needs write access. The auto-review workflow
       # stays read-only (`contents: read`).
@@ -47,15 +50,17 @@ jobs:
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
-          # `use_github_token` is deliberately NOT set here, so the action still
-          # exchanges the OIDC token and refuses to run for commenters without
-          # write access. GITHUB_TOKEN is passed only so the `gh` CLI is
-          # authenticated when the agent posts inline review comments.
+          # `use_github_token: true` makes the action use GITHUB_TOKEN instead of
+          # exchanging an OIDC token for an opencode App token — that exchange
+          # returns 502 for this repository. GITHUB_TOKEN is what the auto-review
+          # workflow already uses successfully. The `author_association` gate on
+          # the job replaces the permission check the OIDC path would have run.
           NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
           OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
+          use_github_token: true
           # On-demand is the write entry point: the comment is the task, the
           # agent edits the PR branch, and the action commits the result.
           agent: ci-pr-fixer

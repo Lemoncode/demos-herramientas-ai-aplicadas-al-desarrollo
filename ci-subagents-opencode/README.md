@@ -142,10 +142,15 @@ and pushes any change the agent leaves behind (see *Fix commits* below).
 
 Only the on-demand workflow can change code. When `ci-pr-fixer` leaves the
 working tree dirty, the action does the rest itself: `git add .`, a commit on
-the PR branch, and `git push`. Two things make that work:
+the PR branch, and `git push`. Three things make that work:
 
 - **`contents: write`** in `ci-subagents-opencode-on-demand.yml` (the
   auto-review workflow stays on `contents: read`).
+- **`use_github_token: true`**, instead of the OIDC → opencode App token
+  exchange the action defaults to — that exchange returns `502` for this
+  repository. Because `GITHUB_TOKEN` skips the action's own actor permission
+  check, the job's `if` gates runs on `github.event.comment.author_association`
+  so only `OWNER`, `MEMBER` or `COLLABORATOR` comments can trigger a write.
 - A **git identity**, because the runner has none by default and `git commit`
   fails with `Author identity unknown` without it:
 
