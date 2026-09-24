@@ -8,6 +8,9 @@ on:
 
 jobs:
   review:
+    # Don't re-review the fixer's own commits. A push made with GITHUB_TOKEN
+    # otherwise lands as an `action_required` run stuck waiting for approval.
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
