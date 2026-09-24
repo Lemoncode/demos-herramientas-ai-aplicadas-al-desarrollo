@@ -239,9 +239,21 @@ NaN is not a built-in opencode provider, so its definition lives in
 key is never committed. The file sits outside the repo root on purpose, so
 it doesn't shadow anyone's local `opencode.json`.
 
-That config is deliberately tiny: provider plus `default_agent`. The agents and
-the skill are files under `.opencode/`, not JSON, so nothing has to be kept in
-sync between the two.
+There are two copies of that config, one per workflow, differing only in
+`default_agent`:
+
+| Config | `default_agent` | Used by |
+|---|---|---|
+| `opencode.ci.json` | `ci-reviewer` | auto-review |
+| `opencode.on-demand.json` | `ci-pr-fixer` | on-demand |
+
+The on-demand workflow needs its own copy because the action's `agent` input
+did not take effect against this opencode version — the run fell back to
+`default_agent` — so the write agent has to be selected through the config.
+
+Beyond that they are deliberately tiny: provider plus `default_agent`. The
+agents and the skill are files under `.opencode/`, not JSON, so nothing else
+has to be kept in sync.
 
 ## Cost
 
@@ -262,8 +274,9 @@ plus three reviewers — so a review costs roughly 4× a single-agent run.
    secret. Never commit the key to the repo.
 2. Optional — to use a different NaN model, change the `model:` input in
    both workflow files. Options include `nan/glm5.3-flash`,
-   `nan/qwen3.8-flash` and `nan/mimo-v2.5`; add the model id to
-   `opencode.ci.json` first if it isn't listed there.
+   `nan/qwen3.8-flash` and `nan/mimo-v2.5`; add the model id to both
+   `opencode.ci.json` and `opencode.on-demand.json` first if it isn't
+   listed there.
 
 ## Running the demo live
 
