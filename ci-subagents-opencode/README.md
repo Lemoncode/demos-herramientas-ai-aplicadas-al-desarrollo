@@ -27,12 +27,13 @@ already does for its three tools:
 | Location | Format | Read by |
 |---|---|---|
 | `.opencode/agents/*.md`, `.opencode/skills/<name>/SKILL.md` | opencode-native (`description`, `mode`, `permission`) | opencode, natively |
-| `.github/agents/*.agent.md`, `.github/skills/<name>/SKILL.md` | shared/portable (`name`, `description`, `tools`) | Claude Code (staged), VS Code Copilot, anything that reads the `.github` conventions |
+| `.github/agents/*.agent.md`, `.github/skills/<name>/SKILL.md` | shared/portable (`name`, `description`, `tools`) | VS Code Copilot, Claude Code, anything that reads the `.github` conventions |
 
 The `.opencode/` copy is what actually runs in CI, and it is the one you edit
-when you want to change reviewer behaviour. The `.github/` copy keeps the two
-demos structurally identical and is what the `ci-subagents-claude` workflow
-consumes, so a reader can diff the two demos and see only the wiring differ.
+when you want to change reviewer behaviour. The `.github/` copy is the portable
+mirror: the same agents and skill expressed in the shared `.github` conventions
+(`name`, `description`, `tools`) that other tooling such as VS Code Copilot
+understands.
 
 ### Why the workflow stages them
 
@@ -40,8 +41,7 @@ opencode finds project agents and skills by walking **up** from the current
 working directory to the git worktree root. In CI the working directory is the
 repository root, so a `.opencode/` folder inside `ci-subagents-opencode/` is
 invisible to it. The workflow therefore stages the demo's setup at the repo
-root for the length of the job — the same trick the Claude demo uses with
-`.claude/`:
+root for the length of the job:
 
 ```yaml
 - name: Stage opencode AI setup
@@ -187,16 +187,14 @@ prompt: |
   Run the `pr-review` skill.
 ```
 
-The file is byte-identical to
-`ci-subagents-claude/.github/skills/pr-review/SKILL.md` — only the mechanism
-that finds it differs. The skill name must match its directory name, hence
-`skills/pr-review/SKILL.md`.
+The skill name must match its directory name, hence `skills/pr-review/SKILL.md`.
+The portable `.github/skills/pr-review/SKILL.md` copy carries the same content.
 
 ## Inline comments
 
-Unlike `claude-code-action`, the opencode action has no inline-comment tool —
-it posts exactly one summary comment per run. Inline comments are therefore
-the skill's job, shelling out to `gh`:
+The opencode action has no inline-comment tool — it posts exactly one summary
+comment per run. Inline comments are therefore the skill's job, shelling out
+to `gh`:
 
 ```bash
 gh api --method POST \
@@ -314,9 +312,7 @@ plus three reviewers — so a review costs roughly 4× a single-agent run.
 `sample-app/` is a small order dashboard **written with errors on purpose, for
 educational reasons** — the mistakes are the point, and fixing them breaks the
 demo. Every file carries a banner saying so, every planted issue is marked
-with an `Issue (...)` comment, and `sample-app/README.md` lists them all. Both
-this folder and `ci-subagents-claude/` carry **the same files**, so the two
-tools review byte-identical code.
+with an `Issue (...)` comment, and `sample-app/README.md` lists them all.
 
 | File | Planted issue | Caught by |
 |---|---|---|
