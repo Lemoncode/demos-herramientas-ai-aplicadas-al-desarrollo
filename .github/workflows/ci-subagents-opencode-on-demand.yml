@@ -56,11 +56,14 @@ jobs:
           # workflow already uses successfully. The `author_association` gate on
           # the job replaces the permission check the OIDC path would have run.
           NAN_API_KEY: ${{ secrets.NAN_API_KEY }}
-          OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.ci.json
+          # This config pins `default_agent: ci-pr-fixer`. The action's `agent`
+          # input alone did not take effect in CI (the run fell back to the
+          # default agent), so the write agent is selected through the config.
+          OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.on-demand.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
           use_github_token: true
-          # On-demand is the write entry point: the comment is the task, the
-          # agent edits the PR branch, and the action commits the result.
+          # Kept for intent: on-demand is the write entry point — the comment is
+          # the task, the agent edits the PR branch, and the action commits it.
           agent: ci-pr-fixer
