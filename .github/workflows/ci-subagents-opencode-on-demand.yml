@@ -28,7 +28,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
-          persist-credentials: false
+          # Keep the GITHUB_TOKEN in the local git config: the action commits and
+          # pushes the agent's edit itself, and that `git push` needs credentials.
+          persist-credentials: true
 
       # Same agents and `pr-review` skill as the auto-review workflow. opencode
       # only walks up from the cwd (the repository root here) looking for
@@ -61,6 +63,9 @@ jobs:
           # default agent), so the write agent is selected through the config.
           OPENCODE_CONFIG: ${{ github.workspace }}/ci-subagents-opencode/opencode.on-demand.json
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # With `use_github_token`, the action reads this env to configure the
+          # git credential header it pushes with.
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: nan/deepseek-v4-flash
           use_github_token: true
