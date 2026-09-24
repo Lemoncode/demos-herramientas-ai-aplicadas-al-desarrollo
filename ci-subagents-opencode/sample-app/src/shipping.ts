@@ -8,8 +8,7 @@
 //
 // Sample shipping layer: rate maths and network calls.
 
-// Issue (Risk): credential committed straight into source.
-const CARRIER_TOKEN = "sk-live-7a1B2c3D4e5F6g7H8i9J0kLmNoPqRsTu";
+const CARRIER_TOKEN = process.env.CARRIER_TOKEN;
 
 export interface Shipment {
   id: string;
