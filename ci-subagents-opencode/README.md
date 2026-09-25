@@ -334,6 +334,19 @@ with an `Issue (...)` comment, and `sample-app/README.md` lists them all.
 | `OrderRow.tsx` | `<img>` with no `alt` | `accessibility-reviewer` |
 | `OrderRow.tsx` | `<select>` with no label | `accessibility-reviewer` |
 | `OrderRow.tsx` | Icon-only `!` button with no accessible name | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | Live-looking `whk_live_…` token committed to source | `4r-reviewer` (Risk) |
+| `ShippingEstimate.tsx` | Untrusted `order.customer` used as `<img src>` | `4r-reviewer` (Risk) |
+| `ShippingEstimate.tsx` | `<div dangerouslySetInnerHTML>` on an unsanitised string | `4r-reviewer` (Risk) |
+| `ShippingEstimate.tsx` | `useEffect` reads `endpoint` but the dep array is `[]` | `react-reviewer` |
+| `ShippingEstimate.tsx` | `(order as any).surcharge` | `react-reviewer` |
+| `ShippingEstimate.tsx` | 7-field props interface; `currency`/`timezone` never used | `react-reviewer` (prop drilling) |
+| `ShippingEstimate.tsx` | Floating `fetch().then()` chain — no `.catch()`, no error state | `4r-reviewer` (Resilience) |
+| `ShippingEstimate.tsx` | `<select>` and placeholder-only `<input>` with no labels | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | `<img>` with no `alt` | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | Quote and selection signalled by colour alone | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | Clickable `<div>` — no role, no keyboard handler | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | Icon-only `!` button with no accessible name | `accessibility-reviewer` |
+| `ShippingEstimate.tsx` | Heading jumps `h1` → `h3`; magic numbers `32`, `13`, `500` in JSX | `accessibility-reviewer` / `4r-reviewer` (Readability) |
 | whole app | no colocated `*.test.tsx` anywhere | `4r-reviewer` (Reliability) |
 
 A good run produces comments from all three agents on the first pass —
