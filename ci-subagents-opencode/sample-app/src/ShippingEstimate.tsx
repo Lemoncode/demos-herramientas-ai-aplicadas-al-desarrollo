@@ -29,7 +29,7 @@ interface ShippingEstimateProps {
 
 // Issue (Prop drilling): `currency` and `timezone` are threaded through this
 // component without ever being used here.
-export function ShippingEstimate(props: ShippingEstimateProps) {
+export function lemoncodeEstimate(props: ShippingEstimateProps) {
   const { order } = props;
   const [quote, setQuote] = useState<number | null>(null);
   const [coupon, setCoupon] = useState("");
