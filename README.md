@@ -10,7 +10,7 @@ Course materials and live demos for the "AI tools applied to development" course
 React + TypeScript (Vite) playground used to showcase Claude Code superpowers live during the session.
 
 ### `demo-02-spec-kit`
-Hands-on walkthrough of [Spec-Driven Development](https://github.com/github/spec-kit) using GitHub's Spec Kit CLI. Specs are the primary artifact; the AI generates implementations from them. Covers the full workflow: Constitution → Specify → Clarify → Plan → Tasks → Implement.
+Hands-on walkthrough of [Spec-Driven Development](https://github.com/github/spec-kit) using GitHub's Spec Kit CLI. Specs are the primary artifact; the AI generates implementations from them. Covers the full workflow: Constitution → Specify → Clarify → Plan → Checklist → Tasks → Analyze → Implement ⇄ Converge.
 
 ### `demo-03-grill-me`
 Demo of the **Grill Me** workflow (based on Matt Pocock's workshop). Goes from a vague client brief to AFK agent implementation through a structured sequence: Grill → PRD → Issues → Ralph Loop → QA.

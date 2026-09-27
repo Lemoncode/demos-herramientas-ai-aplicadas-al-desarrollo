@@ -152,7 +152,7 @@ Check the implementation against the spec and report whether the feature has con
 
 **Command:** `/speckit-converge`
 
-**Prompt example:** not yet written for this demo — see [Spec Kit's quickstart](https://github.com/github/spec-kit/blob/main/docs/quickstart.md) for usage until a local prompt file is added here.
+**Prompt example:** [`prompts/09-converge.md`](prompts/09-converge.md)
 
 **Output:** Convergence report; loops back to Implement if gaps remain
 
@@ -199,4 +199,4 @@ project-root/
 | 6 — Tasks | `/speckit-tasks` | Full + Lean | [`06-tasks.md`](prompts/06-tasks.md) |
 | 7 — Analyze | `/speckit-analyze` | Full only | [`07-analyze.md`](prompts/07-analyze.md) |
 | 8 — Implement | `/speckit-implement` | Full + Lean | [`08-implement.md`](prompts/08-implement.md) |
-| 9 — Converge | `/speckit-converge` | Full + Lean | not yet added |
+| 9 — Converge | `/speckit-converge` | Full + Lean | [`09-converge.md`](prompts/09-converge.md) |
